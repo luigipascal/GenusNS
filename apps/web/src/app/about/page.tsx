@@ -1,10 +1,10 @@
 import Link from "next/link";
+import { LEGAL } from "@/lib/legal";
 import styles from "../doc.module.css";
 
 export const metadata = {
-  title: "About · GENUS//NS",
-  description:
-    "GENUS//NS is a Neural Syntax publication experiment: music for genres that do not exist yet, with transparent provenance and genome-driven identity.",
+  title: "About",
+  description: `GENUS//NS is a Neural Syntax publication experiment under ${LEGAL.imprint}: music for genres that do not exist yet.`,
 };
 
 export default function AboutPage() {
@@ -20,10 +20,11 @@ export default function AboutPage() {
       <h1>Site description</h1>
       <p className={styles.lede}>
         GENUS//NS is the public face of a computational music experiment operated
-        by Neural Syntax and published by 0dB_Labs. It is not a streaming clone
-        and not a record-label brochure. It is a registry of invented musical
-        species — each with a formal genome, a living interface, and a clear
-        record of what machines did and what humans decided.
+        by Neural Syntax and published by {LEGAL.tradingAs}. The legal publisher
+        is <strong>{LEGAL.imprint}</strong>. It is not a streaming clone and not
+        a record-label brochure. It is a registry of invented musical species —
+        each with a formal genome, a living interface, and a clear record of
+        what machines did and what humans decided.
       </p>
 
       <section className={styles.grid}>
@@ -49,7 +50,9 @@ export default function AboutPage() {
             <strong>Genus</strong> is the desktop laboratory.{" "}
             <strong>GENUS//NS</strong> is the artist and public experiment.{" "}
             <strong>Neural Syntax</strong> is the operator.{" "}
-            <strong>0dB_Labs</strong> is the label.
+            <strong>{LEGAL.tradingAs}</strong> is the label. The company behind
+            the imprint is <strong>{LEGAL.companyName}</strong> (No.{" "}
+            {LEGAL.companyNo}).
           </p>
         </div>
         <div>
@@ -63,11 +66,16 @@ export default function AboutPage() {
       </section>
 
       <p className={styles.footNote}>
-        Tagline: music for genres that do not exist yet. The website should
-        behave as though it is another realisation of the experiment.
+        Tagline: music for genres that do not exist yet. Privacy and Terms follow
+        the same Rondanini Publishing pattern used on rondanini.com, adapted for
+        this music experiment. Cookie choices use PlainConsent.
       </p>
 
       <p className={styles.footNote}>
+        <Link href="/privacy">Privacy</Link>
+        {" · "}
+        <Link href="/terms">Terms</Link>
+        {" · "}
         <Link href="/services">Services</Link>
         {" · "}
         <Link href="/method">Method</Link>
@@ -79,3 +87,4 @@ export default function AboutPage() {
     </main>
   );
 }
+

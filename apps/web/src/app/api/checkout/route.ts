@@ -1,37 +1,24 @@
 import { NextResponse } from "next/server";
-import Stripe from "stripe";
+import { SERVICE_CATALOG, trackPricePence } from "@/lib/commerce";
+import {
+  getStripe,
+  randomIntegrationSuffix,
+  siteOrigin,
+} from "@/lib/stripe";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-const SERVICES: Record<
-  string,
-  { name: string; unitAmount: number; description: string }
-> = {
-  "genome-commission": {
-    name: "GENUS//NS — Genome commission",
-    unitAmount: 45000,
-    description: "Custom genome pack + species record",
-  },
-  "refine-master": {
-    name: "GENUS//NS — Refine & master consult",
-    unitAmount: 18000,
-    description: "Performance-layer analysis consult",
-  },
-  "release-kit": {
-    name: "GENUS//NS — Release kit",
-    unitAmount: 9000,
-    description: "Cover, artist mark, Ditto-ready pack",
-  },
-};
-
 /**
  * Stripe Checkout Sessions for track downloads and services.
- * Requires STRIPE_SECRET_KEY. Never put payment_method_types (use Dashboard PM config).
+ * Never put payment_method_types (use Dashboard PM config).
+ * Site origin defaults to https://0dblabs.com while genusns is offline.
  */
 export async function POST(req: Request) {
-  const key = process.env.STRIPE_SECRET_KEY;
-  if (!key) {
+  let stripe;
+  try {
+    stripe = getStripe();
+  } catch {
     return NextResponse.json(
       { error: "STRIPE_SECRET_KEY not configured" },
       { status: 503 },
@@ -44,35 +31,34 @@ export async function POST(req: Request) {
     trackId?: string;
   };
 
-  const stripe = new Stripe(key);
-  const origin =
-    process.env.NEXT_PUBLIC_SITE_URL ??
-    req.headers.get("origin") ??
-    "http://localhost:3456";
+  const origin = siteOrigin(req);
 
   let lineName = "";
   let unitAmount = 0;
   let description = "";
   let meta: Record<string, string> = {};
 
-  if (body.kind === "service" && body.serviceId && SERVICES[body.serviceId]) {
-    const s = SERVICES[body.serviceId]!;
+  if (body.kind === "service" && body.serviceId && SERVICE_CATALOG[body.serviceId]) {
+    const s = SERVICE_CATALOG[body.serviceId]!;
     lineName = s.name;
     unitAmount = s.unitAmount;
     description = s.description;
-    meta = { kind: "service", serviceId: body.serviceId };
+    meta = { kind: "service", serviceId: body.serviceId, project: "genusns" };
   } else if (body.kind === "track" && body.trackId) {
-    lineName = `GENUS//NS — ${body.trackId.toUpperCase()} download`;
-    unitAmount = Number(process.env.STRIPE_TRACK_PRICE_GBP_PENCE ?? 299);
+    const id = body.trackId.toLowerCase();
+    lineName = `GENUS//NS — ${id.toUpperCase()} download`;
+    unitAmount = trackPricePence();
     description = "High-quality download · experimental species recording";
-    meta = { kind: "track", trackId: body.trackId.toLowerCase() };
+    meta = { kind: "track", trackId: id, project: "genusns" };
   } else {
     return NextResponse.json({ error: "Invalid checkout request" }, { status: 400 });
   }
 
-  const session = await stripe.checkout.sessions.create({
+  const sessionParams: Parameters<typeof stripe.checkout.sessions.create>[0] = {
     mode: "payment",
-    success_url: `${origin}/about?checkout=success`,
+    customer_creation: "if_required",
+    billing_address_collection: "auto",
+    success_url: `${origin}/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
     cancel_url: `${origin}/services?checkout=cancel`,
     line_items: [
       {
@@ -88,7 +74,18 @@ export async function POST(req: Request) {
       },
     ],
     metadata: meta,
-  });
+  };
+
+  // integration_identifier on newer API versions — ignore if SDK rejects
+  try {
+    (sessionParams as Record<string, unknown>).integration_identifier =
+      `genusns_checkout_${randomIntegrationSuffix()}`;
+  } catch {
+    /* optional */
+  }
+
+  const session = await stripe.checkout.sessions.create(sessionParams);
 
   return NextResponse.json({ url: session.url, id: session.id });
 }
+

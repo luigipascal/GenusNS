@@ -22,6 +22,9 @@ importers:
       '@genusns/pipeline':
         specifier: workspace:*
         version: link:../../packages/pipeline
+      '@genusns/rights':
+        specifier: workspace:*
+        version: link:../../packages/rights
       '@genusns/ui-tokens':
         specifier: workspace:*
         version: link:../../packages/ui/tokens
@@ -65,6 +68,9 @@ importers:
       '@genusns/genome-visuals':
         specifier: workspace:*
         version: link:../genome-visuals
+      '@genusns/rights':
+        specifier: workspace:*
+        version: link:../rights
       sharp:
         specifier: ^0.34.5
         version: 0.34.5
@@ -72,6 +78,15 @@ importers:
       tsx:
         specifier: ^4.19.3
         version: 4.23.12
+      typescript:
+        specifier: ^5.8.2
+        version: 5.9.3
+      vitest:
+        specifier: ^3.0.9
+        version: 3.2.7(@types/node@22.20.1)(tsx@4.23.12)
+
+  packages/rights:
+    devDependencies:
       typescript:
         specifier: ^5.8.2
         version: 5.9.3

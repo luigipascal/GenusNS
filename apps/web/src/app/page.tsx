@@ -48,6 +48,9 @@ export default function HomePage() {
       <p className={`${styles.mark} mono`} data-show={stage >= 1}>
         GENUS//NS
       </p>
+      <p className={`${styles.imprint} mono`} data-show={stage >= 1}>
+        RONDANINI PUBLISHING LTD T/A 0DB_LABS
+      </p>
       <div
         className={styles.structure}
         data-show={stage >= 2}
@@ -62,6 +65,8 @@ export default function HomePage() {
         A NEURAL SYNTAX EXPERIMENT
         <br />
         IN COMPUTATIONAL MUSICAL TAXONOMY
+        <br />
+        PUBLISHED UNDER 0DB_LABS
       </p>
       <nav className={styles.actions} data-show={stage >= 4}>
         <Link href="/registry" className={styles.action}>

@@ -64,7 +64,8 @@ export default function ServicesPage() {
       <h1>Services</h1>
       <p className={styles.lede}>
         Commission work around the GENUS//NS experiment. Payments via Stripe.
-        Delivery is coordinated by Neural Syntax / 0dB_Labs.
+        Delivery is coordinated by Neural Syntax / Rondanini Publishing Ltd t/a
+        0dB_Labs.
       </p>
 
       <ul className={styles.stages}>

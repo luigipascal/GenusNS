@@ -3,6 +3,16 @@ import { mkdir, writeFile, copyFile, access, readFile } from "node:fs/promises";
 import path from "node:path";
 import type { ExperimentLaw } from "@genusns/genome-visuals";
 import { createGenomeVisualProfile } from "@genusns/genome-visuals";
+import {
+  createDefaultMachineRightsBundle,
+  renderAiDisclosureTxt,
+  renderDistributorComposerWarning,
+  renderPackageRightsReadme,
+  rightsPolicyConfirmedEvent,
+  toReleaseSheetRights,
+  validateRightsPolicy,
+  type RightsPolicyBundle,
+} from "@genusns/rights";
 import { COVER_ARTIST, COVER_LABEL, coverCopyFor } from "./cover.js";
 import { coverFileName, writeCoverPng } from "./render.js";
 import { zipDittoKit } from "./zip.js";
@@ -11,17 +21,24 @@ import { zipDittoKit } from "./zip.js";
  * Ditto Music kit layout (operator uploads manually).
  *
  * READY_FOR_DITTO/<canonical>/
- *   cover.png                 3000x3000
- *   DITTO_METADATA.json       storefront fields
- *   TRACK_INFO.txt            human checklist
- *   audio/                    master wav when ingested (else README)
- *   provenance/               public law summary
+ *   cover.png
+ *   artist.png (optional, copied by pipeline)
+ *   DITTO_METADATA.json
+ *   TRACK_INFO.txt
+ *   AI_DISCLOSURE.txt
+ *   README_RIGHTS.txt
+ *   DISTRIBUTOR_COMPOSER_WARNING.txt (when applicable)
+ *   RELEASE_SHEET.json
+ *   RIGHTS.json
+ *   audio/
+ *   provenance/
  */
 export interface DittoKitResult {
   kitDir: string;
   coverPath: string;
   zipPath: string;
   status: "READY_FOR_DITTO";
+  rights: RightsPolicyBundle;
   manualStep: "Upload this folder's audio + cover into Ditto Music. Nothing else is automated past this point.";
 }
 
@@ -31,6 +48,8 @@ export async function buildDittoKit(
   options: {
     audioPath?: string | null;
     coversDir?: string;
+    rights?: RightsPolicyBundle;
+    operatorConfirmedBy?: string;
   } = {},
 ): Promise<DittoKitResult> {
   const short = experiment.digest.slice(0, 6).toUpperCase();
@@ -52,6 +71,17 @@ export async function buildDittoKit(
 
   const profile = createGenomeVisualProfile(experiment);
   const copy = coverCopyFor(experiment);
+
+  const rights =
+    options.rights ??
+    createDefaultMachineRightsBundle({
+      operatorConfirmedBy: options.operatorConfirmedBy ?? "pipeline",
+      operatorConfirmedAt: new Date().toISOString(),
+    });
+
+  const validation = validateRightsPolicy(rights);
+  const releaseSheet = toReleaseSheetRights(rights);
+  const confirmed = rightsPolicyConfirmedEvent(rights);
 
   const metadata = {
     schema: "genusns.ditto-metadata.v1",
@@ -79,8 +109,23 @@ export async function buildDittoKit(
           ? path.basename(options.audioPath)
           : null,
         duration_sec: experiment.loopSec ?? null,
+        // Intentionally no composer/songwriter fields when not claimed
+        composer: null,
+        songwriter: null,
       },
     ],
+    composition: {
+      status: "Machine-generated composition",
+      composer_songwriter_publishing_claim: "Not claimed",
+      publishing_administration: "NONE",
+      authorship_status: rights.composition.authorshipStatus,
+      publishing_royalty_status: rights.composition.publishingRoyaltyStatus,
+    },
+    master: {
+      status: "Collect through distributor",
+      rights_holder: rights.master.masterRightsHolder,
+      revenue_collection: rights.master.masterRevenueCollectionStatus,
+    },
     genus: {
       canonical_id: experiment.canonicalId,
       digest: experiment.digest,
@@ -92,12 +137,63 @@ export async function buildDittoKit(
       visual_profile_version: profile.version,
     },
     operator_note:
-      "Upload cover.png + audio to Ditto Music manually. Do not change artist/label fields without updating GENUS//NS registry.",
+      "Upload cover.png + audio to Ditto Music manually. Do not invent a composer. Composition publishing is not claimed by default; master revenue may still be collected.",
   };
 
   await writeFile(
     path.join(kitDir, "DITTO_METADATA.json"),
     JSON.stringify(metadata, null, 2),
+    "utf8",
+  );
+  await writeFile(
+    path.join(kitDir, "RIGHTS.json"),
+    JSON.stringify(rights, null, 2),
+    "utf8",
+  );
+  await writeFile(
+    path.join(kitDir, "RELEASE_SHEET.json"),
+    JSON.stringify(
+      {
+        schema: "genusns.release-sheet.v1",
+        title: copy.title,
+        artist: COVER_ARTIST,
+        label: COVER_LABEL,
+        digest: experiment.digest,
+        ...releaseSheet,
+      },
+      null,
+      2,
+    ),
+    "utf8",
+  );
+  await writeFile(
+    path.join(kitDir, "AI_DISCLOSURE.txt"),
+    renderAiDisclosureTxt(rights),
+    "utf8",
+  );
+  await writeFile(
+    path.join(kitDir, "README_RIGHTS.txt"),
+    renderPackageRightsReadme(rights),
+    "utf8",
+  );
+
+  const warning = renderDistributorComposerWarning(rights);
+  if (warning) {
+    await writeFile(
+      path.join(kitDir, "DISTRIBUTOR_COMPOSER_WARNING.txt"),
+      warning,
+      "utf8",
+    );
+  }
+
+  await writeFile(
+    path.join(provenanceDir, "RIGHTS_POLICY_CONFIRMED.json"),
+    JSON.stringify(confirmed, null, 2),
+    "utf8",
+  );
+  await writeFile(
+    path.join(provenanceDir, "RIGHTS_VALIDATION.json"),
+    JSON.stringify(validation, null, 2),
     "utf8",
   );
 
@@ -113,15 +209,23 @@ export async function buildDittoKit(
       `Cover:    cover.png (3000x3000, genome wheel)`,
       `Canonical:${experiment.canonicalId}`,
       "",
+      "COMPOSITION STATUS",
+      "  Machine-generated composition",
+      "COMPOSER/SONGWRITER PUBLISHING CLAIM",
+      "  Not claimed",
+      "MASTER REVENUE",
+      "  Collect through distributor",
+      "",
+      "Do not invent a composer to fill distributor forms.",
+      "See DISTRIBUTOR_COMPOSER_WARNING.txt if the form requires a composer field.",
+      "",
       "ONLY MANUAL STEP:",
       "  1. Open Ditto Music",
       "  2. Create release (Single)",
-      "  3. Upload cover.png",
+      "  3. Upload cover.png (+ artist.png for profile if needed)",
       "  4. Upload the master WAV from audio/",
-      "  5. Paste metadata from DITTO_METADATA.json",
-      "  6. After stores go live, paste DSP links back into GENUS//NS Studio",
-      "",
-      "Everything else in GENUS//NS is automated.",
+      "  5. Use DITTO_METADATA.json — leave composer empty / not claimed",
+      "  6. After stores go live, paste DSP links back into GENUS//NS",
       "",
     ].join("\n"),
     "utf8",
@@ -166,6 +270,10 @@ export async function buildDittoKit(
     cover_sha256: createHash("sha256")
       .update(await readFile(coverPath))
       .digest("hex"),
+    rights_validation: validation.map((v) => ({
+      code: v.code,
+      severity: v.severity,
+    })),
   };
   await writeFile(
     path.join(kitDir, "STATUS.json"),
@@ -180,6 +288,7 @@ export async function buildDittoKit(
     coverPath,
     zipPath,
     status: "READY_FOR_DITTO",
+    rights,
     manualStep:
       "Upload this folder's audio + cover into Ditto Music. Nothing else is automated past this point.",
   };

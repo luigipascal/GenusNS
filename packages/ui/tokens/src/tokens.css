@@ -1,11 +1,16 @@
 :root {
-  /* GENUS//NS base — near-black field; accents come from experiment palette */
-  --gns-bg: #070708;
-  --gns-bg-elevated: #101014;
-  --gns-fg: #e8e6e1;
-  --gns-fg-muted: #8a8780;
-  --gns-line: rgba(232, 230, 225, 0.14);
-  --gns-line-strong: rgba(232, 230, 225, 0.28);
+  /*
+   * GENUS//NS — spectrogram ledger on blue-graphite.
+   * Distinct from the prior void-black Syne field; same data/backend.
+   */
+  --gns-bg: #060a10;
+  --gns-bg-elevated: #0e1520;
+  --gns-fg: #e4ebe8;
+  --gns-fg-muted: #7d8b92;
+  --gns-line: rgba(180, 210, 220, 0.12);
+  --gns-line-strong: rgba(180, 210, 220, 0.28);
+  --gns-oxide: #c9784a;
+  --gns-field-teal: #4f9e96;
 
   --gns-space-1: 0.25rem;
   --gns-space-2: 0.5rem;
@@ -14,7 +19,9 @@
   --gns-space-5: 2.5rem;
   --gns-space-6: 4rem;
 
-  --gns-font-display: "Syne", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --gns-font-display: var(--font-archivo), "Archivo", "Helvetica Neue", Helvetica,
+    Arial, sans-serif;
+  --gns-font-body: var(--font-source-serif), "Source Serif 4", Georgia, serif;
   --gns-font-mono: "IBM Plex Mono", ui-monospace, monospace;
 
   --gns-text-xs: 0.75rem;
@@ -32,9 +39,8 @@
   --gns-motion-quick: 280ms;
   --gns-ease-structural: cubic-bezier(0.22, 0.61, 0.36, 1);
 
-  /* Experiment accents injected at runtime */
-  --gns-accent: var(--gns-fg-muted);
-  --gns-accent-2: var(--gns-fg-muted);
+  --gns-accent: var(--gns-field-teal);
+  --gns-accent-2: var(--gns-oxide);
   --gns-accent-muted: var(--gns-fg-muted);
 }
 
@@ -50,3 +56,4 @@ body {
   background: var(--gns-bg);
   color: var(--gns-fg);
 }
+

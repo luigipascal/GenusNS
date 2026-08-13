@@ -16,6 +16,7 @@
 }
 
 .mark,
+.imprint,
 .structure,
 .line,
 .sub,
@@ -29,6 +30,7 @@
 }
 
 .mark[data-show="true"],
+.imprint[data-show="true"],
 .structure[data-show="true"],
 .line[data-show="true"],
 .sub[data-show="true"],
@@ -44,8 +46,32 @@
   font-size: var(--gns-text-xs);
 }
 
+.imprint {
+  margin: -0.5rem 0 0;
+  letter-spacing: 0.18em;
+  font-size: 0.58rem;
+  color: var(--gns-oxide);
+}
+
 .structure {
   width: min(340px, 72vw);
+  position: relative;
+}
+
+.structure::after {
+  content: "";
+  display: block;
+  height: 2px;
+  margin: 0.85rem auto 0;
+  width: min(220px, 70%);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--gns-field-teal),
+    var(--gns-oxide),
+    transparent
+  );
+  opacity: 0.7;
 }
 
 .structure :global(svg) {
@@ -104,6 +130,7 @@
 
 @media (prefers-reduced-motion: reduce) {
   .mark,
+  .imprint,
   .structure,
   .line,
   .sub,

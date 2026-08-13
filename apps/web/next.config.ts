@@ -7,6 +7,7 @@ const nextConfig: NextConfig = {
     "@genusns/genome-visuals",
     "@genusns/ui-tokens",
     "@genusns/pipeline",
+    "@genusns/rights",
   ],
   serverExternalPackages: ["sharp"],
   reactStrictMode: true,

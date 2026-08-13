@@ -1,0 +1,176 @@
+import Link from "next/link";
+import { LEGAL, companyRegistrationLine } from "@/lib/legal";
+import styles from "../doc.module.css";
+
+export const metadata = {
+  title: "Privacy Policy · GENUS//NS",
+  description: `Privacy Policy for GENUS//NS, operated under ${LEGAL.imprint}.`,
+};
+
+export default function PrivacyPage() {
+  return (
+    <main className={styles.doc}>
+      <header className={styles.bar}>
+        <Link href="/" className="mono">
+          GENUS//NS
+        </Link>
+        <span className="mono">PRIVACY</span>
+      </header>
+
+      <h1>Privacy Policy</h1>
+      <p className={styles.lede}>
+        Effective date: 13 August 2026
+        <br />
+        Website: GENUS//NS
+        <br />
+        Publisher: {LEGAL.imprint}
+      </p>
+
+      <ol className={styles.stages}>
+        <li>
+          <h2 className="mono">1. ABOUT THIS POLICY</h2>
+          <p>
+            {LEGAL.companyName} (&quot;Rondanini&quot;, &quot;we&quot;,
+            &quot;our&quot;, or &quot;us&quot;), trading as {LEGAL.tradingAs},
+            is committed to protecting your privacy and personal data. This
+            Privacy Policy explains how we collect, use, and protect information
+            when you visit the GENUS//NS site, listen to registry material, buy
+            downloads or services, or contact us.
+          </p>
+          <p>
+            This policy is intended to align with UK GDPR, EU GDPR, and the UK
+            Data Protection Act 2018, as applicable to publishers and editorial
+            websites. Wording and structure follow the same approach used on{" "}
+            <a href={LEGAL.parentSite}>rondanini.com</a> and related Rondanini
+            properties.
+          </p>
+        </li>
+
+        <li>
+          <h2 className="mono">2. DATA CONTROLLER</h2>
+          <p>
+            {LEGAL.companyName}
+            <br />
+            {LEGAL.registeredOffice}
+            <br />
+            Registered in {LEGAL.jurisdiction} (Company No. {LEGAL.companyNo})
+            <br />
+            Trading as: {LEGAL.tradingAs}
+            <br />
+            Tel: {LEGAL.tel}
+            <br />
+            Email: {LEGAL.emailInfo}
+          </p>
+        </li>
+
+        <li>
+          <h2 className="mono">3. INFORMATION WE COLLECT</h2>
+          <p>
+            <strong>3.1 Information you provide</strong> — email and related
+            details when you contact us; checkout details processed by Stripe
+            when you purchase a download or service; any other information you
+            choose to include in free-text fields.
+          </p>
+          <p>
+            <strong>3.2 Information we collect automatically</strong> — website
+            usage data through analytics (for example pages visited and referral
+            sources), where you have accepted non-essential cookies; technical
+            information such as IP address, browser type, and device information
+            (often via analytics or server logs); cookies and similar
+            technologies — see Cookies below.
+          </p>
+          <p>
+            <strong>3.3 Information from third parties</strong> — where you
+            follow outbound links (for example DSP store pages or Stripe
+            Checkout), those services operate under their own privacy policies.
+            We may use reputable infrastructure and payment providers to deliver
+            the site and transactions; they process data on our instructions.
+          </p>
+        </li>
+
+        <li>
+          <h2 className="mono">4. HOW WE USE YOUR DATA</h2>
+          <p>
+            We use personal data to operate, secure, and improve GENUS//NS;
+            fulfil purchases; respond to enquiries; measure site performance
+            with analytics when you consent to non-essential cookies; and comply
+            with legal obligations.
+          </p>
+        </li>
+
+        <li>
+          <h2 className="mono">5. LEGAL BASES</h2>
+          <p>
+            Depending on the activity, we rely on consent (for example
+            non-essential analytics cookies), contract (fulfililling a purchase),
+            legitimate interests (for example site security, responding to
+            enquiries, and understanding aggregate readership where permitted),
+            or legal obligation.
+          </p>
+        </li>
+
+        <li>
+          <h2 className="mono">6. RETENTION</h2>
+          <p>
+            We keep data only as long as needed for the purposes above,
+            including any legal, accounting, or reporting requirements. Purchase
+            and enquiry records are reviewed periodically and deleted or
+            anonymised when no longer required.
+          </p>
+        </li>
+
+        <li>
+          <h2 className="mono">7. YOUR RIGHTS</h2>
+          <p>
+            You may have rights to access, rectify, erase, restrict, or object
+            to certain processing, and to data portability where applicable. You
+            can withdraw consent at any time (for example cookie preferences via
+            the site footer). You may lodge a complaint with the ICO (UK) or
+            your local supervisory authority.
+          </p>
+        </li>
+
+        <li>
+          <h2 className="mono">8. COOKIES</h2>
+          <p>
+            Essential cookies may be needed for basic site function. Non-essential
+            cookies used for analytics are loaded only if you choose
+            &quot;Accept analytics&quot; on the cookie banner (PlainConsent).
+            You can change your choice at any time using Cookie settings in the
+            footer.
+          </p>
+          <p>
+            We use essential cookies so the site works. Personalized analytics
+            cookies load only if you opt in; cookieless measurement may still
+            run when a measurement ID is configured.
+          </p>
+        </li>
+
+        <li>
+          <h2 className="mono">9. INTERNATIONAL TRANSFERS</h2>
+          <p>
+            If we use processors outside the UK/EEA, we ensure appropriate
+            safeguards (such as standard contractual clauses) where required by
+            law.
+          </p>
+        </li>
+
+        <li>
+          <h2 className="mono">CONTACT</h2>
+          <p>
+            For questions about this Privacy Policy or your personal data:
+            <br />
+            Email: {LEGAL.emailPrivacy}
+            <br />
+            Post: Privacy Officer, {LEGAL.companyName},{" "}
+            {LEGAL.registeredOffice}
+            <br />
+            Phone: {LEGAL.tel}
+          </p>
+          <p className={styles.footNote}>{companyRegistrationLine()}</p>
+        </li>
+      </ol>
+    </main>
+  );
+}
+

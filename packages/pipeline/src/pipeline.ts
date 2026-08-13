@@ -1,8 +1,9 @@
 import { createHash } from "node:crypto";
-import { mkdir, writeFile, readFile, readdir, copyFile } from "node:fs/promises";
+import { mkdir, writeFile, readFile, readdir, copyFile, access } from "node:fs/promises";
 import path from "node:path";
 import type { ExperimentLaw } from "@genusns/genome-visuals";
 import { createGenomeVisualProfile } from "@genusns/genome-visuals";
+import { createDefaultMachineRightsBundle } from "@genusns/rights";
 import { writeCoverPng } from "./render.js";
 import { buildDittoKit } from "./ditto-kit.js";
 
@@ -47,6 +48,16 @@ export async function runPublicationPipeline(
     "utf8",
   );
 
+  const rights = createDefaultMachineRightsBundle({
+    operatorConfirmedBy: "pipeline",
+    operatorConfirmedAt: new Date().toISOString(),
+  });
+  await writeFile(
+    path.join(expDir, "RIGHTS.json"),
+    JSON.stringify(rights, null, 2),
+    "utf8",
+  );
+
   if (options.snapshotDir) {
     const snapOut = path.join(expDir, "snapshot");
     await mkdir(snapOut, { recursive: true });
@@ -61,7 +72,19 @@ export async function runPublicationPipeline(
 
   const coversDir = path.join(dataRoot, "covers");
   const publicCovers = path.join(dataRoot, "public-covers");
-  const cover = await writeCoverPng(experiment, coversDir);
+  const existingCover = path.join(coversDir, `${short}.png`);
+  let cover: { path: string; sha256: string; bytes: number };
+  try {
+    await access(existingCover);
+    const buf = await readFile(existingCover);
+    cover = {
+      path: existingCover,
+      sha256: createHash("sha256").update(buf).digest("hex"),
+      bytes: buf.length,
+    };
+  } catch {
+    cover = await writeCoverPng(experiment, coversDir);
+  }
   await mkdir(publicCovers, { recursive: true });
   await copyFile(cover.path, path.join(publicCovers, path.basename(cover.path)));
 
@@ -99,6 +122,8 @@ export async function runPublicationPipeline(
   const kit = await buildDittoKit(experiment, dataRoot, {
     audioPath: options.audioPath,
     coversDir,
+    rights,
+    operatorConfirmedBy: "pipeline",
   });
 
   // Maintain index of kits awaiting Ditto upload

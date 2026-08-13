@@ -12,6 +12,8 @@
 | **Genus** | Desktop laboratory (`E:\0dblabs\humanizer`) — Compose, Refine, Genre Genesis |
 | **GENUS//NS** | Artist, registry, publication layer, public website |
 | **Neural Syntax** | Operator / parent identity |
+| **0dB_Labs** | Label (trading name of Rondanini Publishing Ltd) |
+| **Rondanini Publishing Ltd** | Legal company (No. 16548159) |
 
 Internal package names: `genus-desktop`, `genusns-registry`, `genusns-publisher`.
 
@@ -56,6 +58,12 @@ Genre Genesis → Compose → select → Refine (Analyse → named DSP → re-an
 (title + artist `GENUS//NS` + label `0dB_Labs`), Ditto kit assembly, registry record.
 
 **Manual only:** Ditto Music upload (and pasting DSP links once live).
+
+## Rights policy (default autonomous GENUS work)
+
+Composition publishing royalties are **not claimed**. Master-side distribution
+revenue may still be **collected**. See [`docs/RIGHTS_POLICY.md`](RIGHTS_POLICY.md)
+and package `@genusns/rights`. Do not invent a human composer for distributor forms.
 
 Refine changes the **performance layer only**; composition/arrangement remain intact. That distinction must appear in provenance.
 

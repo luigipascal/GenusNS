@@ -60,6 +60,13 @@ export default function TransparencyPage() {
         Let’s Submit scores are different measurements. None of them is
         labelled “AI probability” on this site.
       </p>
+      <p className={styles.footNote}>
+        Composition publishing royalties for fully machine-generated GENUS works
+        are not claimed by default; master-side distribution revenue may still
+        be collected. See Privacy / Terms and the TRACE rights blocks for
+        project policy language. Publisher: Rondanini Publishing Ltd t/a
+        0dB_Labs.
+      </p>
     </main>
   );
 }

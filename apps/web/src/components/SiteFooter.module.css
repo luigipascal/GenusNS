@@ -1,0 +1,73 @@
+.footer {
+  margin-top: auto;
+  padding: var(--gns-space-5) var(--gns-space-5) var(--gns-space-6);
+  border-top: 1px solid var(--gns-line);
+  display: grid;
+  gap: var(--gns-space-3);
+  background:
+    linear-gradient(
+      180deg,
+      transparent,
+      color-mix(in oklab, var(--gns-oxide) 6%, transparent)
+    ),
+    var(--gns-bg-elevated);
+}
+
+.imprint {
+  display: grid;
+  gap: 0.35rem;
+  max-width: 48rem;
+}
+
+.brand {
+  margin: 0;
+  font-size: var(--gns-text-sm);
+  line-height: 1.45;
+}
+
+.roles {
+  margin: 0;
+  font-family: var(--gns-font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gns-fg-muted);
+}
+
+.legal {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.85rem 1.35rem;
+  font-family: var(--gns-font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.legal a {
+  color: var(--gns-fg-muted);
+  border-bottom: 1px solid transparent;
+}
+
+.legal a:hover,
+.legal a:focus-visible {
+  color: var(--gns-fg);
+  border-bottom-color: var(--gns-oxide);
+  outline: none;
+}
+
+.copy,
+.reg {
+  margin: 0;
+  font-size: 0.7rem;
+  line-height: 1.55;
+  color: var(--gns-fg-muted);
+  max-width: 52rem;
+}
+
+.reg {
+  font-family: var(--gns-font-mono);
+  letter-spacing: 0.02em;
+  font-size: 0.62rem;
+}
+

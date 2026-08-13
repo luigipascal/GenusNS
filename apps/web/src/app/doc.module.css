@@ -3,6 +3,14 @@
   padding: var(--gns-space-4) var(--gns-space-5) var(--gns-space-6);
   max-width: 52rem;
   margin: 0 auto;
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in oklab, var(--gns-bg-elevated) 88%, transparent),
+      color-mix(in oklab, var(--gns-bg-elevated) 72%, transparent)
+    );
+  border-left: 1px solid var(--gns-line);
+  border-right: 1px solid var(--gns-line);
 }
 
 .bar {
@@ -52,8 +60,17 @@
 }
 
 .stages p {
-  margin: 0;
+  margin: 0 0 0.75rem;
   line-height: 1.6;
+}
+
+.stages p:last-child {
+  margin-bottom: 0;
+}
+
+.stages a {
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
 }
 
 .grid {

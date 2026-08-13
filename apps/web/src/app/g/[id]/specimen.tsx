@@ -17,10 +17,13 @@ import {
   renderSpectralSurfaceSvg,
   resolveExperiment,
 } from "@genusns/genome-visuals";
+import { publicTraceRightsLabels } from "@genusns/rights";
 import { PlaybackProvider, usePlayback } from "@/lib/playback";
 import styles from "./specimen.module.css";
 
 export type ExperimentMode = "listen" | "law" | "trace";
+
+const TRACE_RIGHTS = publicTraceRightsLabels();
 
 function formatTime(sec: number): string {
   const s = Math.max(0, sec);
@@ -175,9 +178,33 @@ function SpecimenBody({
               <span>{formatTime(playback.duration)}</span>
             </div>
             <p className={`${styles.note} mono`}>
-              VISUAL PLAYBACK · NO AUTOPLAY · MASTER AUDIO VIA PUBLICATION
-              SNAPSHOT
+              {playback.mode === "master"
+                ? "MASTER AUDIO · NO AUTOPLAY"
+                : playback.mode === "genome-preview"
+                  ? "GENOME AUDITION · WEB AUDIO PREVIEW · NO AUTOPLAY"
+                  : "LOADING AUDIO…"}
             </p>
+            <button
+              type="button"
+              className={styles.play}
+              style={{ marginTop: "0.75rem" }}
+              onClick={() => {
+                void fetch("/api/checkout", {
+                  method: "POST",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify({
+                    kind: "track",
+                    trackId: experiment.digest.slice(0, 6),
+                  }),
+                })
+                  .then((r) => r.json())
+                  .then((d: { url?: string }) => {
+                    if (d.url) window.location.href = d.url;
+                  });
+              }}
+            >
+              BUY DOWNLOAD
+            </button>
           </div>
         )}
       </section>
@@ -281,7 +308,8 @@ function SpecimenBody({
             <li>
               <span className="mono">REFINEMENT</span>
               <span>
-                Performance layer only · named DSP (when supplied)
+                Performance layer only · named DSP (when supplied) · does not
+                create a composer claim
               </span>
             </li>
             <li>
@@ -291,10 +319,36 @@ function SpecimenBody({
               </span>
             </li>
           </ol>
+
+          <div className={styles.rightsBlock}>
+            <h2 className="mono">MACHINE</h2>
+            <ul>
+              {TRACE_RIGHTS.machine.map((item) => (
+                <li key={item}>{item}</li>
+              ))}
+            </ul>
+            <h2 className="mono">HUMAN</h2>
+            <ul>
+              {TRACE_RIGHTS.human.map((item) => (
+                <li key={item}>{item}</li>
+              ))}
+            </ul>
+            <h2 className="mono">COMPOSITION ROYALTIES</h2>
+            <p>{TRACE_RIGHTS.compositionRoyalties}</p>
+            <p className={styles.caveat}>
+              Machine-generated composition. Publishing royalties not claimed.
+              Master recording commercially distributed.
+            </p>
+            <h2 className="mono">MASTER</h2>
+            <p>
+              {TRACE_RIGHTS.master} · master-side revenue collected
+            </p>
+          </div>
+
           <p className={styles.caveat}>
-            Machines invent and measure. Humans approve genomes, select
-            candidates, accept masters, and publish. Refine does not rewrite
-            composition.
+            Machines invent and measure. Humans operate, select, and publish.
+            Refine does not rewrite composition. Operator selection is
+            curation, not automatic authorship.
           </p>
         </section>
       )}
