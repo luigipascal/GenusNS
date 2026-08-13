@@ -1,5 +1,5 @@
 import { resolveExperiment } from "@genusns/genome-visuals";
-import { buildDittoKit } from "../ditto-kit.js";
+import { buildDittoKit } from "../ditto-kit";
 
 const exp = resolveExperiment("288fbd");
 if (!exp) throw new Error("missing 288fbd");

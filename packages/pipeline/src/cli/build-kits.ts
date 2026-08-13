@@ -1,7 +1,7 @@
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { listExperiments } from "@genusns/genome-visuals";
-import { buildDittoKit } from "../ditto-kit.js";
+import { buildDittoKit } from "../ditto-kit";
 
 const repoRoot = path.resolve(
   path.dirname(fileURLToPath(import.meta.url)),

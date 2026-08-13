@@ -2,7 +2,7 @@ import type {
   CompositionRightsRecord,
   RightsAuditEvent,
   RightsPolicyBundle,
-} from "./types.js";
+} from "./types";
 
 /** Provenance event at publication / confirmation. */
 export function rightsPolicyConfirmedEvent(

@@ -13,9 +13,9 @@ import {
   validateRightsPolicy,
   type RightsPolicyBundle,
 } from "@genusns/rights";
-import { COVER_ARTIST, COVER_LABEL, coverCopyFor } from "./cover.js";
-import { coverFileName, writeCoverPng } from "./render.js";
-import { zipDittoKit } from "./zip.js";
+import { COVER_ARTIST, COVER_LABEL, coverCopyFor } from "./cover";
+import { coverFileName, writeCoverPng } from "./render";
+import { zipDittoKit } from "./zip";
 
 /**
  * Ditto Music kit layout (operator uploads manually).

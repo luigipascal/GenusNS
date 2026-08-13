@@ -1,7 +1,7 @@
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { getFirstGenome, listExperiments } from "@genusns/genome-visuals";
-import { writeArtistImagePng, writeCoverPng } from "../render.js";
+import { writeArtistImagePng, writeCoverPng } from "../render";
 
 const repoRoot = path.resolve(
   path.dirname(fileURLToPath(import.meta.url)),

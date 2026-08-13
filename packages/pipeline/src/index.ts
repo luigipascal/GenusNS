@@ -4,19 +4,19 @@ export {
   COVER_SIZE,
   coverCopyFor,
   renderAlbumCoverSvg,
-} from "./cover.js";
-export type { CoverCopy } from "./cover.js";
-export { renderArtistImageSvg } from "./artist.js";
-export { oklchToHex, paletteForRaster } from "./color.js";
+} from "./cover";
+export type { CoverCopy } from "./cover";
+export { renderArtistImageSvg } from "./artist";
+export { oklchToHex, paletteForRaster } from "./color";
 export {
   renderCoverPng,
   renderArtistPng,
   writeCoverPng,
   writeArtistImagePng,
   coverFileName,
-} from "./render.js";
-export { buildDittoKit } from "./ditto-kit.js";
-export type { DittoKitResult } from "./ditto-kit.js";
-export { zipDittoKit, zipAllDittoKits } from "./zip.js";
-export { runPublicationPipeline, verifyAssetHashes } from "./pipeline.js";
-export type { IngestResult } from "./pipeline.js";
+} from "./render";
+export { buildDittoKit } from "./ditto-kit";
+export type { DittoKitResult } from "./ditto-kit";
+export { zipDittoKit, zipAllDittoKits } from "./zip";
+export { runPublicationPipeline, verifyAssetHashes } from "./pipeline";
+export type { IngestResult } from "./pipeline";

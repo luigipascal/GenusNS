@@ -1,4 +1,4 @@
-import type { RightsPolicyBundle } from "./types.js";
+import type { RightsPolicyBundle } from "./types";
 
 export interface CatalogueRightsSummary {
   publishedRecordings: number;

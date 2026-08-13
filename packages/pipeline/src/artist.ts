@@ -1,7 +1,7 @@
 import type { ExperimentLaw, GenomeVisualProfile } from "@genusns/genome-visuals";
 import { renderGenomeGlyphSvg } from "@genusns/genome-visuals";
-import { paletteForRaster } from "./color.js";
-import { COVER_ARTIST, COVER_LABEL, COVER_SIZE } from "./cover.js";
+import { paletteForRaster } from "./color";
+import { COVER_ARTIST, COVER_LABEL, COVER_SIZE } from "./cover";
 
 /**
  * Artist profile image for GENUS//NS — built from the first compiled genome.

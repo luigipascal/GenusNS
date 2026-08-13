@@ -6,7 +6,7 @@ import type {
   PublishingRoyaltyStatus,
   RightsPolicyBundle,
   SystemUsed,
-} from "./types.js";
+} from "./types";
 
 export const PROJECT_RIGHTS_DEFAULTS: ProjectRightsDefaults = {
   DEFAULT_MACHINE_COMPOSITION_AUTHORSHIP_STATUS: "MACHINE_GENERATED_NOT_CLAIMED",

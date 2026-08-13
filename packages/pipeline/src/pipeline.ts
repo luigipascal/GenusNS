@@ -4,8 +4,8 @@ import path from "node:path";
 import type { ExperimentLaw } from "@genusns/genome-visuals";
 import { createGenomeVisualProfile } from "@genusns/genome-visuals";
 import { createDefaultMachineRightsBundle } from "@genusns/rights";
-import { writeCoverPng } from "./render.js";
-import { buildDittoKit } from "./ditto-kit.js";
+import { writeCoverPng } from "./render";
+import { buildDittoKit } from "./ditto-kit";
 
 export interface IngestResult {
   genusnsId: string;

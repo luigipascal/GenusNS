@@ -1,6 +1,6 @@
 import type { ExperimentLaw, GenomeVisualProfile } from "@genusns/genome-visuals";
 import { renderGenomeGlyphSvg } from "@genusns/genome-visuals";
-import { paletteForRaster } from "./color.js";
+import { paletteForRaster } from "./color";
 
 export const COVER_ARTIST = "GENUS//NS";
 export const COVER_LABEL = "0dB_Labs";

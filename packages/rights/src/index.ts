@@ -13,7 +13,7 @@ export type {
   RightsAuditEvent,
   RevenueCategory,
   ProjectRightsDefaults,
-} from "./types.js";
+} from "./types";
 
 export {
   PROJECT_RIGHTS_DEFAULTS,
@@ -21,31 +21,31 @@ export {
   MACHINE_COMPOSITION_TOOLTIP,
   createDefaultMachineRightsBundle,
   mapWizardCompositionChoice,
-} from "./defaults.js";
+} from "./defaults";
 
 export {
   validateRightsPolicy,
   rightsValidationPassed,
-} from "./validate.js";
-export type { ValidationSeverity, RightsValidationItem } from "./validate.js";
+} from "./validate";
+export type { ValidationSeverity, RightsValidationItem } from "./validate";
 
 export {
   renderAiDisclosureTxt,
   renderPackageRightsReadme,
   renderDistributorComposerWarning,
   toReleaseSheetRights,
-} from "./documents.js";
+} from "./documents";
 
 export {
   rightsPolicyConfirmedEvent,
   compositionRightsChangedEvent,
-} from "./audit.js";
+} from "./audit";
 
 export {
   summariseCatalogueRights,
   formatCatalogueRightsReport,
-} from "./catalogue.js";
-export type { CatalogueRightsSummary } from "./catalogue.js";
+} from "./catalogue";
+export type { CatalogueRightsSummary } from "./catalogue";
 
 export {
   WIZARD_COMPOSITION_QUESTION,
@@ -54,5 +54,5 @@ export {
   GENUS_POLICY_BANNER,
   applyWizardCompositionChoice,
   publicTraceRightsLabels,
-} from "./studio.js";
-export type { WizardCompositionChoice } from "./studio.js";
+} from "./studio";
+export type { WizardCompositionChoice } from "./studio";

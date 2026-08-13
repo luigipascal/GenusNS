@@ -1,4 +1,4 @@
-import type { RightsPolicyBundle } from "./types.js";
+import type { RightsPolicyBundle } from "./types";
 
 export type ValidationSeverity = "PASS" | "WARNING" | "ERROR" | "INFO";
 

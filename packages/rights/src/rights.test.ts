@@ -6,7 +6,7 @@ import {
   toReleaseSheetRights,
   renderAiDisclosureTxt,
   renderDistributorComposerWarning,
-} from "./index.js";
+} from "./index";
 
 describe("default machine rights policy", () => {
   const rights = createDefaultMachineRightsBundle();

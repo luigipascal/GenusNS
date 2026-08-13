@@ -2,9 +2,9 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { copyFile, mkdir } from "node:fs/promises";
 import { getFirstGenome, listExperiments } from "@genusns/genome-visuals";
-import { runPublicationPipeline } from "../pipeline.js";
-import { writeArtistImagePng } from "../render.js";
-import { zipAllDittoKits, zipDittoKit } from "../zip.js";
+import { runPublicationPipeline } from "../pipeline";
+import { writeArtistImagePng } from "../render";
+import { zipAllDittoKits, zipDittoKit } from "../zip";
 
 const repoRoot = path.resolve(
   path.dirname(fileURLToPath(import.meta.url)),

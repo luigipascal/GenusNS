@@ -3,12 +3,12 @@ import {
   mapWizardCompositionChoice,
   MACHINE_COMPOSITION_POLICY_NOTE,
   PROJECT_RIGHTS_DEFAULTS,
-} from "./defaults.js";
+} from "./defaults";
 import type {
   CompositionAuthorshipStatus,
   RightsPolicyBundle,
-} from "./types.js";
-import { compositionRightsChangedEvent } from "./audit.js";
+} from "./types";
+import { compositionRightsChangedEvent } from "./audit";
 
 export type WizardCompositionChoice =
   | "fully_machine"

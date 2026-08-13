@@ -14,12 +14,15 @@ COPY packages/genome-visuals/package.json ./packages/genome-visuals/
 COPY packages/pipeline/package.json ./packages/pipeline/
 COPY packages/rights/package.json ./packages/rights/
 COPY packages/ui/tokens/package.json ./packages/ui/tokens/
-RUN pnpm install --frozen-lockfile
+# Coolify injects NODE_ENV=production at build-time; that skips
+# workspace typescript/devDeps and can break sharp. Force full install.
+RUN NODE_ENV=development pnpm install --frozen-lockfile \
+  && NODE_ENV=development pnpm rebuild sharp
 COPY . .
 # Do not bake secrets into the image
 RUN rm -f .env .env.local apps/web/.env apps/web/.env.local || true
 ENV NEXT_TELEMETRY_DISABLED=1
-RUN pnpm --filter @genusns/web build
+RUN NODE_ENV=production pnpm --filter @genusns/web build
 
 FROM node:22-bookworm-slim AS runner
 WORKDIR /app
@@ -42,4 +45,4 @@ COPY --from=builder --chown=nextjs:nodejs /app/apps/web/public ./apps/web/public
 USER nextjs
 EXPOSE 3000
 CMD ["node", "apps/web/server.js"]
-
+

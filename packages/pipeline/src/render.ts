@@ -1,17 +1,22 @@
 import { createHash } from "node:crypto";
 import { mkdir, writeFile, readFile, access } from "node:fs/promises";
 import path from "node:path";
-import sharp from "sharp";
 import {
   createGenomeVisualProfile,
   type ExperimentLaw,
 } from "@genusns/genome-visuals";
-import { renderArtistImageSvg } from "./artist.js";
+import { renderArtistImageSvg } from "./artist";
 import {
   COVER_SIZE,
   coverCopyFor,
   renderAlbumCoverSvg,
-} from "./cover.js";
+} from "./cover";
+
+async function sharpPng(svg: string): Promise<Buffer> {
+  // Lazy-load so Next.js page-data collection does not require native sharp at build time.
+  const { default: sharp } = await import("sharp");
+  return sharp(Buffer.from(svg)).png().toBuffer();
+}
 
 export async function renderCoverPng(
   experiment: ExperimentLaw,
@@ -20,7 +25,7 @@ export async function renderCoverPng(
   const profile = createGenomeVisualProfile(experiment);
   const copy = coverCopyFor(experiment);
   const svg = renderAlbumCoverSvg(profile, copy, size);
-  return sharp(Buffer.from(svg)).png().toBuffer();
+  return sharpPng(svg);
 }
 
 export async function renderArtistPng(
@@ -29,7 +34,7 @@ export async function renderArtistPng(
 ): Promise<Buffer> {
   const profile = createGenomeVisualProfile(experiment);
   const svg = renderArtistImageSvg(profile, experiment, size);
-  return sharp(Buffer.from(svg)).png().toBuffer();
+  return sharpPng(svg);
 }
 
 export function coverFileName(experiment: ExperimentLaw): string {
