@@ -33,7 +33,11 @@ ENV NEXT_TELEMETRY_DISABLED=1
 # Default; Coolify should override with the mounted volume path
 ENV GENUSNS_DATA_DIR=/app/data
 
-RUN addgroup --system --gid 1001 nodejs \
+# Coolify healthcheck uses curl/wget against localhost:3000
+RUN apt-get update \
+  && apt-get install -y --no-install-recommends curl ca-certificates \
+  && rm -rf /var/lib/apt/lists/* \
+  && addgroup --system --gid 1001 nodejs \
   && adduser --system --uid 1001 nextjs \
   && mkdir -p /app/data \
   && chown nextjs:nodejs /app/data
