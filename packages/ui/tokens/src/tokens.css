@@ -19,9 +19,8 @@
   --gns-space-5: 2.5rem;
   --gns-space-6: 4rem;
 
-  --gns-font-display: var(--font-archivo), "Archivo", "Helvetica Neue", Helvetica,
-    Arial, sans-serif;
-  --gns-font-body: var(--font-source-serif), "Source Serif 4", Georgia, serif;
+  --gns-font-display: "Archivo", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --gns-font-body: "Source Serif 4", Georgia, serif;
   --gns-font-mono: "IBM Plex Mono", ui-monospace, monospace;
 
   --gns-text-xs: 0.75rem;
