@@ -1,0 +1,42 @@
+{
+  "id": "288fbdc2281bc4c8",
+  "name": "Genus-288FBD",
+  "stage": "compiled",
+  "artifacts": [
+    "MANIFEST.json",
+    "events.json",
+    "form_path.json",
+    "foundry_brief.json",
+    "genre_definition.json",
+    "grid.json",
+    "loop_approx.mid",
+    "prompts.json",
+    "tuning.json"
+  ],
+  "bpm": 93.18,
+  "edo": 36,
+  "cycle": 13,
+  "event_count": 598,
+  "form_path": [
+    "Ash",
+    "Drift",
+    "B",
+    "Lock",
+    "E",
+    "Ash",
+    "Drift",
+    "B",
+    "Lock",
+    "E",
+    "Ash"
+  ],
+  "voices": {
+    "pulse": 130,
+    "groove": 110,
+    "bass": 60,
+    "melody": 238,
+    "harmony": 60
+  },
+  "loop_sec": 83.70895,
+  "compiled_at": "2026-08-13T08:13:55.209571+00:00"
+}

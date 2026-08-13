@@ -1,0 +1,85 @@
+.doc {
+  min-height: 100dvh;
+  padding: var(--gns-space-4) var(--gns-space-5) var(--gns-space-6);
+  max-width: 52rem;
+  margin: 0 auto;
+}
+
+.bar {
+  display: flex;
+  justify-content: space-between;
+  font-size: var(--gns-text-xs);
+  letter-spacing: 0.22em;
+  margin-bottom: var(--gns-space-5);
+  color: var(--gns-fg-muted);
+}
+
+.doc h1 {
+  font-size: clamp(1.6rem, 3vw, 2.4rem);
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  line-height: 1.2;
+  margin: 0 0 var(--gns-space-3);
+}
+
+.lede {
+  color: var(--gns-fg-muted);
+  line-height: 1.65;
+  margin: 0 0 var(--gns-space-5);
+  max-width: 40rem;
+}
+
+.stages {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: var(--gns-space-4);
+}
+
+.stages li {
+  padding-left: var(--gns-space-4);
+  border-left: 1px solid var(--gns-line-strong);
+}
+
+.stages h2,
+.grid h2 {
+  margin: 0 0 0.5rem;
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  font-weight: 500;
+  color: var(--gns-fg-muted);
+}
+
+.stages p {
+  margin: 0;
+  line-height: 1.6;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--gns-space-4);
+}
+
+.grid ul {
+  margin: 0;
+  padding-left: 1.1rem;
+  color: var(--gns-fg-muted);
+  line-height: 1.7;
+}
+
+.footNote {
+  margin-top: var(--gns-space-5);
+  padding-top: var(--gns-space-4);
+  border-top: 1px solid var(--gns-line);
+  color: var(--gns-fg-muted);
+  font-size: 0.9rem;
+  line-height: 1.65;
+}
+
+@media (max-width: 720px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}

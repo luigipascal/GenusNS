@@ -1,0 +1,17 @@
+node_modules
+**/node_modules
+.next
+**/.next
+dist
+**/dist
+coverage
+.git
+.cursor
+*.md
+!README.md
+!docs/**
+.env
+.env.*
+*.log
+.turbo
+**/*.tsbuildinfo

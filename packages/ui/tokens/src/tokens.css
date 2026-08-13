@@ -1,0 +1,52 @@
+:root {
+  /* GENUS//NS base — near-black field; accents come from experiment palette */
+  --gns-bg: #070708;
+  --gns-bg-elevated: #101014;
+  --gns-fg: #e8e6e1;
+  --gns-fg-muted: #8a8780;
+  --gns-line: rgba(232, 230, 225, 0.14);
+  --gns-line-strong: rgba(232, 230, 225, 0.28);
+
+  --gns-space-1: 0.25rem;
+  --gns-space-2: 0.5rem;
+  --gns-space-3: 1rem;
+  --gns-space-4: 1.5rem;
+  --gns-space-5: 2.5rem;
+  --gns-space-6: 4rem;
+
+  --gns-font-display: "Syne", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --gns-font-mono: "IBM Plex Mono", ui-monospace, monospace;
+
+  --gns-text-xs: 0.75rem;
+  --gns-text-sm: 0.875rem;
+  --gns-text-md: 1rem;
+  --gns-text-lg: 1.25rem;
+  --gns-text-xl: 1.75rem;
+  --gns-text-hero: clamp(1.75rem, 4vw, 3rem);
+
+  --gns-line-thin: 1px;
+  --gns-line-mid: 1.5px;
+
+  --gns-motion-dormant: 28s;
+  --gns-motion-active: 12s;
+  --gns-motion-quick: 280ms;
+  --gns-ease-structural: cubic-bezier(0.22, 0.61, 0.36, 1);
+
+  /* Experiment accents injected at runtime */
+  --gns-accent: var(--gns-fg-muted);
+  --gns-accent-2: var(--gns-fg-muted);
+  --gns-accent-muted: var(--gns-fg-muted);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --gns-motion-dormant: 0.01ms;
+    --gns-motion-active: 0.01ms;
+  }
+}
+
+html,
+body {
+  background: var(--gns-bg);
+  color: var(--gns-fg);
+}

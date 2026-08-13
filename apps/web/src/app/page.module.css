@@ -1,0 +1,116 @@
+.field {
+  min-height: 100dvh;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: var(--gns-space-4);
+  padding: var(--gns-space-5);
+  text-align: center;
+  background:
+    radial-gradient(
+      ellipse 60% 50% at 50% 42%,
+      color-mix(in oklab, var(--gns-accent) 12%, transparent),
+      transparent 70%
+    ),
+    var(--gns-bg);
+}
+
+.mark,
+.structure,
+.line,
+.sub,
+.actions,
+.species {
+  opacity: 0;
+  transform: translateY(8px);
+  transition:
+    opacity 900ms var(--gns-ease-structural),
+    transform 900ms var(--gns-ease-structural);
+}
+
+.mark[data-show="true"],
+.structure[data-show="true"],
+.line[data-show="true"],
+.sub[data-show="true"],
+.actions[data-show="true"],
+.species[data-show="true"] {
+  opacity: 1;
+  transform: none;
+}
+
+.mark {
+  margin: 0;
+  letter-spacing: 0.35em;
+  font-size: var(--gns-text-xs);
+}
+
+.structure {
+  width: min(340px, 72vw);
+}
+
+.structure :global(svg) {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.line {
+  margin: 0;
+  font-size: var(--gns-text-hero);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  line-height: 1.15;
+}
+
+.sub {
+  margin: 0;
+  font-size: var(--gns-text-xs);
+  letter-spacing: 0.18em;
+  line-height: 1.7;
+  color: var(--gns-fg-muted);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--gns-space-5);
+  margin-top: var(--gns-space-3);
+}
+
+.action {
+  font-family: var(--gns-font-mono);
+  font-size: var(--gns-text-xs);
+  letter-spacing: 0.22em;
+  padding-bottom: 0.35rem;
+  border-bottom: var(--gns-line-thin) solid var(--gns-line-strong);
+  transition: border-color var(--gns-motion-quick) var(--gns-ease-structural),
+    color var(--gns-motion-quick) var(--gns-ease-structural);
+}
+
+.action:hover,
+.action:focus-visible {
+  color: var(--gns-accent);
+  border-color: var(--gns-accent);
+  outline: none;
+}
+
+.species {
+  margin: var(--gns-space-5) 0 0;
+  font-size: 0.65rem;
+  letter-spacing: 0.16em;
+  color: var(--gns-fg-muted);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mark,
+  .structure,
+  .line,
+  .sub,
+  .actions,
+  .species {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}

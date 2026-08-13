@@ -1,0 +1,84 @@
+"use client";
+
+import Link from "next/link";
+import { useEffect, useMemo, useState, type CSSProperties } from "react";
+import {
+  createGenomeVisualProfile,
+  getFeaturedExperiment,
+  renderGenomeGlyphSvg,
+} from "@genusns/genome-visuals";
+import styles from "./page.module.css";
+
+export default function HomePage() {
+  const experiment = getFeaturedExperiment();
+  const profile = useMemo(
+    () => createGenomeVisualProfile(experiment),
+    [experiment],
+  );
+  const [stage, setStage] = useState(0);
+
+  useEffect(() => {
+    const timers = [
+      window.setTimeout(() => setStage(1), 400),
+      window.setTimeout(() => setStage(2), 1100),
+      window.setTimeout(() => setStage(3), 1800),
+      window.setTimeout(() => setStage(4), 2400),
+    ];
+    return () => timers.forEach(clearTimeout);
+  }, []);
+
+  const glyph = renderGenomeGlyphSvg(profile, {
+    size: 340,
+    animate: stage >= 2,
+    title: profile.canonicalId,
+  });
+
+  return (
+    <main
+      className={styles.field}
+      data-stage={stage}
+      style={
+        {
+          "--gns-accent": profile.palette.primaryAccent,
+          "--gns-accent-2": profile.palette.secondaryAccent,
+          "--gns-accent-muted": profile.palette.mutedAccent,
+        } as CSSProperties
+      }
+    >
+      <p className={`${styles.mark} mono`} data-show={stage >= 1}>
+        GENUS//NS
+      </p>
+      <div
+        className={styles.structure}
+        data-show={stage >= 2}
+        dangerouslySetInnerHTML={{ __html: glyph }}
+      />
+      <h1 className={styles.line} data-show={stage >= 3}>
+        MUSIC FOR GENRES
+        <br />
+        THAT DO NOT EXIST YET
+      </h1>
+      <p className={`${styles.sub} mono`} data-show={stage >= 3}>
+        A NEURAL SYNTAX EXPERIMENT
+        <br />
+        IN COMPUTATIONAL MUSICAL TAXONOMY
+      </p>
+      <nav className={styles.actions} data-show={stage >= 4}>
+        <Link href="/registry" className={styles.action}>
+          ENTER THE REGISTRY
+        </Link>
+        <Link href={`/g/${experiment.digest.slice(0, 6)}`} className={styles.action}>
+          LISTEN
+        </Link>
+        <Link href="/method" className={styles.action}>
+          METHOD
+        </Link>
+      </nav>
+      <p className={`${styles.species} mono`} data-show={stage >= 4}>
+        THE CURRENT SPECIES · {profile.canonicalId} · {profile.radialSegments}
+        -EDO · CYCLE {profile.pulseCount} · EUCLID {experiment.euclidean[0]}/
+        {experiment.euclidean[1]}
+      </p>
+    </main>
+  );
+}

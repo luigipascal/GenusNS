@@ -1,0 +1,108 @@
+{
+  "name": "Genus-288FBD",
+  "id": "288fbdc2281bc4c8",
+  "math_digest": "288fbdc2281bc4c8",
+  "genome": {
+    "id": "288fbdc2281bc4c8",
+    "name": "Genus-288FBD",
+    "pitch": {
+      "edo": 36,
+      "tonic_hz": 62.69,
+      "generator_cents": 208.451,
+      "allowed_degrees": [
+        0,
+        3,
+        4,
+        5,
+        8,
+        10,
+        11,
+        13,
+        14,
+        17,
+        18,
+        20,
+        22,
+        28,
+        29,
+        32,
+        33,
+        35
+      ]
+    },
+    "meter": {
+      "pulse_hz": 1.553,
+      "cycle_length": 13,
+      "accent_residues": [
+        7,
+        11
+      ],
+      "subdivision_euclidean": [
+        3,
+        13
+      ]
+    },
+    "spectral": {
+      "centroid_mu": 0.571,
+      "centroid_sigma": 0.156,
+      "roughness_max": 0.611,
+      "inharmonicity": 0.485
+    },
+    "form": {
+      "nodes": [
+        "Ash",
+        "Drift",
+        "B",
+        "Lock",
+        "E"
+      ],
+      "edges": [
+        [
+          "Ash",
+          "Drift",
+          0.503
+        ],
+        [
+          "Drift",
+          "B",
+          0.388
+        ],
+        [
+          "B",
+          "Lock",
+          0.716
+        ],
+        [
+          "Lock",
+          "E",
+          0.918
+        ],
+        [
+          "E",
+          "Ash",
+          0.376
+        ]
+      ]
+    },
+    "rhythm_rule": "Euclidean(3,13) on Z/13Z with accents [7, 11]; generator 36-EDO stack",
+    "constraints": [
+      "no 4/4 default unless cycle_length==16 and accents==[0,4,8,12]",
+      "pitch degrees must close under octave identification",
+      "form graph must be strongly connected enough for recurrence"
+    ],
+    "math_digest": "288fbdc2281bc4c8",
+    "provenance": {
+      "proposer": "jax-ferrovia",
+      "method": "seeded_math_sample",
+      "nearest_known": "gamelan_proxy",
+      "novelty_distance": 0.1403
+    }
+  },
+  "board": {
+    "yes": 11.0,
+    "total": 13.0,
+    "ratio": 0.8462,
+    "majority_threshold": 0.5
+  },
+  "approved_at": "20260812T195409Z"
+}

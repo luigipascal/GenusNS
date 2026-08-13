@@ -1,0 +1,1693 @@
+[
+  {
+    "digest": "00d88ef0aa406864",
+    "canonicalId": "GENUS//NS:00D88E",
+    "name": "Genus-00D88E",
+    "edo": 24,
+    "tonicHz": 203.03,
+    "generatorCents": 109.641,
+    "allowedDegrees": [
+      0,
+      1,
+      3,
+      7,
+      8,
+      9,
+      10,
+      16,
+      17
+    ],
+    "bpm": 171.6,
+    "cycleLength": 18,
+    "accentResidues": [
+      12,
+      15
+    ],
+    "euclidean": [
+      3,
+      18
+    ],
+    "spectral": {
+      "centroid": 0.567,
+      "centroidSigma": 0.129,
+      "roughnessMax": 0.591,
+      "inharmonicity": 0.518
+    },
+    "form": {
+      "nodes": [
+        "C",
+        "Bloom",
+        "B",
+        "D",
+        "Bridge",
+        "E"
+      ],
+      "edges": [
+        [
+          "C",
+          "Bloom",
+          0.359
+        ],
+        [
+          "Bloom",
+          "B",
+          0.352
+        ],
+        [
+          "Bloom",
+          "B",
+          0.497
+        ],
+        [
+          "B",
+          "D",
+          0.727
+        ],
+        [
+          "B",
+          "B",
+          0.183
+        ],
+        [
+          "D",
+          "Bridge",
+          0.586
+        ],
+        [
+          "D",
+          "B",
+          0.162
+        ],
+        [
+          "Bridge",
+          "E",
+          0.559
+        ],
+        [
+          "Bridge",
+          "E",
+          0.292
+        ],
+        [
+          "E",
+          "C",
+          0.874
+        ]
+      ]
+    },
+    "eventCount": 804,
+    "formPath": [
+      "C",
+      "Bloom",
+      "B",
+      "D",
+      "Bridge",
+      "E",
+      "C",
+      "Bloom",
+      "B",
+      "D",
+      "Bridge",
+      "E",
+      "C"
+    ],
+    "rhythmRule": "Euclidean(3,18) on Z/18Z with accents [12, 15]; generator 24-EDO stack",
+    "nearestKnown": "gamelan_proxy",
+    "noveltyDistance": 0.1697,
+    "loopSec": 62.93706
+  },
+  {
+    "digest": "19615d49ec2d94fa",
+    "canonicalId": "GENUS//NS:19615D",
+    "name": "Genus-19615D",
+    "edo": 12,
+    "tonicHz": 78.78,
+    "generatorCents": 114.998,
+    "allowedDegrees": [
+      0,
+      1,
+      2,
+      6,
+      10,
+      11
+    ],
+    "bpm": 170.88,
+    "cycleLength": 24,
+    "accentResidues": [
+      2,
+      13,
+      15,
+      17,
+      20
+    ],
+    "euclidean": [
+      3,
+      24
+    ],
+    "spectral": {
+      "centroid": 0.581,
+      "centroidSigma": 0.106,
+      "roughnessMax": 0.893,
+      "inharmonicity": 0.123
+    },
+    "form": {
+      "nodes": [
+        "E",
+        "Bloom",
+        "D",
+        "Ash",
+        "B",
+        "C"
+      ],
+      "edges": [
+        [
+          "E",
+          "Bloom",
+          0.773
+        ],
+        [
+          "E",
+          "B",
+          0.212
+        ],
+        [
+          "Bloom",
+          "D",
+          0.893
+        ],
+        [
+          "Bloom",
+          "B",
+          0.242
+        ],
+        [
+          "D",
+          "Ash",
+          0.548
+        ],
+        [
+          "D",
+          "C",
+          0.413
+        ],
+        [
+          "Ash",
+          "B",
+          0.408
+        ],
+        [
+          "Ash",
+          "B",
+          0.518
+        ],
+        [
+          "B",
+          "C",
+          0.93
+        ],
+        [
+          "B",
+          "C",
+          0.342
+        ],
+        [
+          "C",
+          "E",
+          0.525
+        ],
+        [
+          "C",
+          "Ash",
+          0.591
+        ]
+      ]
+    },
+    "eventCount": 1150,
+    "formPath": [
+      "E",
+      "Bloom",
+      "D",
+      "Ash",
+      "B",
+      "C",
+      "Ash",
+      "B",
+      "C",
+      "Ash",
+      "B",
+      "C",
+      "Ash"
+    ],
+    "rhythmRule": "Euclidean(3,24) on Z/24Z with accents [2, 13, 15, 17, 20]; generator 12-EDO stack",
+    "nearestKnown": "gamelan_proxy",
+    "noveltyDistance": 0.1601,
+    "loopSec": 84.26966
+  },
+  {
+    "digest": "288fbdc2281bc4c8",
+    "canonicalId": "GENUS//NS:288FBD",
+    "name": "Genus-288FBD",
+    "edo": 36,
+    "tonicHz": 62.69,
+    "generatorCents": 208.451,
+    "allowedDegrees": [
+      0,
+      3,
+      4,
+      5,
+      8,
+      10,
+      11,
+      13,
+      14,
+      17,
+      18,
+      20,
+      22,
+      28,
+      29,
+      32,
+      33,
+      35
+    ],
+    "bpm": 93.18,
+    "cycleLength": 13,
+    "accentResidues": [
+      7,
+      11
+    ],
+    "euclidean": [
+      3,
+      13
+    ],
+    "spectral": {
+      "centroid": 0.571,
+      "centroidSigma": 0.156,
+      "roughnessMax": 0.611,
+      "inharmonicity": 0.485
+    },
+    "form": {
+      "nodes": [
+        "Ash",
+        "Drift",
+        "B",
+        "Lock",
+        "E"
+      ],
+      "edges": [
+        [
+          "Ash",
+          "Drift",
+          0.503
+        ],
+        [
+          "Drift",
+          "B",
+          0.388
+        ],
+        [
+          "B",
+          "Lock",
+          0.716
+        ],
+        [
+          "Lock",
+          "E",
+          0.918
+        ],
+        [
+          "E",
+          "Ash",
+          0.376
+        ]
+      ]
+    },
+    "eventCount": 598,
+    "formPath": [
+      "Ash",
+      "Drift",
+      "B",
+      "Lock",
+      "E",
+      "Ash",
+      "Drift",
+      "B",
+      "Lock",
+      "E",
+      "Ash"
+    ],
+    "rhythmRule": "Euclidean(3,13) on Z/13Z with accents [7, 11]; generator 36-EDO stack",
+    "nearestKnown": "gamelan_proxy",
+    "noveltyDistance": 0.1403,
+    "loopSec": 83.70895
+  },
+  {
+    "digest": "2b85a0b263525916",
+    "canonicalId": "GENUS//NS:2B85A0",
+    "name": "Genus-2B85A0",
+    "edo": 22,
+    "tonicHz": 133.26,
+    "generatorCents": 304.615,
+    "allowedDegrees": [
+      1,
+      3,
+      5,
+      8,
+      9,
+      15,
+      18,
+      19,
+      20,
+      21
+    ],
+    "bpm": 200.52,
+    "cycleLength": 11,
+    "accentResidues": [
+      0,
+      4
+    ],
+    "euclidean": [
+      3,
+      11
+    ],
+    "spectral": {
+      "centroid": 0.3,
+      "centroidSigma": 0.059,
+      "roughnessMax": 0.526,
+      "inharmonicity": 0.597
+    },
+    "form": {
+      "nodes": [
+        "Drift",
+        "Bloom",
+        "A",
+        "D",
+        "Bridge"
+      ],
+      "edges": [
+        [
+          "Drift",
+          "Bloom",
+          0.431
+        ],
+        [
+          "Bloom",
+          "A",
+          0.332
+        ],
+        [
+          "A",
+          "D",
+          0.828
+        ],
+        [
+          "D",
+          "Bridge",
+          0.368
+        ],
+        [
+          "D",
+          "Bridge",
+          0.195
+        ],
+        [
+          "Bridge",
+          "Drift",
+          0.588
+        ]
+      ]
+    },
+    "eventCount": 504,
+    "formPath": [
+      "Drift",
+      "Bloom",
+      "A",
+      "D",
+      "Bridge",
+      "Drift",
+      "Bloom",
+      "A",
+      "D",
+      "Bridge",
+      "Drift"
+    ],
+    "rhythmRule": "Euclidean(3,11) on Z/11Z with accents [0, 4]; generator 22-EDO stack",
+    "nearestKnown": "serial_modern",
+    "noveltyDistance": 0.1316,
+    "loopSec": 32.91442
+  },
+  {
+    "digest": "36050a02c998aa82",
+    "canonicalId": "GENUS//NS:36050A",
+    "name": "Genus-36050A",
+    "edo": 53,
+    "tonicHz": 97.49,
+    "generatorCents": 667.916,
+    "allowedDegrees": [
+      1,
+      4,
+      5,
+      8,
+      9,
+      11,
+      12,
+      14,
+      16,
+      22,
+      26,
+      27,
+      33,
+      38,
+      39,
+      41,
+      42,
+      45,
+      47,
+      48,
+      49,
+      50,
+      51,
+      52
+    ],
+    "bpm": 244.86,
+    "cycleLength": 12,
+    "accentResidues": [
+      1,
+      8
+    ],
+    "euclidean": [
+      2,
+      12
+    ],
+    "spectral": {
+      "centroid": 0.803,
+      "centroidSigma": 0.106,
+      "roughnessMax": 0.376,
+      "inharmonicity": 0.32
+    },
+    "form": {
+      "nodes": [
+        "A",
+        "Ash",
+        "D",
+        "Lock",
+        "C",
+        "Drift"
+      ],
+      "edges": [
+        [
+          "A",
+          "Ash",
+          0.711
+        ],
+        [
+          "Ash",
+          "D",
+          0.96
+        ],
+        [
+          "D",
+          "Lock",
+          0.302
+        ],
+        [
+          "D",
+          "Lock",
+          0.366
+        ],
+        [
+          "Lock",
+          "C",
+          0.413
+        ],
+        [
+          "C",
+          "Drift",
+          0.866
+        ],
+        [
+          "C",
+          "A",
+          0.231
+        ],
+        [
+          "Drift",
+          "A",
+          0.669
+        ]
+      ]
+    },
+    "eventCount": 552,
+    "formPath": [
+      "A",
+      "Ash",
+      "D",
+      "Lock",
+      "C",
+      "Drift",
+      "A",
+      "Ash",
+      "D",
+      "Lock",
+      "C",
+      "Drift",
+      "A"
+    ],
+    "rhythmRule": "Euclidean(2,12) on Z/12Z with accents [1, 8]; generator 53-EDO stack",
+    "nearestKnown": "western_pop",
+    "noveltyDistance": 0.1534,
+    "loopSec": 29.40456
+  },
+  {
+    "digest": "4651eb582dc5fb3f",
+    "canonicalId": "GENUS//NS:4651EB",
+    "name": "Genus-4651EB",
+    "edo": 24,
+    "tonicHz": 126.02,
+    "generatorCents": 52.998,
+    "allowedDegrees": [
+      0,
+      3,
+      4,
+      7,
+      12,
+      13,
+      15,
+      21,
+      23
+    ],
+    "bpm": 214.14,
+    "cycleLength": 5,
+    "accentResidues": [
+      0,
+      1,
+      2,
+      4
+    ],
+    "euclidean": [
+      4,
+      5
+    ],
+    "spectral": {
+      "centroid": 0.758,
+      "centroidSigma": 0.243,
+      "roughnessMax": 0.72,
+      "inharmonicity": 0.331
+    },
+    "form": {
+      "nodes": [
+        "Drift",
+        "Lock",
+        "B",
+        "C",
+        "D",
+        "Bridge"
+      ],
+      "edges": [
+        [
+          "Drift",
+          "Lock",
+          0.568
+        ],
+        [
+          "Drift",
+          "B",
+          0.445
+        ],
+        [
+          "Lock",
+          "B",
+          0.482
+        ],
+        [
+          "B",
+          "C",
+          0.95
+        ],
+        [
+          "C",
+          "D",
+          0.884
+        ],
+        [
+          "C",
+          "C",
+          0.484
+        ],
+        [
+          "D",
+          "Bridge",
+          0.85
+        ],
+        [
+          "D",
+          "Drift",
+          0.157
+        ],
+        [
+          "Bridge",
+          "Drift",
+          0.757
+        ]
+      ]
+    },
+    "eventCount": 348,
+    "formPath": [
+      "Drift",
+      "Lock",
+      "B",
+      "C",
+      "D",
+      "Bridge",
+      "Drift",
+      "Lock",
+      "B",
+      "C",
+      "D",
+      "Bridge",
+      "Drift"
+    ],
+    "rhythmRule": "Euclidean(4,5) on Z/5Z with accents [0, 1, 2, 4]; generator 24-EDO stack",
+    "nearestKnown": "gamelan_proxy",
+    "noveltyDistance": 0.133,
+    "loopSec": 14.00953
+  },
+  {
+    "digest": "6336b67cd614ef99",
+    "canonicalId": "GENUS//NS:6336B6",
+    "name": "Genus-6336B6",
+    "edo": 19,
+    "tonicHz": 86.87,
+    "generatorCents": 217.817,
+    "allowedDegrees": [
+      1,
+      3,
+      4,
+      7,
+      11,
+      16,
+      17,
+      18
+    ],
+    "bpm": 221.82,
+    "cycleLength": 17,
+    "accentResidues": [
+      6,
+      9,
+      13,
+      14,
+      15
+    ],
+    "euclidean": [
+      4,
+      17
+    ],
+    "spectral": {
+      "centroid": 0.4,
+      "centroidSigma": 0.149,
+      "roughnessMax": 0.679,
+      "inharmonicity": 0.466
+    },
+    "form": {
+      "nodes": [
+        "D",
+        "C",
+        "B",
+        "Lock",
+        "Ash",
+        "Drift"
+      ],
+      "edges": [
+        [
+          "D",
+          "C",
+          0.799
+        ],
+        [
+          "C",
+          "B",
+          0.602
+        ],
+        [
+          "B",
+          "Lock",
+          0.642
+        ],
+        [
+          "Lock",
+          "Ash",
+          0.749
+        ],
+        [
+          "Ash",
+          "Drift",
+          0.657
+        ],
+        [
+          "Drift",
+          "D",
+          0.965
+        ]
+      ]
+    },
+    "eventCount": 868,
+    "formPath": [
+      "D",
+      "C",
+      "B",
+      "Lock",
+      "Ash",
+      "Drift",
+      "D",
+      "C",
+      "B",
+      "Lock",
+      "Ash",
+      "Drift",
+      "D"
+    ],
+    "rhythmRule": "Euclidean(4,17) on Z/17Z with accents [6, 9, 13, 14, 15]; generator 19-EDO stack",
+    "nearestKnown": "gamelan_proxy",
+    "noveltyDistance": 0.1267,
+    "loopSec": 45.98323
+  },
+  {
+    "digest": "691620c37be04908",
+    "canonicalId": "GENUS//NS:691620",
+    "name": "Genus-691620",
+    "edo": 19,
+    "tonicHz": 109.85,
+    "generatorCents": 377.185,
+    "allowedDegrees": [
+      0,
+      2,
+      5,
+      12
+    ],
+    "bpm": 134.16,
+    "cycleLength": 18,
+    "accentResidues": [
+      2,
+      6,
+      8,
+      10,
+      11
+    ],
+    "euclidean": [
+      4,
+      18
+    ],
+    "spectral": {
+      "centroid": 0.373,
+      "centroidSigma": 0.224,
+      "roughnessMax": 0.836,
+      "inharmonicity": 0.425
+    },
+    "form": {
+      "nodes": [
+        "A",
+        "Lock",
+        "Drift",
+        "D",
+        "Bloom",
+        "B"
+      ],
+      "edges": [
+        [
+          "A",
+          "Lock",
+          0.566
+        ],
+        [
+          "Lock",
+          "Drift",
+          0.771
+        ],
+        [
+          "Drift",
+          "D",
+          0.664
+        ],
+        [
+          "D",
+          "Bloom",
+          0.488
+        ],
+        [
+          "D",
+          "Drift",
+          0.278
+        ],
+        [
+          "Bloom",
+          "B",
+          0.705
+        ],
+        [
+          "Bloom",
+          "D",
+          0.28
+        ],
+        [
+          "B",
+          "A",
+          0.871
+        ]
+      ]
+    },
+    "eventCount": 894,
+    "formPath": [
+      "A",
+      "Lock",
+      "Drift",
+      "D",
+      "Bloom",
+      "B",
+      "A",
+      "Lock",
+      "Drift",
+      "D",
+      "Bloom",
+      "B",
+      "A"
+    ],
+    "rhythmRule": "Euclidean(4,18) on Z/18Z with accents [2, 6, 8, 10, 11]; generator 19-EDO stack",
+    "nearestKnown": "gamelan_proxy",
+    "noveltyDistance": 0.1276,
+    "loopSec": 80.50089
+  },
+  {
+    "digest": "7af3f57381837421",
+    "canonicalId": "GENUS//NS:7AF3F5",
+    "name": "Genus-7AF3F5",
+    "edo": 36,
+    "tonicHz": 73.7,
+    "generatorCents": 215.318,
+    "allowedDegrees": [
+      11,
+      18,
+      26,
+      28,
+      30,
+      33
+    ],
+    "bpm": 239.76,
+    "cycleLength": 5,
+    "accentResidues": [
+      0,
+      2,
+      4
+    ],
+    "euclidean": [
+      5,
+      5
+    ],
+    "spectral": {
+      "centroid": 0.493,
+      "centroidSigma": 0.21,
+      "roughnessMax": 0.325,
+      "inharmonicity": 0.761
+    },
+    "form": {
+      "nodes": [
+        "B",
+        "Ash",
+        "Bloom"
+      ],
+      "edges": [
+        [
+          "B",
+          "Ash",
+          0.613
+        ],
+        [
+          "B",
+          "B",
+          0.108
+        ],
+        [
+          "Ash",
+          "Bloom",
+          0.304
+        ],
+        [
+          "Bloom",
+          "B",
+          0.734
+        ]
+      ]
+    },
+    "eventCount": 312,
+    "formPath": [
+      "B",
+      "Ash",
+      "Bloom",
+      "B",
+      "Ash",
+      "Bloom",
+      "B",
+      "Ash",
+      "Bloom"
+    ],
+    "rhythmRule": "Euclidean(5,5) on Z/5Z with accents [0, 2, 4]; generator 36-EDO stack",
+    "nearestKnown": "gamelan_proxy",
+    "noveltyDistance": 0.1995,
+    "loopSec": 12.51251
+  },
+  {
+    "digest": "8ccfd910e5d6bb7d",
+    "canonicalId": "GENUS//NS:8CCFD9",
+    "name": "Genus-8CCFD9",
+    "edo": 12,
+    "tonicHz": 185.1,
+    "generatorCents": 522.421,
+    "allowedDegrees": [
+      2,
+      3,
+      7,
+      9,
+      10
+    ],
+    "bpm": 186.24,
+    "cycleLength": 11,
+    "accentResidues": [
+      0,
+      2,
+      3,
+      4,
+      8
+    ],
+    "euclidean": [
+      3,
+      11
+    ],
+    "spectral": {
+      "centroid": 0.334,
+      "centroidSigma": 0.221,
+      "roughnessMax": 0.789,
+      "inharmonicity": 0.725
+    },
+    "form": {
+      "nodes": [
+        "C",
+        "Lock",
+        "Bridge",
+        "Bloom",
+        "Drift"
+      ],
+      "edges": [
+        [
+          "C",
+          "Lock",
+          0.308
+        ],
+        [
+          "Lock",
+          "Bridge",
+          0.331
+        ],
+        [
+          "Lock",
+          "Bridge",
+          0.11
+        ],
+        [
+          "Bridge",
+          "Bloom",
+          0.456
+        ],
+        [
+          "Bridge",
+          "Lock",
+          0.371
+        ],
+        [
+          "Bloom",
+          "Drift",
+          0.772
+        ],
+        [
+          "Bloom",
+          "Drift",
+          0.594
+        ],
+        [
+          "Drift",
+          "C",
+          0.71
+        ]
+      ]
+    },
+    "eventCount": 624,
+    "formPath": [
+      "C",
+      "Lock",
+      "Bridge",
+      "Bloom",
+      "Drift",
+      "C",
+      "Lock",
+      "Bridge",
+      "Bloom",
+      "Drift",
+      "C"
+    ],
+    "rhythmRule": "Euclidean(3,11) on Z/11Z with accents [0, 2, 3, 4, 8]; generator 12-EDO stack",
+    "nearestKnown": "gamelan_proxy",
+    "noveltyDistance": 0.1407,
+    "loopSec": 35.43814
+  },
+  {
+    "digest": "95b10aa69d56f3bf",
+    "canonicalId": "GENUS//NS:95B10A",
+    "name": "Genus-95B10A",
+    "edo": 53,
+    "tonicHz": 108.07,
+    "generatorCents": 607.374,
+    "allowedDegrees": [
+      8,
+      10,
+      14,
+      15,
+      17,
+      18,
+      23,
+      25,
+      27,
+      31,
+      33,
+      34,
+      35,
+      36,
+      38,
+      39,
+      43,
+      44,
+      48,
+      50,
+      52
+    ],
+    "bpm": 255.9,
+    "cycleLength": 5,
+    "accentResidues": [
+      0,
+      3,
+      4
+    ],
+    "euclidean": [
+      3,
+      5
+    ],
+    "spectral": {
+      "centroid": 0.345,
+      "centroidSigma": 0.061,
+      "roughnessMax": 0.373,
+      "inharmonicity": 0.471
+    },
+    "form": {
+      "nodes": [
+        "Lock",
+        "D",
+        "E"
+      ],
+      "edges": [
+        [
+          "Lock",
+          "D",
+          0.686
+        ],
+        [
+          "Lock",
+          "Lock",
+          0.195
+        ],
+        [
+          "D",
+          "E",
+          0.583
+        ],
+        [
+          "E",
+          "Lock",
+          0.903
+        ],
+        [
+          "E",
+          "Lock",
+          0.597
+        ]
+      ]
+    },
+    "eventCount": 304,
+    "formPath": [
+      "Lock",
+      "D",
+      "E",
+      "Lock",
+      "D",
+      "E",
+      "Lock",
+      "D",
+      "E"
+    ],
+    "rhythmRule": "Euclidean(3,5) on Z/5Z with accents [0, 3, 4]; generator 53-EDO stack",
+    "nearestKnown": "gamelan_proxy",
+    "noveltyDistance": 0.1593,
+    "loopSec": 11.72333
+  },
+  {
+    "digest": "a7700a8890cec37f",
+    "canonicalId": "GENUS//NS:A7700A",
+    "name": "Genus-A7700A",
+    "edo": 31,
+    "tonicHz": 116.86,
+    "generatorCents": 330.983,
+    "allowedDegrees": [
+      0,
+      1,
+      2,
+      3,
+      9,
+      13,
+      18,
+      21,
+      23,
+      26,
+      29,
+      30
+    ],
+    "bpm": 190.8,
+    "cycleLength": 12,
+    "accentResidues": [
+      0,
+      4,
+      5
+    ],
+    "euclidean": [
+      3,
+      12
+    ],
+    "spectral": {
+      "centroid": 0.398,
+      "centroidSigma": 0.201,
+      "roughnessMax": 0.404,
+      "inharmonicity": 0.792
+    },
+    "form": {
+      "nodes": [
+        "C",
+        "Bloom",
+        "D",
+        "Ash",
+        "E",
+        "Lock"
+      ],
+      "edges": [
+        [
+          "C",
+          "Bloom",
+          0.535
+        ],
+        [
+          "C",
+          "Bloom",
+          0.348
+        ],
+        [
+          "Bloom",
+          "D",
+          0.534
+        ],
+        [
+          "Bloom",
+          "Lock",
+          0.518
+        ],
+        [
+          "D",
+          "Ash",
+          0.843
+        ],
+        [
+          "Ash",
+          "E",
+          0.789
+        ],
+        [
+          "E",
+          "Lock",
+          0.426
+        ],
+        [
+          "E",
+          "D",
+          0.129
+        ],
+        [
+          "Lock",
+          "C",
+          0.45
+        ]
+      ]
+    },
+    "eventCount": 596,
+    "formPath": [
+      "C",
+      "Bloom",
+      "D",
+      "Ash",
+      "E",
+      "Lock",
+      "C",
+      "Bloom",
+      "D",
+      "Ash",
+      "E",
+      "Lock",
+      "C"
+    ],
+    "rhythmRule": "Euclidean(3,12) on Z/12Z with accents [0, 4, 5]; generator 31-EDO stack",
+    "nearestKnown": "serial_modern",
+    "noveltyDistance": 0.1922,
+    "loopSec": 37.73585
+  },
+  {
+    "digest": "afcbe26ef1b5c3bd",
+    "canonicalId": "GENUS//NS:AFCBE2",
+    "name": "Genus-AFCBE2",
+    "edo": 53,
+    "tonicHz": 198.42,
+    "generatorCents": 584.409,
+    "allowedDegrees": [
+      0,
+      4,
+      5,
+      7,
+      8,
+      9,
+      11,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      24,
+      26,
+      29,
+      30,
+      33,
+      34,
+      36,
+      38,
+      41,
+      47,
+      48,
+      52
+    ],
+    "bpm": 225.36,
+    "cycleLength": 9,
+    "accentResidues": [
+      0,
+      2,
+      6
+    ],
+    "euclidean": [
+      4,
+      9
+    ],
+    "spectral": {
+      "centroid": 0.594,
+      "centroidSigma": 0.142,
+      "roughnessMax": 0.691,
+      "inharmonicity": 0.396
+    },
+    "form": {
+      "nodes": [
+        "A",
+        "C",
+        "B",
+        "Bridge"
+      ],
+      "edges": [
+        [
+          "A",
+          "C",
+          0.819
+        ],
+        [
+          "C",
+          "B",
+          0.532
+        ],
+        [
+          "B",
+          "Bridge",
+          0.635
+        ],
+        [
+          "B",
+          "B",
+          0.4
+        ],
+        [
+          "Bridge",
+          "A",
+          0.944
+        ]
+      ]
+    },
+    "eventCount": 480,
+    "formPath": [
+      "A",
+      "C",
+      "B",
+      "Bridge",
+      "A",
+      "C",
+      "B",
+      "Bridge",
+      "A"
+    ],
+    "rhythmRule": "Euclidean(4,9) on Z/9Z with accents [0, 2, 6]; generator 53-EDO stack",
+    "nearestKnown": "gamelan_proxy",
+    "noveltyDistance": 0.1275,
+    "loopSec": 23.96166
+  },
+  {
+    "digest": "c1af303c30a36205",
+    "canonicalId": "GENUS//NS:C1AF30",
+    "name": "Genus-C1AF30",
+    "edo": 36,
+    "tonicHz": 110.79,
+    "generatorCents": 80.06,
+    "allowedDegrees": [
+      2,
+      4,
+      7,
+      8,
+      9,
+      11,
+      13,
+      21,
+      22,
+      23,
+      26,
+      27,
+      32
+    ],
+    "bpm": 136.02,
+    "cycleLength": 16,
+    "accentResidues": [
+      4,
+      5
+    ],
+    "euclidean": [
+      7,
+      16
+    ],
+    "spectral": {
+      "centroid": 0.684,
+      "centroidSigma": 0.125,
+      "roughnessMax": 0.583,
+      "inharmonicity": 0.537
+    },
+    "form": {
+      "nodes": [
+        "Ash",
+        "C",
+        "A"
+      ],
+      "edges": [
+        [
+          "Ash",
+          "C",
+          0.87
+        ],
+        [
+          "Ash",
+          "C",
+          0.28
+        ],
+        [
+          "C",
+          "A",
+          0.893
+        ],
+        [
+          "C",
+          "C",
+          0.193
+        ],
+        [
+          "A",
+          "Ash",
+          0.357
+        ],
+        [
+          "A",
+          "C",
+          0.463
+        ]
+      ]
+    },
+    "eventCount": 706,
+    "formPath": [
+      "Ash",
+      "C",
+      "A",
+      "C",
+      "A",
+      "C",
+      "A",
+      "C",
+      "A"
+    ],
+    "rhythmRule": "Euclidean(7,16) on Z/16Z with accents [4, 5]; generator 36-EDO stack",
+    "nearestKnown": "gamelan_proxy",
+    "noveltyDistance": 0.1287,
+    "loopSec": 70.57786
+  },
+  {
+    "digest": "f5d42a4f382cdb12",
+    "canonicalId": "GENUS//NS:F5D42A",
+    "name": "Genus-F5D42A",
+    "edo": 24,
+    "tonicHz": 114.07,
+    "generatorCents": 203.964,
+    "allowedDegrees": [
+      4,
+      7,
+      12,
+      18,
+      23
+    ],
+    "bpm": 248.4,
+    "cycleLength": 18,
+    "accentResidues": [
+      1,
+      6,
+      17
+    ],
+    "euclidean": [
+      2,
+      18
+    ],
+    "spectral": {
+      "centroid": 0.791,
+      "centroidSigma": 0.243,
+      "roughnessMax": 0.73,
+      "inharmonicity": 0.011
+    },
+    "form": {
+      "nodes": [
+        "Bloom",
+        "Bridge",
+        "B",
+        "A",
+        "Lock"
+      ],
+      "edges": [
+        [
+          "Bloom",
+          "Bridge",
+          0.461
+        ],
+        [
+          "Bloom",
+          "Bridge",
+          0.367
+        ],
+        [
+          "Bridge",
+          "B",
+          0.512
+        ],
+        [
+          "Bridge",
+          "B",
+          0.245
+        ],
+        [
+          "B",
+          "A",
+          0.785
+        ],
+        [
+          "A",
+          "Lock",
+          0.862
+        ],
+        [
+          "A",
+          "Bloom",
+          0.422
+        ],
+        [
+          "Lock",
+          "Bloom",
+          0.35
+        ],
+        [
+          "Lock",
+          "A",
+          0.589
+        ]
+      ]
+    },
+    "eventCount": 844,
+    "formPath": [
+      "Bloom",
+      "Bridge",
+      "B",
+      "A",
+      "Lock",
+      "A",
+      "Lock",
+      "A",
+      "Lock",
+      "A",
+      "Lock"
+    ],
+    "rhythmRule": "Euclidean(2,18) on Z/18Z with accents [1, 6, 17]; generator 24-EDO stack",
+    "nearestKnown": "gamelan_proxy",
+    "noveltyDistance": 0.1863,
+    "loopSec": 43.47826
+  },
+  {
+    "digest": "f9b2d3bc402d6563",
+    "canonicalId": "GENUS//NS:F9B2D3",
+    "name": "Genus-F9B2D3",
+    "edo": 53,
+    "tonicHz": 62.5,
+    "generatorCents": 641.357,
+    "allowedDegrees": [
+      1,
+      7,
+      8,
+      11,
+      14,
+      17,
+      18,
+      20,
+      23,
+      26,
+      31,
+      36,
+      37,
+      40,
+      42,
+      43,
+      44,
+      47
+    ],
+    "bpm": 115.2,
+    "cycleLength": 11,
+    "accentResidues": [
+      2,
+      9
+    ],
+    "euclidean": [
+      2,
+      11
+    ],
+    "spectral": {
+      "centroid": 0.564,
+      "centroidSigma": 0.102,
+      "roughnessMax": 0.353,
+      "inharmonicity": 0.753
+    },
+    "form": {
+      "nodes": [
+        "Drift",
+        "E",
+        "Lock",
+        "D",
+        "B",
+        "Bloom"
+      ],
+      "edges": [
+        [
+          "Drift",
+          "E",
+          0.388
+        ],
+        [
+          "Drift",
+          "B",
+          0.538
+        ],
+        [
+          "E",
+          "Lock",
+          0.625
+        ],
+        [
+          "E",
+          "E",
+          0.333
+        ],
+        [
+          "Lock",
+          "D",
+          0.424
+        ],
+        [
+          "D",
+          "B",
+          0.794
+        ],
+        [
+          "B",
+          "Bloom",
+          0.413
+        ],
+        [
+          "Bloom",
+          "Drift",
+          0.991
+        ]
+      ]
+    },
+    "eventCount": 518,
+    "formPath": [
+      "Drift",
+      "B",
+      "Bloom",
+      "Drift",
+      "E",
+      "Lock",
+      "D",
+      "B",
+      "Bloom",
+      "Drift",
+      "B",
+      "Bloom",
+      "Drift"
+    ],
+    "rhythmRule": "Euclidean(2,11) on Z/11Z with accents [2, 9]; generator 53-EDO stack",
+    "nearestKnown": "gamelan_proxy",
+    "noveltyDistance": 0.2039,
+    "loopSec": 57.29167
+  }
+]

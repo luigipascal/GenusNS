@@ -1,0 +1,17 @@
+{
+  "name": "genusns",
+  "private": true,
+  "version": "0.1.0",
+  "description": "GENUS//NS — publication layer, registry, living interface",
+  "packageManager": "pnpm@9.15.0",
+  "scripts": {
+    "dev": "pnpm --filter @genusns/web dev",
+    "build": "pnpm -r build",
+    "test": "pnpm -r test",
+    "lint": "pnpm -r lint",
+    "typecheck": "pnpm -r typecheck"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
