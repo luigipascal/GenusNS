@@ -6,10 +6,13 @@
   "packageManager": "pnpm@9.15.0",
   "scripts": {
     "dev": "pnpm --filter @genusns/web dev",
-    "build": "pnpm -r build",
+    "build": "pnpm --filter @genusns/web build",
     "test": "pnpm -r test",
     "lint": "pnpm -r lint",
-    "typecheck": "pnpm -r typecheck"
+    "typecheck": "pnpm -r typecheck",
+    "covers": "pnpm --filter @genusns/pipeline covers",
+    "pipeline": "pnpm --filter @genusns/pipeline pipeline",
+    "kits": "pnpm --filter @genusns/pipeline kits"
   },
   "engines": {
     "node": ">=20"

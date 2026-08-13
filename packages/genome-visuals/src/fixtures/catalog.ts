@@ -27,3 +27,10 @@ export function getFeaturedExperiment(): ExperimentLaw {
     experimentCatalog[0]!
   );
 }
+
+/** Earliest compiled genome in the catalog batch (00D88E). Used for artist mark. */
+export const FIRST_GENOME_DIGEST = "00d88ef0aa406864";
+
+export function getFirstGenome(): ExperimentLaw {
+  return resolveExperiment(FIRST_GENOME_DIGEST) ?? experimentCatalog[0]!;
+}

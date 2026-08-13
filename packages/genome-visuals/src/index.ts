@@ -34,4 +34,6 @@ export {
   listExperiments,
   resolveExperiment,
   getFeaturedExperiment,
+  getFirstGenome,
+  FIRST_GENOME_DIGEST,
 } from "./fixtures/catalog";

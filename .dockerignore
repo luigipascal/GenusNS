@@ -15,3 +15,6 @@ coverage
 *.log
 .turbo
 **/*.tsbuildinfo
+data/experiments
+data/READY_FOR_DITTO
+data/public-covers

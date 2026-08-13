@@ -70,6 +70,12 @@ export default function HomePage() {
         <Link href={`/g/${experiment.digest.slice(0, 6)}`} className={styles.action}>
           LISTEN
         </Link>
+        <Link href="/about" className={styles.action}>
+          ABOUT
+        </Link>
+        <Link href="/services" className={styles.action}>
+          SERVICES
+        </Link>
         <Link href="/method" className={styles.action}>
           METHOD
         </Link>

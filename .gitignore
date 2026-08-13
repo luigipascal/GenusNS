@@ -10,3 +10,11 @@ coverage
 *.log
 .turbo
 .vercel
+data/experiments/
+data/READY_FOR_DITTO/
+data/public-covers/
+data/OPERATOR_DROP/
+data/covers/*.png
+data/identity/*.png
+
+data/GENUSNS_DITTO_ALL.zip

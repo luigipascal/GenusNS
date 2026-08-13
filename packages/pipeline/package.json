@@ -1,0 +1,25 @@
+{
+  "name": "@genusns/pipeline",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "covers": "tsx src/cli/generate-covers.ts",
+    "kits": "tsx src/cli/build-kits.ts",
+    "pipeline": "tsx src/cli/run-pipeline.ts",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@genusns/genome-visuals": "workspace:*",
+    "sharp": "^0.34.5"
+  },
+  "devDependencies": {
+    "tsx": "^4.19.3",
+    "typescript": "^5.8.2",
+    "vitest": "^3.0.9"
+  }
+}

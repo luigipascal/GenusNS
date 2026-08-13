@@ -62,11 +62,15 @@
   gap: var(--gns-space-4);
 }
 
-.grid ul {
+.grid p {
   margin: 0;
-  padding-left: 1.1rem;
   color: var(--gns-fg-muted);
-  line-height: 1.7;
+  line-height: 1.65;
+}
+
+.grid strong {
+  color: var(--gns-fg);
+  font-weight: 600;
 }
 
 .footNote {

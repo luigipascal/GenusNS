@@ -141,6 +141,14 @@ function SpecimenBody({
               {experiment.euclidean[0]}/{experiment.euclidean[1]} ·{" "}
               {experiment.bpm} BPM
             </p>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              className={styles.cover}
+              src={`/covers/${experiment.digest.slice(0, 6).toLowerCase()}.png`}
+              alt={`${experiment.digest.slice(0, 6).toUpperCase()} — GENUS//NS — 0dB_Labs`}
+              width={320}
+              height={320}
+            />
             <div
               className={styles.orbitLive}
               dangerouslySetInnerHTML={{ __html: orbit }}

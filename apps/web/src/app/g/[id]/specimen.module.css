@@ -120,6 +120,15 @@
   margin-top: var(--gns-space-2);
 }
 
+.cover {
+  width: min(280px, 70vw);
+  height: auto;
+  aspect-ratio: 1;
+  margin-top: var(--gns-space-3);
+  border: 1px solid var(--gns-line);
+  display: block;
+}
+
 .orbitLive :global(svg) {
   width: 100%;
   height: auto;

@@ -39,7 +39,7 @@ GENUS//NS **does**:
 ```text
 Ingest → Provenance archive → Experiment Registry → Release Builder
 → Distribution Kit → Public Website → External DSP links
-(+ manual SymphonicMS upload)
+(+ manual Ditto Music upload)
 ```
 
 ---
@@ -48,9 +48,14 @@ Ingest → Provenance archive → Experiment Registry → Release Builder
 
 ```text
 Genre Genesis → Compose → select → Refine (Analyse → named DSP → re-analyse)
-→ operator accepts → Send to GENUS//NS → ingest snapshot → review
-→ release assignment → kits → SymphonicMS (manual) → DSP links → Publish
+→ operator accepts → Send to GENUS//NS → ingest snapshot → auto cover + kit
+→ operator uploads kit to Ditto Music → DSP links → Publish
 ```
+
+**Automated by GENUS//NS:** hash verify, provenance archive, genome-wheel cover
+(title + artist `GENUS//NS` + label `0dB_Labs`), Ditto kit assembly, registry record.
+
+**Manual only:** Ditto Music upload (and pasting DSP links once live).
 
 Refine changes the **performance layer only**; composition/arrangement remain intact. That distinction must appear in provenance.
 

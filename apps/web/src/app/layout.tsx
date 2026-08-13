@@ -9,7 +9,8 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "GENUS//NS",
-  description: "Music for genres that do not exist yet.",
+  description:
+    "Music for genres that do not exist yet. A Neural Syntax experiment in computational musical taxonomy, published by 0dB_Labs.",
 };
 
 export default function RootLayout({
