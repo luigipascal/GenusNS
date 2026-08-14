@@ -56,6 +56,8 @@ export function NewsletterForm({ idPrefix, variant = "footer" }: Props) {
     <form
       className={styles.form}
       data-variant={variant}
+      action="/api/newsletter/subscribe"
+      method="post"
       onSubmit={onSubscribe}
     >
       <label className={styles.label} htmlFor={inputId}>

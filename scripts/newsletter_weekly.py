@@ -1,9 +1,7 @@
 #!/usr/bin/env python3
 """
-Saturday GENUS//NS bulletin — public registry facts only.
-
-Assembles (does not invent) a weekly letter from data/published.json
-and sends it via Brevo to BREVO_NEWSLETTER_LIST_ID.
+Saturday GENUS//NS bulletin — public registry facts plus a recap of public
+GENUS//NS AIgents Forum thread titles (agents assemble; they do not invent).
 
 Never include: file paths, package zips, ISRCs, keys, emails, Ditto/Stripe/Coolify,
 unpublished backlog, composer credits, internal hostnames.
@@ -19,6 +17,7 @@ import argparse
 import html
 import json
 import os
+import re
 import sys
 import urllib.error
 import urllib.request
@@ -29,6 +28,8 @@ SCRIPT_DIR = Path(__file__).resolve().parent
 GENUSNS = SCRIPT_DIR.parent
 DATA = Path(os.environ.get("GENUSNS_DATA_DIR") or (GENUSNS / "data")).resolve()
 SITE = "https://genusns.com"
+FORUM_URL = "https://aigents.berta.one/forum/genus-ns-lab"
+FORUM_LABEL = "GENUS//NS AIgents Forum"
 SENDER_EMAIL = os.environ.get("BREVO_FROM_EMAIL") or "genusns@genusns.com"
 SENDER_NAME = os.environ.get("BREVO_FROM_NAME") or "GENUS//NS"
 API_BASE = "https://api.brevo.com/v3"
@@ -158,16 +159,78 @@ def _log(row: dict) -> None:
         fh.write(json.dumps(row, ensure_ascii=False) + "\n")
 
 
+def _forum_recap() -> tuple[str, str]:
+    intro = (
+        "LAB THIS WEEK — the same agents read the public GENUS//NS AIgents Forum "
+        "and recap what was debated. Nothing private; titles only."
+    )
+    titles: list[str] = []
+    try:
+        req = urllib.request.Request(
+            FORUM_URL,
+            headers={
+                "Accept": "text/html",
+                "User-Agent": "GenusNS-newsletter/1.0 (+https://genusns.com)",
+            },
+        )
+        with urllib.request.urlopen(req, timeout=20) as resp:
+            page = resp.read().decode("utf-8", errors="replace")
+        seen: set[str] = set()
+        for m in re.finditer(
+            r"<h2[^>]*>\s*(?:<a[^>]*>)?([^<]{8,160})(?:</a>)?\s*</h2>",
+            page,
+            re.I,
+        ):
+            title = " ".join(m.group(1).split()).strip()
+            key = title.lower()
+            if not title or key in seen:
+                continue
+            if "genus//ns lab" in key and len(title) < 24:
+                continue
+            seen.add(key)
+            titles.append(title)
+            if len(titles) >= 8:
+                break
+        if titles:
+            body = "\n".join(f"{i}. {t}" for i, t in enumerate(titles, 1))
+        else:
+            body = "No public threads were listed on the lab board this week. The forum is open."
+        fetched = True
+    except Exception:
+        titles = []
+        body = "The lab page could not be read this week. The forum is still open."
+        fetched = False
+    text = "\n".join([intro, body, f"Join {FORUM_LABEL}: {FORUM_URL}"])
+    items = "".join(
+        f"<tr><td style='padding:6px 0;font-size:14px;line-height:1.45;'>{html.escape(t)}</td></tr>"
+        for t in titles
+    )
+    if not items:
+        items = f"<tr><td style='font-size:15px;line-height:1.6;'>{html.escape(body)}</td></tr>"
+    html_block = (
+        "<tr><td style='padding-top:22px;font-family:Consolas,monospace;font-size:11px;"
+        "letter-spacing:0.16em;color:#c45c32;'>LAB THIS WEEK</td></tr>"
+        f"<tr><td style='padding-top:8px;font-size:15px;line-height:1.6;'>{html.escape(intro)}</td></tr>"
+        f"<tr><td style='padding-top:10px;'><table role='presentation' width='100%'>{items}</table></td></tr>"
+        f"<tr><td style='padding-top:12px;'><a href='{html.escape(FORUM_URL)}' "
+        f"style='font-family:Consolas,monospace;font-size:12px;letter-spacing:0.14em;color:#c45c32;'>"
+        f"{html.escape(FORUM_LABEL)}</a></td></tr>"
+    )
+    _ = fetched
+    return text, html_block
+
+
 def assemble(now: datetime, entries: list[dict], total_public: int) -> tuple[str, str, str]:
     week = _week_key(now)
     subject = f"GENUS//NS week {week} — agent bulletin"
     start = (now - timedelta(days=7)).strftime("%Y-%m-%d")
     end = now.strftime("%Y-%m-%d")
+    recap_text, recap_html = _forum_recap()
 
     if entries:
         lines = [
             f"{len(entries)} species went public on the registry between {start} and {end} UTC.",
-            "Each line is a listen page. Nothing else is included.",
+            "Each line is a listen page.",
             "",
         ]
         for e in entries:
@@ -195,6 +258,10 @@ def assemble(now: datetime, entries: list[dict], total_public: int) -> tuple[str
             "",
             f"Public catalogue size: {total_public} species.",
             f"Registry: {SITE}",
+            "",
+            recap_text,
+            "",
+            "Unsubscribe: use the Unsubscribe link in this email (stops Saturday bulletins and further letters).",
             "",
             AGENT_DISCLOSURE,
         ]
@@ -242,7 +309,11 @@ def assemble(now: datetime, entries: list[dict], total_public: int) -> tuple[str
 <tr><td style="padding-top:16px;">{rows_html}</td></tr>
 <tr><td style="padding-top:18px;font-size:14px;color:#9a9588;">Public catalogue: {total_public} species.</td></tr>
 <tr><td style="padding-top:16px;"><a href="{SITE}" style="font-family:Consolas,monospace;font-size:12px;letter-spacing:0.14em;color:#c45c32;">GENUSNS.COM</a></td></tr>
-<tr><td style="padding-top:28px;font-family:Consolas,monospace;font-size:11px;line-height:1.5;color:#9a9588;">{disc}</td></tr>
+{recap_html}
+<tr><td style="padding-top:28px;font-family:Consolas,monospace;font-size:11px;line-height:1.55;color:#9a9588;">
+<a href="{{{{ unsubscribe }}}}" style="color:#9a9588;text-decoration:underline;">Unsubscribe</a> from GENUS//NS letters (welcome and Saturday bulletin).
+</td></tr>
+<tr><td style="padding-top:16px;font-family:Consolas,monospace;font-size:11px;line-height:1.5;color:#9a9588;">{disc}</td></tr>
 </table></td></tr></table>
 </body></html>"""
     return subject, text, html_body

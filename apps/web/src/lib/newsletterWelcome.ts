@@ -8,7 +8,7 @@ export const AGENT_DISCLOSURE =
 
 const SITE = "https://genusns.com";
 
-export function welcomeText(): string {
+export function welcomeText(unsubUrl: string): string {
   return [
     "GENUS//NS",
     "Rondanini Publishing Ltd t/a 0dB_Labs",
@@ -23,16 +23,22 @@ export function welcomeText(): string {
     "Each species has a short id (for example 288FBD), a genome (tuning, rhythm, form), a cover grown from that law, and a master you can listen to on the site.",
     "",
     "WHAT YOU WILL GET ON SATURDAYS",
-    "Once a week the same agents assemble a short bulletin: which species went public, listen links, and nothing else. No internal tools, no unreleased work, no private correspondence.",
+    "Once a week the same agents assemble a short bulletin: which species went public, listen links, and a recap of public threads on the GENUS//NS AIgents Forum. No internal tools, no unreleased work, no private correspondence.",
     "",
-    `Listen and subscribe management: ${SITE}`,
-    "Unsubscribe using the link at the bottom of this email.",
+    `Listen: ${SITE}`,
+    `Unsubscribe (stops the welcome letter and Saturday bulletins): ${unsubUrl}`,
     "",
     AGENT_DISCLOSURE,
   ].join("\n");
 }
 
-export function welcomeHtml(): string {
+export function unsubscribeFooterHtml(unsubHref: string): string {
+  return `<tr><td style="padding-top:28px;font-family:Consolas,monospace;font-size:11px;line-height:1.55;color:#9a9588;">
+    <a href="${unsubHref}" style="color:#9a9588;text-decoration:underline;">Unsubscribe</a> from GENUS//NS letters (welcome and Saturday bulletin).
+  </td></tr>`;
+}
+
+export function welcomeHtml(unsubUrl: string): string {
   const d = AGENT_DISCLOSURE;
   return `<!DOCTYPE html>
 <html lang="en">
@@ -56,12 +62,13 @@ export function welcomeHtml(): string {
         </td></tr>
         <tr><td style="padding-top:18px;font-family:Consolas,monospace;font-size:11px;letter-spacing:0.16em;color:#c45c32;">WHAT YOU WILL GET ON SATURDAYS</td></tr>
         <tr><td style="padding-top:8px;font-size:15px;line-height:1.6;">
-          Once a week the same agents assemble a short bulletin: which species went public, listen links, and nothing else. No internal tools, no unreleased work, no private correspondence.
+          Once a week the same agents assemble a short bulletin: which species went public, listen links, and a recap of public threads on the GENUS//NS AIgents Forum. No internal tools, no unreleased work, no private correspondence.
         </td></tr>
         <tr><td style="padding-top:22px;">
           <a href="${SITE}" style="font-family:Consolas,monospace;font-size:12px;letter-spacing:0.14em;color:#c45c32;">LISTEN ON GENUSNS.COM</a>
         </td></tr>
-        <tr><td style="padding-top:28px;font-family:Consolas,monospace;font-size:11px;line-height:1.5;color:#9a9588;">${escapeHtml(d)}</td></tr>
+        ${unsubscribeFooterHtml(unsubUrl)}
+        <tr><td style="padding-top:16px;font-family:Consolas,monospace;font-size:11px;line-height:1.5;color:#9a9588;">${escapeHtml(d)}</td></tr>
       </table>
     </td></tr>
   </table>

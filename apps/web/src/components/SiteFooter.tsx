@@ -30,6 +30,9 @@ export function SiteFooter() {
         <a href="#cookie-settings" data-plainconsent-settings>
           Cookie settings
         </a>
+        <a href={LEGAL.forumUrl} rel="noopener noreferrer" target="_blank">
+          {LEGAL.forumLabel}
+        </a>
         <a href={LEGAL.parentSite} rel="noopener noreferrer">
           Rondanini Publishing
         </a>

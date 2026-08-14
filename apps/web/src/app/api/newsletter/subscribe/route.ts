@@ -4,15 +4,23 @@ import {
   welcomeHtml,
   welcomeText,
 } from "@/lib/newsletterWelcome";
+import { unsubscribeUrl } from "@/lib/newsletterUnsub";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const WELCOME_ATTR = "GENUSNS_WELCOME";
 
 type BrevoErrorBody = {
   code?: string;
   message?: string;
+};
+
+type BrevoContact = {
+  email?: string;
+  listIds?: number[];
+  attributes?: Record<string, string | number | boolean | null>;
 };
 
 function parseListId(raw: string | undefined): number | null {
@@ -25,26 +33,88 @@ const FROM_EMAIL =
   process.env.BREVO_FROM_EMAIL?.trim() || "genusns@genusns.com";
 const FROM_NAME = process.env.BREVO_FROM_NAME?.trim() || "GENUS//NS";
 
-async function sendWelcomeLetter(apiKey: string, email: string): Promise<void> {
+function brevoHeaders(apiKey: string): Record<string, string> {
+  return {
+    "api-key": apiKey,
+    "content-type": "application/json",
+    accept: "application/json",
+  };
+}
+
+async function getContact(
+  apiKey: string,
+  email: string,
+): Promise<BrevoContact | null> {
+  const res = await fetch(
+    `https://api.brevo.com/v3/contacts/${encodeURIComponent(email)}`,
+    { headers: brevoHeaders(apiKey) },
+  );
+  if (res.status === 404) return null;
+  if (!res.ok) {
+    console.error("Brevo get contact failed", res.status);
+    return null;
+  }
+  return (await res.json()) as BrevoContact;
+}
+
+function alreadyWelcomed(contact: BrevoContact | null, listId: number): boolean {
+  if (!contact) return false;
+  const sent = String(contact.attributes?.[WELCOME_ATTR] ?? "").toLowerCase();
+  const onList = (contact.listIds ?? []).includes(listId);
+  return onList && sent === "sent";
+}
+
+async function ensureWelcomeAttribute(apiKey: string): Promise<void> {
+  const res = await fetch(
+    `https://api.brevo.com/v3/contacts/attributes/normal/${WELCOME_ATTR}`,
+    {
+      method: "POST",
+      headers: brevoHeaders(apiKey),
+      body: JSON.stringify({ type: "text" }),
+    },
+  );
+  if (!res.ok && res.status !== 400) {
+    console.error("Brevo welcome attribute", res.status, await res.text().catch(() => ""));
+  }
+}
+  const res = await fetch(
+    `https://api.brevo.com/v3/contacts/${encodeURIComponent(email)}`,
+    {
+      method: "PUT",
+      headers: brevoHeaders(apiKey),
+      body: JSON.stringify({ attributes: { [WELCOME_ATTR]: "sent" } }),
+    },
+  );
+  if (!res.ok && res.status !== 204) {
+    console.error("Brevo mark welcome failed", res.status, await res.text().catch(() => ""));
+  }
+}
+
+async function sendWelcomeLetter(
+  apiKey: string,
+  email: string,
+  origin: string,
+): Promise<void> {
+  const unsub = unsubscribeUrl(origin, email);
   const res = await fetch("https://api.brevo.com/v3/smtp/email", {
     method: "POST",
-    headers: {
-      "api-key": apiKey,
-      "content-type": "application/json",
-      accept: "application/json",
-    },
+    headers: brevoHeaders(apiKey),
     body: JSON.stringify({
       sender: { name: FROM_NAME, email: FROM_EMAIL },
       to: [{ email }],
       subject: WELCOME_SUBJECT,
-      htmlContent: welcomeHtml(),
-      textContent: welcomeText(),
+      htmlContent: welcomeHtml(unsub),
+      textContent: welcomeText(unsub),
       tags: ["genusns-welcome"],
+      headers: {
+        "List-Unsubscribe": `<${unsub}>`,
+        "List-Unsubscribe-Post": "List-Unsubscribe=One-Click",
+      },
     }),
   });
   if (!res.ok) {
     const err = await res.text().catch(() => "");
-    console.error("Brevo welcome send failed", res.status, err.slice(0, 500));
+    throw new Error(`Brevo welcome send failed ${res.status}: ${err.slice(0, 400)}`);
   }
 }
 
@@ -57,8 +127,7 @@ function siteOrigin(req: Request): string {
 }
 
 /**
- * POST { email } → Brevo contacts (or DOI confirmation when template id set).
- * API key never leaves the server.
+ * POST { email } → Brevo list + welcome letter (with unsubscribe).
  */
 export async function POST(req: Request) {
   const apiKey = process.env.BREVO_API_KEY?.trim();
@@ -89,11 +158,8 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Valid email required" }, { status: 400 });
   }
 
-  const headers = {
-    "api-key": apiKey,
-    "content-type": "application/json",
-    accept: "application/json",
-  };
+  const headers = brevoHeaders(apiKey);
+  const origin = siteOrigin(req);
 
   try {
     if (doiTemplateId && Number.isInteger(doiTemplateId) && doiTemplateId > 0) {
@@ -106,7 +172,7 @@ export async function POST(req: Request) {
             email,
             includeListIds: [listId],
             templateId: doiTemplateId,
-            redirectionUrl: `${siteOrigin(req)}/`,
+            redirectionUrl: `${origin}/`,
           }),
         },
       );
@@ -127,6 +193,11 @@ export async function POST(req: Request) {
       );
     }
 
+    const prior = await getContact(apiKey, email);
+    if (alreadyWelcomed(prior, listId)) {
+      return NextResponse.json({ ok: true, welcome: false });
+    }
+
     const res = await fetch("https://api.brevo.com/v3/contacts", {
       method: "POST",
       headers,
@@ -137,31 +208,23 @@ export async function POST(req: Request) {
       }),
     });
 
-    if (res.status === 201) {
-      await sendWelcomeLetter(apiKey, email);
-      return NextResponse.json({ ok: true, welcome: true });
+    if (!res.ok && res.status !== 201 && res.status !== 204) {
+      const err = (await res.json().catch(() => ({}))) as BrevoErrorBody;
+      if (err.code !== "duplicate_parameter") {
+        console.error("Brevo subscribe failed", res.status, err);
+        return NextResponse.json(
+          { error: err.message ?? "Subscribe failed" },
+          { status: 502 },
+        );
+      }
     }
 
-    if (res.ok || res.status === 204) {
-      return NextResponse.json({ ok: true });
-    }
-
-    const err = (await res.json().catch(() => ({}))) as BrevoErrorBody;
-    // Already on the list / contact exists — treat as success (no second welcome)
-    if (err.code === "duplicate_parameter") {
-      return NextResponse.json({ ok: true });
-    }
-
-    console.error("Brevo subscribe failed", res.status, err);
-    return NextResponse.json(
-      { error: err.message ?? "Subscribe failed" },
-      { status: 502 },
-    );
+    await sendWelcomeLetter(apiKey, email, origin);
+    await markWelcomeSent(apiKey, email);
+    return NextResponse.json({ ok: true, welcome: true });
   } catch (e) {
-    console.error("Brevo subscribe network error", e);
-    return NextResponse.json(
-      { error: "Newsletter service unavailable" },
-      { status: 502 },
-    );
+    console.error("Brevo subscribe error", e);
+    const msg = e instanceof Error ? e.message : "Newsletter service unavailable";
+    return NextResponse.json({ error: msg }, { status: 502 });
   }
 }

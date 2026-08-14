@@ -2,7 +2,8 @@ import { access, appendFile, mkdir, readFile } from "node:fs/promises";
 import path from "node:path";
 import { dataRoot } from "./orders";
 import { loadPublished, type PublishEntry } from "./publish";
-import { AGENT_DISCLOSURE } from "./newsletterWelcome";
+import { AGENT_DISCLOSURE, unsubscribeFooterHtml } from "./newsletterWelcome";
+import { fetchForumRecap, type ForumRecap } from "./forumRecap";
 
 const SITE = "https://genusns.com";
 
@@ -60,6 +61,7 @@ export function assembleWeeklyHtml(
   total: number,
   rangeStart: string,
   rangeEnd: string,
+  recap: ForumRecap,
 ): { subject: string; html: string; text: string } {
   const subject = `GENUS//NS week ${week} — agent bulletin`;
   const disc = AGENT_DISCLOSURE;
@@ -79,6 +81,10 @@ export function assembleWeeklyHtml(
     "",
     `Public catalogue size: ${total} species.`,
     `Registry: ${SITE}`,
+    "",
+    recap.text,
+    "",
+    "Unsubscribe: use the Unsubscribe link in this email (stops Saturday bulletins and further letters).",
     "",
     disc,
   ].join("\n");
@@ -101,7 +107,9 @@ export function assembleWeeklyHtml(
 <tr><td style="padding-top:16px;"><table role="presentation" width="100%">${rows}</table></td></tr>
 <tr><td style="padding-top:18px;font-size:14px;color:#9a9588;">Public catalogue: ${total} species.</td></tr>
 <tr><td style="padding-top:16px;"><a href="${SITE}" style="font-family:Consolas,monospace;font-size:12px;letter-spacing:0.14em;color:#c45c32;">GENUSNS.COM</a></td></tr>
-<tr><td style="padding-top:28px;font-family:Consolas,monospace;font-size:11px;line-height:1.5;color:#9a9588;">${disc}</td></tr>
+${recap.html}
+${unsubscribeFooterHtml("{{ unsubscribe }}")}
+<tr><td style="padding-top:16px;font-family:Consolas,monospace;font-size:11px;line-height:1.5;color:#9a9588;">${disc}</td></tr>
 </table></td></tr></table>
 </body></html>`;
   return { subject, html, text };
@@ -154,7 +162,8 @@ export async function sendWeeklyCampaign(opts: {
   const recent = await speciesSince(7, now);
   const rangeEnd = now.toISOString().slice(0, 10);
   const rangeStart = new Date(now.getTime() - 7 * 86400000).toISOString().slice(0, 10);
-  const letter = assembleWeeklyHtml(week, recent, total, rangeStart, rangeEnd);
+  const recap = await fetchForumRecap();
+  const letter = assembleWeeklyHtml(week, recent, total, rangeStart, rangeEnd, recap);
 
   const created = await fetch("https://api.brevo.com/v3/emailCampaigns", {
     method: "POST",

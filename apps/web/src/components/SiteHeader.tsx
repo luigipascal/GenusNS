@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { LEGAL } from "@/lib/legal";
 import styles from "./SiteHeader.module.css";
 
 const LINKS = [
@@ -19,6 +20,14 @@ export function SiteHeader() {
             {l.label}
           </Link>
         ))}
+        <a
+          href={LEGAL.forumUrl}
+          rel="noopener noreferrer"
+          target="_blank"
+          title={LEGAL.forumLabel}
+        >
+          Forum
+        </a>
       </nav>
     </header>
   );

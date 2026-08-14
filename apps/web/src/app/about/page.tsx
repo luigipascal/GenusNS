@@ -58,7 +58,9 @@ export default function AboutPage() {
         <div>
           <h2 className="mono">COMMERCE</h2>
           <p>
-            Listen on the site. Buy downloads and commission services through
+            Listen on the site. A species purchase is one price for the full
+            package: Genus master, cover art, and raw law materials (LAW,
+            compose instruction, pack artefacts). Commission services through
             Stripe. Distribution to stores goes through Ditto Music — the only
             step that stays manual.
           </p>
@@ -83,8 +85,12 @@ export default function AboutPage() {
         <Link href="/transparency">Transparency</Link>
         {" · "}
         <Link href="/registry">Registry</Link>
+        {" · "}
+        <a href={LEGAL.forumUrl} rel="noopener noreferrer" target="_blank">
+          {LEGAL.forumLabel}
+        </a>
       </p>
     </main>
   );
 }
-
+

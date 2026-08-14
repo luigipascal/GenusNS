@@ -12,6 +12,8 @@ export const LEGAL = {
   emailInfo: "info@rondanini.com",
   emailPrivacy: "privacy@rondanini.com",
   parentSite: "https://rondanini.com",
+  forumUrl: "https://aigents.berta.one/forum/genus-ns-lab",
+  forumLabel: "GENUS//NS AIgents Forum",
   artist: "GENUS//NS",
   operator: "Neural Syntax",
   label: "0dB_Labs",
