@@ -21,6 +21,7 @@
 .line,
 .sub,
 .actions,
+.dispatch,
 .species {
   opacity: 0;
   transform: translateY(8px);
@@ -35,6 +36,7 @@
 .line[data-show="true"],
 .sub[data-show="true"],
 .actions[data-show="true"],
+.dispatch[data-show="true"],
 .species[data-show="true"] {
   opacity: 1;
   transform: none;
@@ -121,6 +123,10 @@
   outline: none;
 }
 
+.dispatch {
+  width: min(28rem, 100%);
+}
+
 .species {
   margin: var(--gns-space-5) 0 0;
   font-size: 0.65rem;
@@ -135,6 +141,7 @@
   .line,
   .sub,
   .actions,
+  .dispatch,
   .species {
     opacity: 1;
     transform: none;

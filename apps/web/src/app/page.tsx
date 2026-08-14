@@ -7,6 +7,7 @@ import {
   getFeaturedExperiment,
   renderGenomeGlyphSvg,
 } from "@genusns/genome-visuals";
+import { NewsletterForm } from "@/components/NewsletterForm";
 import styles from "./page.module.css";
 
 export default function HomePage() {
@@ -85,6 +86,9 @@ export default function HomePage() {
           METHOD
         </Link>
       </nav>
+      <div className={styles.dispatch} data-show={stage >= 4}>
+        <NewsletterForm idPrefix="home" variant="hero" />
+      </div>
       <p className={`${styles.species} mono`} data-show={stage >= 4}>
         THE CURRENT SPECIES · {profile.canonicalId} · {profile.radialSegments}
         -EDO · CYCLE {profile.pulseCount} · EUCLID {experiment.euclidean[0]}/
