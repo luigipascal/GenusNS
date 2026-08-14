@@ -11,7 +11,7 @@ export const PODCAST = {
   specimenPath: "/g/00d88e",
   youtubeUrl: LEGAL.youtubeUrl,
   forumUrl: LEGAL.forumUrl,
-  audioSrc: "/api/podcast/ep001-00d88e",
+  mediaSrc: "/api/podcast/ep001-00d88e",
   voice: "Tess",
   voiceId: "ttv-voice-2025112518363025-J6Tn9IpY",
 } as const;

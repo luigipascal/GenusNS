@@ -6,10 +6,17 @@
 }
 
 .deck {
-  width: min(36rem, 92vw);
+  width: min(52rem, 94vw);
   display: grid;
   gap: var(--gns-space-4);
   justify-items: stretch;
+}
+
+.video {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: #000;
+  border: 1px solid var(--gns-line);
 }
 
 .play {

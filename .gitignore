@@ -25,7 +25,9 @@ data/_ditto_shots/
 data/_ditto_auth_state.json
 data/videos/
 data/podcast/*.mp3
+data/podcast/*.mp4
 apps/web/public/podcast/*.mp3
+apps/web/public/podcast/*.mp4
 data/_yt_token.json
 data/yt_upload_log.jsonl
 data/yt_schedule.json

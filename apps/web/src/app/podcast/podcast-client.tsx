@@ -12,14 +12,14 @@ function formatTime(sec: number): string {
 }
 
 export function PodcastClient() {
-  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const videoRef = useRef<HTMLVideoElement | null>(null);
   const [ready, setReady] = useState(false);
   const [playing, setPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
 
   useEffect(() => {
-    const el = audioRef.current;
+    const el = videoRef.current;
     if (!el) return;
     const onMeta = () => {
       if (Number.isFinite(el.duration) && el.duration > 0) {
@@ -49,7 +49,7 @@ export function PodcastClient() {
   }, []);
 
   const toggle = useCallback(() => {
-    const el = audioRef.current;
+    const el = videoRef.current;
     if (!el || !ready) return;
     if (el.paused) {
       void el.play().then(() => setPlaying(true));
@@ -61,9 +61,15 @@ export function PodcastClient() {
 
   return (
     <main className={styles.page}>
-      {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
-      <audio ref={audioRef} preload="metadata" src={PODCAST.audioSrc} />
       <div className={styles.deck}>
+        {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
+        <video
+          ref={videoRef}
+          className={styles.video}
+          preload="metadata"
+          playsInline
+          src={PODCAST.mediaSrc}
+        />
         <button
           type="button"
           className={styles.play}
@@ -84,7 +90,7 @@ export function PodcastClient() {
             aria-label="Seek"
             onChange={(e) => {
               const t = Number(e.target.value);
-              const el = audioRef.current;
+              const el = videoRef.current;
               if (el) el.currentTime = t;
               setCurrentTime(t);
             }}
