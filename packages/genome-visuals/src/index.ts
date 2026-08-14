@@ -27,6 +27,8 @@ export {
   findFarExperiments,
   pickRandomSpecies,
 } from "./distance";
+export { composeInstructionFromLaw } from "./compose-instruction";
+export type { ComposeInstruction } from "./compose-instruction";
 
 export { experiment288fbd } from "./fixtures/288fbd";
 export {
