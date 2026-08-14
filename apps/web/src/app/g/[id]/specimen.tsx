@@ -36,13 +36,12 @@ function formatTime(sec: number): string {
 }
 
 function SpecimenBody({
-  id,
+  experiment,
   initialMode,
 }: {
-  id: string;
+  experiment: ExperimentLaw;
   initialMode: ExperimentMode;
 }) {
-  const experiment = resolveExperiment(id);
   const [mode, setMode] = useState<ExperimentMode>(initialMode);
   const [dataMode, setDataMode] = useState(false);
   const [showRaw, setShowRaw] = useState(false);
@@ -539,7 +538,7 @@ export function ExperimentSpecimen({
   const profile = createGenomeVisualProfile(experiment);
   return (
     <PlaybackProvider experiment={experiment} profile={profile}>
-      <SpecimenBody id={id} initialMode={initialMode} />
+      <SpecimenBody experiment={experiment} initialMode={initialMode} />
     </PlaybackProvider>
   );
 }
