@@ -1,4 +1,9 @@
 import { NextResponse } from "next/server";
+import {
+  WELCOME_SUBJECT,
+  welcomeHtml,
+  welcomeText,
+} from "@/lib/newsletterWelcome";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -14,6 +19,33 @@ function parseListId(raw: string | undefined): number | null {
   if (!raw?.trim()) return null;
   const n = Number(raw);
   return Number.isInteger(n) && n > 0 ? n : null;
+}
+
+const FROM_EMAIL =
+  process.env.BREVO_FROM_EMAIL?.trim() || "genusns@genusns.com";
+const FROM_NAME = process.env.BREVO_FROM_NAME?.trim() || "GENUS//NS";
+
+async function sendWelcomeLetter(apiKey: string, email: string): Promise<void> {
+  const res = await fetch("https://api.brevo.com/v3/smtp/email", {
+    method: "POST",
+    headers: {
+      "api-key": apiKey,
+      "content-type": "application/json",
+      accept: "application/json",
+    },
+    body: JSON.stringify({
+      sender: { name: FROM_NAME, email: FROM_EMAIL },
+      to: [{ email }],
+      subject: WELCOME_SUBJECT,
+      htmlContent: welcomeHtml(),
+      textContent: welcomeText(),
+      tags: ["genusns-welcome"],
+    }),
+  });
+  if (!res.ok) {
+    const err = await res.text().catch(() => "");
+    console.error("Brevo welcome send failed", res.status, err.slice(0, 500));
+  }
 }
 
 function siteOrigin(req: Request): string {
@@ -105,12 +137,17 @@ export async function POST(req: Request) {
       }),
     });
 
+    if (res.status === 201) {
+      await sendWelcomeLetter(apiKey, email);
+      return NextResponse.json({ ok: true, welcome: true });
+    }
+
     if (res.ok || res.status === 204) {
       return NextResponse.json({ ok: true });
     }
 
     const err = (await res.json().catch(() => ({}))) as BrevoErrorBody;
-    // Already on the list / contact exists — treat as success
+    // Already on the list / contact exists — treat as success (no second welcome)
     if (err.code === "duplicate_parameter") {
       return NextResponse.json({ ok: true });
     }

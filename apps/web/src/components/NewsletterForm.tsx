@@ -31,6 +31,7 @@ export function NewsletterForm({ idPrefix, variant = "footer" }: Props) {
         error?: string;
         hint?: string;
         doubleOptIn?: boolean;
+        welcome?: boolean;
       };
       if (!res.ok || !data.ok) {
         const detail = [data.error, data.hint].filter(Boolean).join(" — ");
@@ -40,7 +41,9 @@ export function NewsletterForm({ idPrefix, variant = "footer" }: Props) {
       setMessage(
         data.doubleOptIn
           ? "Check your email to confirm."
-          : "Subscribed. Thank you.",
+          : data.welcome
+            ? "Subscribed. The welcome letter is on its way."
+            : "Subscribed. Thank you.",
       );
       setEmail("");
     } catch (err) {
