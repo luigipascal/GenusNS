@@ -16,6 +16,7 @@ export const LEGAL = {
   forumLabel: "GENUS//NS AIgents Forum",
   youtubeUrl: "https://www.youtube.com/@genusns/videos",
   youtubeLabel: "YouTube",
+  youtubeChannelId: "UCfGQ-cBAm7InANUFEZuxi1Q",
   artist: "GENUS//NS",
   operator: "Neural Syntax",
   label: "0dB_Labs",

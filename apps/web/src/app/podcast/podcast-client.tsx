@@ -1,102 +1,57 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { PODCAST } from "@/lib/podcast";
+import type { YoutubeEpisode } from "@/lib/youtubeEpisodes";
 import styles from "./podcast.module.css";
 
-function formatTime(sec: number): string {
-  const s = Math.max(0, Number.isFinite(sec) ? sec : 0);
-  const m = Math.floor(s / 60);
-  const r = Math.floor(s % 60);
-  return `${m}:${r.toString().padStart(2, "0")}`;
-}
+export function PodcastClient({ episodes }: { episodes: YoutubeEpisode[] }) {
+  const [active, setActive] = useState(episodes[0]?.id ?? "");
+  const current = episodes.find((e) => e.id === active) ?? episodes[0];
 
-export function PodcastClient() {
-  const videoRef = useRef<HTMLVideoElement | null>(null);
-  const [ready, setReady] = useState(false);
-  const [playing, setPlaying] = useState(false);
-  const [currentTime, setCurrentTime] = useState(0);
-  const [duration, setDuration] = useState(0);
-
-  useEffect(() => {
-    const el = videoRef.current;
-    if (!el) return;
-    const onMeta = () => {
-      if (Number.isFinite(el.duration) && el.duration > 0) {
-        setDuration(el.duration);
-        setReady(true);
-      }
-    };
-    const onTime = () => setCurrentTime(el.currentTime);
-    const onEnd = () => {
-      setPlaying(false);
-      setCurrentTime(el.duration || 0);
-    };
-    const onErr = () => setReady(false);
-    el.addEventListener("loadedmetadata", onMeta);
-    el.addEventListener("durationchange", onMeta);
-    el.addEventListener("timeupdate", onTime);
-    el.addEventListener("ended", onEnd);
-    el.addEventListener("error", onErr);
-    el.load();
-    return () => {
-      el.removeEventListener("loadedmetadata", onMeta);
-      el.removeEventListener("durationchange", onMeta);
-      el.removeEventListener("timeupdate", onTime);
-      el.removeEventListener("ended", onEnd);
-      el.removeEventListener("error", onErr);
-    };
-  }, []);
-
-  const toggle = useCallback(() => {
-    const el = videoRef.current;
-    if (!el || !ready) return;
-    if (el.paused) {
-      void el.play().then(() => setPlaying(true));
-    } else {
-      el.pause();
-      setPlaying(false);
-    }
-  }, [ready]);
+  if (!current) {
+    return (
+      <main className={styles.page}>
+        <div className={styles.deck}>
+          {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
+          <video
+            className={styles.video}
+            controls
+            playsInline
+            preload="metadata"
+            src={PODCAST.mediaSrc}
+          />
+        </div>
+      </main>
+    );
+  }
 
   return (
     <main className={styles.page}>
       <div className={styles.deck}>
-        {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
-        <video
-          ref={videoRef}
+        <iframe
           className={styles.video}
-          preload="metadata"
-          playsInline
-          src={PODCAST.mediaSrc}
+          src={`https://www.youtube-nocookie.com/embed/${current.id}?rel=0`}
+          title={current.title}
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          allowFullScreen
         />
-        <button
-          type="button"
-          className={styles.play}
-          onClick={toggle}
-          disabled={!ready}
-        >
-          {!ready ? "LOADING" : playing ? "PAUSE" : "PLAY"}
-        </button>
-        <div className={`${styles.transport} mono`}>
-          <span>{formatTime(currentTime)}</span>
-          <input
-            type="range"
-            min={0}
-            max={duration || 0}
-            step={0.05}
-            value={currentTime}
-            disabled={!ready}
-            aria-label="Seek"
-            onChange={(e) => {
-              const t = Number(e.target.value);
-              const el = videoRef.current;
-              if (el) el.currentTime = t;
-              setCurrentTime(t);
-            }}
-          />
-          <span>{formatTime(duration)}</span>
-        </div>
+        {episodes.length > 1 ? (
+          <ol className={styles.list}>
+            {episodes.map((ep) => (
+              <li key={ep.id}>
+                <button
+                  type="button"
+                  className={styles.item}
+                  data-active={ep.id === current.id ? "on" : "off"}
+                  onClick={() => setActive(ep.id)}
+                >
+                  {ep.title}
+                </button>
+              </li>
+            ))}
+          </ol>
+        ) : null}
       </div>
     </main>
   );
