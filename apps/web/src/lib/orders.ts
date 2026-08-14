@@ -1,5 +1,5 @@
 import { createHash, randomBytes } from "node:crypto";
-import { mkdir, readFile, writeFile, access, readdir } from "node:fs/promises";
+import { mkdir, readFile, writeFile, access, readdir, stat } from "node:fs/promises";
 import path from "node:path";
 
 export type OrderKind = "service" | "track";
@@ -174,6 +174,21 @@ export async function upsertPaidOrder(input: {
   return order;
 }
 
+/**
+ * Reject truncated MiniMax stubs. 256 kbps × ~12 s ≈ 400 KB.
+ * 4651EB shipped at 136 KB / 4.2 s — that is not a master.
+ */
+export const MIN_MASTER_BYTES = 400_000;
+
+async function isUsableMasterFile(file: string): Promise<boolean> {
+  try {
+    const s = await stat(file);
+    return s.isFile() && s.size >= MIN_MASTER_BYTES;
+  } catch {
+    return false;
+  }
+}
+
 /** Resolve master audio path for a track short id (e.g. 288fbd). */
 export async function resolveTrackAudioPath(
   trackId: string,
@@ -190,18 +205,16 @@ export async function resolveTrackAudioPath(
     path.join(dataRoot(), "packages", short, "master.wav"),
   ];
   for (const file of candidates) {
-    try {
-      await access(file);
-      return file;
-    } catch {
-      /* try next */
-    }
+    if (await isUsableMasterFile(file)) return file;
   }
   try {
     const dir = path.join(dataRoot(), "READY_FOR_DITTO", short, "audio");
     const files = await readdir(dir);
     const audio = files.find((f) => /\.(wav|flac|aiff|mp3)$/i.test(f));
-    if (audio) return path.join(dir, audio);
+    if (audio) {
+      const full = path.join(dir, audio);
+      if (await isUsableMasterFile(full)) return full;
+    }
   } catch {
     /* none */
   }

@@ -29,7 +29,7 @@ function parseTopics(html: string): ForumTopic[] {
     /<h2[^>]*>\s*(?:<a[^>]*>)?([^<]{8,160})(?:<\/a>)?\s*<\/h2>/gi;
   let m: RegExpExecArray | null;
   while ((m = heading.exec(html))) {
-    const title = m[1].replace(/\s+/g, " ").trim();
+    const title = (m[1] ?? "").replace(/\s+/g, " ").trim();
     if (!title || seen.has(title.toLowerCase())) continue;
     if (/genus\/\/ns lab/i.test(title) && title.length < 24) continue;
     seen.add(title.toLowerCase());

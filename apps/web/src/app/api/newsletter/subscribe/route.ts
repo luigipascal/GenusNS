@@ -77,6 +77,8 @@ async function ensureWelcomeAttribute(apiKey: string): Promise<void> {
     console.error("Brevo welcome attribute", res.status, await res.text().catch(() => ""));
   }
 }
+
+async function markWelcomeSent(apiKey: string, email: string): Promise<void> {
   const res = await fetch(
     `https://api.brevo.com/v3/contacts/${encodeURIComponent(email)}`,
     {

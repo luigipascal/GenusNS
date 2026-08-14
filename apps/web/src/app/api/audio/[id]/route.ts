@@ -3,7 +3,7 @@ import { createReadStream, statSync } from "node:fs";
 import { access, readdir } from "node:fs/promises";
 import path from "node:path";
 import { Readable } from "node:stream";
-import { resolveTrackAudioPath } from "@/lib/orders";
+import { MIN_MASTER_BYTES, resolveTrackAudioPath } from "@/lib/orders";
 import { isTrackPublished } from "@/lib/publish";
 
 export const runtime = "nodejs";
@@ -30,6 +30,7 @@ async function locateAudio(id: string): Promise<string | null> {
     if (match) {
       const p = path.join(publicDir, match);
       await access(p);
+      if (statSync(p).size < MIN_MASTER_BYTES) return null;
       return p;
     }
   } catch {
@@ -119,4 +120,4 @@ export async function GET(req: Request, ctx: Ctx) {
     },
   });
 }
-
+
