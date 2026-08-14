@@ -89,6 +89,10 @@ export default function AboutPage() {
         <a href={LEGAL.forumUrl} rel="noopener noreferrer" target="_blank">
           {LEGAL.forumLabel}
         </a>
+        {" · "}
+        <a href={LEGAL.youtubeUrl} rel="noopener noreferrer" target="_blank">
+          {LEGAL.youtubeLabel}
+        </a>
       </p>
     </main>
   );

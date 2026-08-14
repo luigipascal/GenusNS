@@ -19,8 +19,12 @@ async function existingCover(short: string): Promise<string | null> {
   const upper = short.toUpperCase();
   const candidates = [
     path.join(root, "covers", `${lower}.png`),
+    path.join(root, "covers", `${lower}.jpg`),
     path.join(root, "public-covers", `${lower}.png`),
+    path.join(root, "packages", upper, "cover.png"),
+    path.join(root, "packages", upper, "cover.jpg"),
     path.join(root, "READY_FOR_DITTO", upper, "cover.png"),
+    path.join(root, "READY_FOR_DITTO", upper, "cover.jpg"),
     path.join(process.cwd(), "public", "covers", `${lower}.png`),
   ];
   for (const file of candidates) {
@@ -67,18 +71,23 @@ export async function GET(_req: Request, ctx: Ctx) {
     if (!experiment) {
       return NextResponse.json({ error: "unknown species" }, { status: 404 });
     }
-    const coversDir = path.join(dataRoot(), "covers");
-    const result = await writeCoverPng(experiment, coversDir);
-    file = result.path;
-    await stampCover(short, file);
+    try {
+      const coversDir = path.join(dataRoot(), "covers");
+      const result = await writeCoverPng(experiment, coversDir);
+      file = result.path;
+      await stampCover(short, file);
+    } catch {
+      return NextResponse.json({ error: "cover not ready" }, { status: 404 });
+    }
   }
 
   const stat = statSync(file);
   const stream = createReadStream(file);
+  const isJpg = file.toLowerCase().endsWith(".jpg") || file.toLowerCase().endsWith(".jpeg");
   return new NextResponse(Readable.toWeb(stream) as unknown as ReadableStream, {
     status: 200,
     headers: {
-      "Content-Type": "image/png",
+      "Content-Type": isJpg ? "image/jpeg" : "image/png",
       "Content-Length": String(stat.size),
       "Cache-Control": "public, max-age=86400",
     },

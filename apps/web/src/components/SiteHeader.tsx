@@ -28,6 +28,14 @@ export function SiteHeader() {
         >
           Forum
         </a>
+        <a
+          href={LEGAL.youtubeUrl}
+          rel="noopener noreferrer"
+          target="_blank"
+          title={LEGAL.youtubeLabel}
+        >
+          YouTube
+        </a>
       </nav>
     </header>
   );

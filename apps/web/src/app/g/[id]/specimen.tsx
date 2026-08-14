@@ -187,6 +187,9 @@ function SpecimenBody({
               alt={`${experiment.digest.slice(0, 6).toUpperCase()} — GENUS//NS — 0dB_Labs`}
               width={320}
               height={320}
+              onError={(ev) => {
+                ev.currentTarget.style.display = "none";
+              }}
             />
             <div
               className={styles.orbitLive}

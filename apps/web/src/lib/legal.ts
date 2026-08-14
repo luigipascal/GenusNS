@@ -14,6 +14,8 @@ export const LEGAL = {
   parentSite: "https://rondanini.com",
   forumUrl: "https://aigents.berta.one/forum/genus-ns-lab",
   forumLabel: "GENUS//NS AIgents Forum",
+  youtubeUrl: "https://www.youtube.com/@genusns",
+  youtubeLabel: "YouTube",
   artist: "GENUS//NS",
   operator: "Neural Syntax",
   label: "0dB_Labs",

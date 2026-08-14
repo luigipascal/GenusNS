@@ -9,6 +9,7 @@ import {
   type ExperimentLaw,
 } from "@genusns/genome-visuals";
 import { NewsletterForm } from "@/components/NewsletterForm";
+import { LEGAL } from "@/lib/legal";
 import styles from "./page.module.css";
 
 export default function HomePage() {
@@ -120,6 +121,22 @@ export default function HomePage() {
         <Link href="/method" className={styles.action}>
           METHOD
         </Link>
+        <a
+          href={LEGAL.forumUrl}
+          className={styles.action}
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          FORUM
+        </a>
+        <a
+          href={LEGAL.youtubeUrl}
+          className={styles.action}
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          YOUTUBE
+        </a>
       </nav>
       <div className={styles.dispatch} data-show={stage >= 4}>
         <NewsletterForm idPrefix="home" variant="hero" />

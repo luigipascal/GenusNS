@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import type { ExperimentLaw } from "@genusns/genome-visuals";
+import { LEGAL } from "@/lib/legal";
 import styles from "./catalogue.module.css";
 
 type PubStatus = {
@@ -96,6 +97,12 @@ export function CatalogueClient() {
         <nav className={`${styles.nav} mono`}>
           <Link href="/registry">Registry map</Link>
           <Link href="/about">About</Link>
+          <a href={LEGAL.forumUrl} rel="noopener noreferrer" target="_blank">
+            Forum
+          </a>
+          <a href={LEGAL.youtubeUrl} rel="noopener noreferrer" target="_blank">
+            YouTube
+          </a>
         </nav>
       </header>
 
@@ -167,6 +174,9 @@ export function CatalogueClient() {
                     alt={`${id} cover — GENUS//NS`}
                     width={640}
                     height={640}
+                    onError={(ev) => {
+                      ev.currentTarget.style.display = "none";
+                    }}
                   />
                   <span className={`${styles.badge} mono`}>
                     {statusLabel(st)}

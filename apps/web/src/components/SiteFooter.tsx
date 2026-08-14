@@ -33,6 +33,9 @@ export function SiteFooter() {
         <a href={LEGAL.forumUrl} rel="noopener noreferrer" target="_blank">
           {LEGAL.forumLabel}
         </a>
+        <a href={LEGAL.youtubeUrl} rel="noopener noreferrer" target="_blank">
+          {LEGAL.youtubeLabel}
+        </a>
         <a href={LEGAL.parentSite} rel="noopener noreferrer">
           Rondanini Publishing
         </a>
