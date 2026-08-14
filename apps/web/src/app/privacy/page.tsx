@@ -67,9 +67,11 @@ export default function PrivacyPage() {
           <h2 className="mono">3. INFORMATION WE COLLECT</h2>
           <p>
             <strong>3.1 Information you provide</strong> — email and related
-            details when you contact us; checkout details processed by Stripe
-            when you purchase a download or service; any other information you
-            choose to include in free-text fields.
+            details when you contact us; email when you subscribe to the site
+            newsletter (processed by Brevo — you can unsubscribe via the links
+            in those emails); checkout details processed by Stripe when you
+            purchase a download or service; any other information you choose to
+            include in free-text fields.
           </p>
           <p>
             <strong>3.2 Information we collect automatically</strong> — website

@@ -34,6 +34,95 @@
   color: var(--gns-fg-muted);
 }
 
+.newsletter {
+  display: grid;
+  gap: 0.45rem;
+  max-width: 28rem;
+}
+
+.newsletterLabel {
+  margin: 0;
+  font-family: var(--gns-font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gns-fg-muted);
+}
+
+.newsletterRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.75rem 1.1rem;
+}
+
+.newsletterInput {
+  flex: 1 1 12rem;
+  min-width: 0;
+  margin: 0;
+  padding: 0.2rem 0 0.35rem;
+  border: 0;
+  border-bottom: 1px solid var(--gns-line-strong);
+  border-radius: 0;
+  background: transparent;
+  color: var(--gns-fg);
+  font-family: var(--gns-font-body);
+  font-size: var(--gns-text-sm);
+  line-height: 1.4;
+}
+
+.newsletterInput::placeholder {
+  color: var(--gns-fg-muted);
+  opacity: 0.85;
+}
+
+.newsletterInput:focus-visible {
+  outline: none;
+  border-bottom-color: var(--gns-oxide);
+}
+
+.newsletterInput:disabled {
+  opacity: 0.65;
+}
+
+.newsletterSubmit {
+  flex: 0 0 auto;
+  padding: 0 0 0.35rem;
+  font-family: var(--gns-font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gns-fg-muted);
+  border-bottom: 1px solid transparent;
+}
+
+.newsletterSubmit:hover:not(:disabled),
+.newsletterSubmit:focus-visible {
+  color: var(--gns-fg);
+  border-bottom-color: var(--gns-oxide);
+  outline: none;
+}
+
+.newsletterSubmit:disabled {
+  opacity: 0.65;
+  cursor: wait;
+}
+
+.newsletterStatus {
+  margin: 0;
+  font-size: 0.7rem;
+  line-height: 1.45;
+  color: var(--gns-fg-muted);
+}
+
+.newsletterStatus[data-state="error"] {
+  color: color-mix(in oklab, var(--gns-oxide) 75%, #8a3030);
+}
+
+.newsletterStatus[data-state="ok"] {
+  color: var(--gns-fg);
+}
+
 .legal {
   display: flex;
   flex-wrap: wrap;
