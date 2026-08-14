@@ -4,6 +4,7 @@ import { access, readdir } from "node:fs/promises";
 import path from "node:path";
 import { Readable } from "node:stream";
 import { resolveTrackAudioPath } from "@/lib/orders";
+import { isTrackPublished } from "@/lib/publish";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -13,6 +14,9 @@ type Ctx = { params: Promise<{ id: string }> };
 async function locateAudio(id: string): Promise<string | null> {
   const short = id.replace(/[^a-fA-F0-9]/g, "").slice(0, 6);
   if (short.length < 4) return null;
+
+  // One public release per day — backlog masters stay off LISTEN until published.
+  if (!(await isTrackPublished(short))) return null;
 
   let audioPath = await resolveTrackAudioPath(short);
   if (audioPath) return audioPath;

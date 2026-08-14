@@ -25,6 +25,7 @@ export function SiteFooter() {
       <nav className={styles.legal} aria-label="Legal">
         <Link href="/catalogue">Catalogue</Link>
         <Link href="/registry">Registry</Link>
+        <Link href="/podcast">Podcast</Link>
         <Link href="/privacy">Privacy Policy</Link>
         <Link href="/terms">Terms of Use</Link>
         <a href="#cookie-settings" data-plainconsent-settings>

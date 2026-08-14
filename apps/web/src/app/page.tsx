@@ -121,6 +121,9 @@ export default function HomePage() {
         <Link href="/method" className={styles.action}>
           METHOD
         </Link>
+        <Link href="/podcast" className={styles.action}>
+          PODCAST
+        </Link>
         <a
           href={LEGAL.forumUrl}
           className={styles.action}

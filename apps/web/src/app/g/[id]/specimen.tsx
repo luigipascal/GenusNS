@@ -17,6 +17,7 @@ import {
   renderRhythmOrbitSvg,
   renderSpectralSurfaceSvg,
   resolveExperiment,
+  type ExperimentLaw,
 } from "@genusns/genome-visuals";
 import { publicTraceRightsLabels } from "@genusns/rights";
 import { TRACK_PACKAGE_CONTENTS } from "@/lib/commerce";
@@ -235,10 +236,10 @@ function SpecimenBody({
               <p className={`${styles.packageTitle} mono`}>
                 ONE PRICE · FULL PACKAGE INCLUDES
               </p>
-              <ul className={`${styles.packageList} mono`}>
+              <ul className={styles.packageList}>
                 {TRACK_PACKAGE_CONTENTS.map((item) => (
                   <li key={item.id}>
-                    <span>{item.label}</span>
+                    <span className={`${styles.packageLabel} mono`}>{item.label}</span>
                     <span className={styles.packageDetail}>{item.detail}</span>
                   </li>
                 ))}
@@ -493,11 +494,13 @@ function SpecimenBody({
 export function ExperimentSpecimen({
   id,
   initialMode = "listen",
+  initial = null,
 }: {
   id: string;
   initialMode?: ExperimentMode;
+  initial?: ExperimentLaw | null;
 }) {
-  const bundled = resolveExperiment(id);
+  const bundled = initial ?? resolveExperiment(id);
   const [experiment, setExperiment] = useState(bundled);
   const [loading, setLoading] = useState(!bundled);
 

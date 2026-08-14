@@ -99,6 +99,34 @@
   line-height: 1.65;
 }
 
+.kicker {
+  letter-spacing: 0.16em;
+  font-size: 0.7rem;
+  margin: 0 0 0.75rem;
+  color: var(--gns-fg-muted);
+}
+
+.script {
+  display: grid;
+  gap: 1rem;
+  margin: var(--gns-space-4) 0;
+}
+
+.script p {
+  margin: 0;
+  line-height: 1.7;
+  color: color-mix(in oklab, var(--gns-fg) 88%, var(--gns-fg-muted));
+}
+
+.player {
+  margin: 0 0 var(--gns-space-4);
+  width: 100%;
+}
+
+.player audio {
+  width: 100%;
+}
+
 @media (max-width: 720px) {
   .grid {
     grid-template-columns: 1fr;

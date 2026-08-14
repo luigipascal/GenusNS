@@ -49,13 +49,34 @@ Ingest → Provenance archive → Experiment Registry → Release Builder
 ## Canonical workflow
 
 ```text
-Genre Genesis → Compose → select → Refine (Analyse → named DSP → re-analyse)
+Genre Genesis → compile pack (foundry_brief + prompts from law)
+→ Compose generates master from that locked instruction
+→ select → Refine (Analyse → named DSP → re-analyse)
 → operator accepts → Send to GENUS//NS → ingest snapshot → auto cover + kit
 → operator uploads kit to Ditto Music → DSP links → Publish
 ```
 
+**Listen policy:** the public site plays only Genus-generated masters.
+The law and compose instruction stay in `{}` / provenance. No Web Audio
+stand-in, Foundry demo, or raw source track is published as the release.
+
+**Publish cadence:**
+1. **Bootstrap stock** — publish the full current approved batch once
+   (`scripts/publish_daily.py --bootstrap`) so the registry opens with inventory.
+2. **Steady state** — autonomously generate and publish **one new track per
+   UTC day** (`scripts/publish_daily.py`). Extra ready packages may sit in
+   `data/backlog.json`; that is fine.
+
+LISTEN and BUY unlock only for ids in `data/published.json`.
+
+**Generation location:** Contabo Coolify hosts the public site. Master
+generation runs on the same Contabo VPS via host cron `/opt/genusns/cron-daily.sh`
+(docker one-shot `genusns-worker`, MiniMax API — no GPU). Data volume:
+`/opt/genusns/data` ↔ `/app/data`. Not on the operator laptop.
+
 **Automated by GENUS//NS:** hash verify, provenance archive, genome-wheel cover
-(title + artist `GENUS//NS` + label `0dB_Labs`), Ditto kit assembly, registry record.
+(title + artist `GENUS//NS` + label `0dB_Labs`), Ditto kit assembly, registry record,
+daily publish promotion (≤1/day).
 
 **Manual only:** Ditto Music upload (and pasting DSP links once live).
 

@@ -2,7 +2,10 @@ import { createHash } from "node:crypto";
 import { mkdir, writeFile, copyFile, access, readFile } from "node:fs/promises";
 import path from "node:path";
 import type { ExperimentLaw } from "@genusns/genome-visuals";
-import { createGenomeVisualProfile } from "@genusns/genome-visuals";
+import {
+  composeInstructionFromLaw,
+  createGenomeVisualProfile,
+} from "@genusns/genome-visuals";
 import {
   createDefaultMachineRightsBundle,
   renderAiDisclosureTxt,
@@ -251,13 +254,44 @@ export async function buildDittoKit(
     "utf8",
   );
 
+  const composeInstruction = composeInstructionFromLaw(experiment);
+  await writeFile(
+    path.join(provenanceDir, "COMPOSE_INSTRUCTION.json"),
+    JSON.stringify(composeInstruction, null, 2),
+    "utf8",
+  );
+
   if (options.audioPath) {
     const dest = path.join(audioDir, path.basename(options.audioPath));
     await copyFile(options.audioPath, dest);
   } else {
     await writeFile(
       path.join(audioDir, "README.txt"),
-      "Master WAV not yet ingested.\nRun genus publish genusns from Genus desktop, then re-run the kit builder.\n",
+      [
+        "NO MASTER YET — Genus Compose required",
+        "=====================================",
+        "",
+        "Do not place raw source stems, Foundry demos, or preview sketches here.",
+        "Generate the track in Genus from the locked compose instruction:",
+        "",
+        composeInstruction.prompt,
+        "",
+        `BPM ${composeInstruction.bpm} · key ${composeInstruction.key}`,
+        composeInstruction.duration_ms
+          ? `Target duration_ms ${composeInstruction.duration_ms}`
+          : "",
+        "",
+        "Operator path:",
+        "  1. Import the compiled Genus pack (foundry_brief.json + prompts.json)",
+        "  2. Compose → select → Refine (performance only)",
+        "  3. genus publish genusns",
+        "  4. Re-run the kit builder so master.wav lands in this folder",
+        "",
+        "See provenance/COMPOSE_INSTRUCTION.json and the site {} panel.",
+        "",
+      ]
+        .filter((line) => line !== undefined)
+        .join("\n"),
       "utf8",
     );
   }

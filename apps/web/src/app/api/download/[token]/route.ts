@@ -5,6 +5,7 @@ import { Readable } from "node:stream";
 import {
   findOrderByToken,
   resolveTrackAudioPath,
+  resolveTrackPackagePath,
   saveOrder,
 } from "@/lib/orders";
 
@@ -15,7 +16,7 @@ type Ctx = { params: Promise<{ token: string }> };
 
 /**
  * Fulfil paid track downloads from Contabo data volume.
- * Token issued by checkout.session.completed webhook.
+ * Prefers buyer package zip (Genus master + raw law materials).
  */
 export async function GET(_req: Request, ctx: Ctx) {
   const { token } = await ctx.params;
@@ -35,13 +36,14 @@ export async function GET(_req: Request, ctx: Ctx) {
     return NextResponse.json({ error: "Download expired" }, { status: 410 });
   }
 
-  const audioPath = await resolveTrackAudioPath(order.trackId);
+  const packagePath = await resolveTrackPackagePath(order.trackId);
+  const audioPath = packagePath ?? (await resolveTrackAudioPath(order.trackId));
   if (!audioPath) {
     return NextResponse.json(
       {
-        error: "Master not yet on server",
+        error: "Package not yet on server",
         detail:
-          "Paid order recorded. Audio will be available once the master WAV is on the Contabo data volume (READY_FOR_DITTO/<ID>/audio/).",
+          "Paid order recorded. Package (Genus master + raw law materials) will be available once generation finishes on the Contabo data volume.",
         orderId: order.id,
       },
       { status: 409 },
@@ -66,11 +68,13 @@ export async function GET(_req: Request, ctx: Ctx) {
   const filename = path.basename(audioPath);
   const ext = path.extname(filename).toLowerCase();
   const type =
-    ext === ".flac"
-      ? "audio/flac"
-      : ext === ".mp3"
-        ? "audio/mpeg"
-        : "audio/wav";
+    ext === ".zip"
+      ? "application/zip"
+      : ext === ".flac"
+        ? "audio/flac"
+        : ext === ".mp3"
+          ? "audio/mpeg"
+          : "audio/wav";
 
   return new NextResponse(webStream, {
     status: 200,
@@ -82,4 +86,3 @@ export async function GET(_req: Request, ctx: Ctx) {
     },
   });
 }
-

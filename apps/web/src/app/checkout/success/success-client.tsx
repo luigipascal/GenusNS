@@ -67,7 +67,9 @@ export default function CheckoutSuccessClient() {
       <h1>Payment received</h1>
       <p className={styles.lede}>
         Thank you. Orders are recorded for Rondanini Publishing Ltd t/a
-        0dB_Labs. Service commissions are fulfilled manually.
+        0dB_Labs. A species purchase is the full package — master, cover, and
+        raw law materials — not audio alone. Service commissions are fulfilled
+        manually.
       </p>
 
       {pending && <p className="mono">Confirming…</p>}
@@ -84,9 +86,14 @@ export default function CheckoutSuccessClient() {
           </li>
           {summary.downloadUrl && (
             <li>
-              <h2 className="mono">DOWNLOAD</h2>
+              <h2 className="mono">YOUR PACKAGE</h2>
               <p>
-                <a href={summary.downloadUrl}>Download your file</a>
+                One zip for this species. Includes: Genus master (≤2 min),
+                cover.png, LAW.json, compose instruction, foundry brief +
+                prompts, loop MIDI, grid/tuning/form artefacts, and manifest.
+              </p>
+              <p>
+                <a href={summary.downloadUrl}>Download full package</a>
                 {summary.downloadExpiresAt
                   ? ` · expires ${summary.downloadExpiresAt}`
                   : ""}

@@ -13,12 +13,16 @@ declare global {
   }
 }
 
+/** Public GA4 measurement ID. Loaded by PlainConsent only after Accept analytics. */
+const GA_MEASUREMENT_ID =
+  process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID?.trim() || "G-6PWGCLL17J";
+
 /**
  * Same PlainConsent banner used on rondanini.com.
- * Essential cookies only until the visitor opts into analytics.
+ * Do not inject gtag.js here — the banner script loads GA after opt-in.
  */
 export function PlainConsent() {
-  const gaId = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID ?? "";
+  const gaId = GA_MEASUREMENT_ID;
 
   return (
     <>

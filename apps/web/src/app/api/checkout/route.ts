@@ -1,5 +1,10 @@
 import { NextResponse } from "next/server";
-import { SERVICE_CATALOG, trackPricePence } from "@/lib/commerce";
+import {
+  SERVICE_CATALOG,
+  trackPackageStripeDescription,
+  trackPricePence,
+} from "@/lib/commerce";
+import { isTrackPublished } from "@/lib/publish";
 import {
   getStripe,
   randomIntegrationSuffix,
@@ -10,9 +15,8 @@ export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 /**
- * Stripe Checkout Sessions for track downloads and services.
+ * Stripe Checkout Sessions for track packages and services.
  * Never put payment_method_types (use Dashboard PM config).
- * Site origin defaults to https://0dblabs.com while genusns is offline.
  */
 export async function POST(req: Request) {
   let stripe;
@@ -46,9 +50,18 @@ export async function POST(req: Request) {
     meta = { kind: "service", serviceId: body.serviceId, project: "genusns" };
   } else if (body.kind === "track" && body.trackId) {
     const id = body.trackId.toLowerCase();
-    lineName = `GENUS//NS — ${id.toUpperCase()} download`;
+    if (!(await isTrackPublished(id))) {
+      return NextResponse.json(
+        {
+          error: "Track not yet published",
+          hint: "Packages enter a backlog; GENUS//NS publishes at most one track per day.",
+        },
+        { status: 409 },
+      );
+    }
+    lineName = `GENUS//NS — ${id.toUpperCase()} full package`;
     unitAmount = trackPricePence();
-    description = "High-quality download · experimental species recording";
+    description = trackPackageStripeDescription(id);
     meta = { kind: "track", trackId: id, project: "genusns" };
   } else {
     return NextResponse.json({ error: "Invalid checkout request" }, { status: 400 });
@@ -88,4 +101,4 @@ export async function POST(req: Request) {
 
   return NextResponse.json({ url: session.url, id: session.id });
 }
-
+

@@ -86,6 +86,8 @@ export default function AboutPage() {
         {" · "}
         <Link href="/registry">Registry</Link>
         {" · "}
+        <Link href="/podcast">Podcast</Link>
+        {" · "}
         <a href={LEGAL.forumUrl} rel="noopener noreferrer" target="_blank">
           {LEGAL.forumLabel}
         </a>

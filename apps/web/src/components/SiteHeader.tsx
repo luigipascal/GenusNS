@@ -5,6 +5,7 @@ import styles from "./SiteHeader.module.css";
 const LINKS = [
   { href: "/catalogue", label: "Catalogue" },
   { href: "/registry", label: "Registry" },
+  { href: "/podcast", label: "Podcast" },
   { href: "/about", label: "About" },
 ] as const;
 

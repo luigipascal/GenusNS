@@ -11,7 +11,7 @@ import {
   type ReactNode,
 } from "react";
 import type { ExperimentLaw, GenomeVisualProfile } from "@genusns/genome-visuals";
-import { GenomeAudition, masterAudioUrl, type AuditionMode } from "./genome-audition";
+import { masterAudioUrl, type AuditionMode } from "./genome-audition";
 
 export interface PlaybackState {
   trackId: string | null;
@@ -22,7 +22,7 @@ export interface PlaybackState {
   cyclePhase: number;
   activeStep: number;
   stepPhase: number;
-  /** master = Contabo/file stream; genome-preview = Web Audio law audition */
+  /** master = Genus-generated file; awaiting-master = law only, no audio yet */
   mode: AuditionMode;
   play: () => void;
   pause: () => void;
@@ -49,18 +49,16 @@ export function PlaybackProvider({
   const [playing, setPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(fallbackDuration);
-  const [mode, setMode] = useState<AuditionMode>("none");
+  const [mode, setMode] = useState<AuditionMode>("awaiting-master");
   const audioRef = useRef<HTMLAudioElement | null>(null);
-  const auditionRef = useRef<GenomeAudition | null>(null);
   const raf = useRef<number | null>(null);
-  const last = useRef<number | null>(null);
-  const modeRef = useRef<AuditionMode>("none");
+  const modeRef = useRef<AuditionMode>("awaiting-master");
 
   useEffect(() => {
     modeRef.current = mode;
   }, [mode]);
 
-  // Probe for published master; otherwise genome preview.
+  // Probe Contabo / public master only — never invent a preview track.
   useEffect(() => {
     let cancelled = false;
     const short = experiment.digest.slice(0, 6);
@@ -69,43 +67,40 @@ export function PlaybackProvider({
     setPlaying(false);
     setCurrentTime(0);
     setDuration(fallbackDuration);
-    setMode("none");
+    setMode("awaiting-master");
 
     if (audioRef.current) {
       audioRef.current.pause();
       audioRef.current.src = "";
       audioRef.current = null;
     }
-    auditionRef.current?.stop();
 
     (async () => {
       try {
         const head = await fetch(url, { method: "HEAD" });
         if (cancelled) return;
-        if (head.ok) {
-          const el = new Audio();
-          el.preload = "metadata";
-          el.src = url;
-          el.loop = false;
-          await new Promise<void>((resolve, reject) => {
-            el.addEventListener("loadedmetadata", () => resolve(), { once: true });
-            el.addEventListener("error", () => reject(new Error("audio error")), {
-              once: true,
-            });
+        if (!head.ok) return;
+        const el = new Audio();
+        el.preload = "metadata";
+        el.src = url;
+        el.loop = false;
+        await new Promise<void>((resolve, reject) => {
+          el.addEventListener("loadedmetadata", () => resolve(), { once: true });
+          el.addEventListener("error", () => reject(new Error("audio error")), {
+            once: true,
           });
-          if (cancelled) return;
-          audioRef.current = el;
-          setDuration(Number.isFinite(el.duration) && el.duration > 0 ? el.duration : fallbackDuration);
-          setMode("master");
-          return;
-        }
+        });
+        if (cancelled) return;
+        audioRef.current = el;
+        setDuration(
+          Number.isFinite(el.duration) && el.duration > 0
+            ? el.duration
+            : fallbackDuration,
+        );
+        setMode("master");
       } catch {
-        /* fall through to preview */
+        /* stay awaiting-master */
       }
-      if (cancelled) return;
-      auditionRef.current = new GenomeAudition();
-      setDuration(fallbackDuration);
-      setMode("genome-preview");
     })();
 
     return () => {
@@ -116,6 +111,7 @@ export function PlaybackProvider({
 
   const tickVisual = useCallback(
     (now: number) => {
+      void now;
       if (modeRef.current === "master" && audioRef.current) {
         const el = audioRef.current;
         setCurrentTime(el.currentTime);
@@ -126,31 +122,6 @@ export function PlaybackProvider({
           raf.current = null;
           return;
         }
-      } else if (modeRef.current === "genome-preview" && auditionRef.current) {
-        if (last.current == null) last.current = now;
-        last.current = now;
-        const t = auditionRef.current.currentTime();
-        if (t >= duration) {
-          auditionRef.current.pause();
-          setPlaying(false);
-          setCurrentTime(duration);
-          if (raf.current != null) cancelAnimationFrame(raf.current);
-          raf.current = null;
-          return;
-        }
-        setCurrentTime(t);
-      } else {
-        if (last.current == null) last.current = now;
-        const dt = (now - last.current) / 1000;
-        last.current = now;
-        setCurrentTime((t) => {
-          const next = t + dt;
-          if (next >= duration) {
-            setPlaying(false);
-            return duration;
-          }
-          return next;
-        });
       }
       raf.current = requestAnimationFrame(tickVisual);
     },
@@ -161,7 +132,6 @@ export function PlaybackProvider({
     if (!playing) {
       if (raf.current != null) cancelAnimationFrame(raf.current);
       raf.current = null;
-      last.current = null;
       return;
     }
     raf.current = requestAnimationFrame(tickVisual);
@@ -172,31 +142,20 @@ export function PlaybackProvider({
 
   const play = useCallback(() => {
     void (async () => {
-      if (mode === "master" && audioRef.current) {
-        if (audioRef.current.currentTime >= (audioRef.current.duration || duration) - 0.05) {
-          audioRef.current.currentTime = 0;
-        }
-        await audioRef.current.play();
-        setPlaying(true);
-        return;
+      if (mode !== "master" || !audioRef.current) return;
+      if (
+        audioRef.current.currentTime >=
+        (audioRef.current.duration || duration) - 0.05
+      ) {
+        audioRef.current.currentTime = 0;
       }
-      if (mode === "genome-preview") {
-        const a = auditionRef.current ?? new GenomeAudition();
-        auditionRef.current = a;
-        const from = currentTime >= duration - 0.05 ? 0 : currentTime;
-        await a.play(experiment, from);
-        setPlaying(true);
-        return;
-      }
-      // mode none still — visual clock only
-      if (currentTime >= duration) setCurrentTime(0);
+      await audioRef.current.play();
       setPlaying(true);
     })();
-  }, [mode, currentTime, duration, experiment]);
+  }, [mode, duration]);
 
   const pause = useCallback(() => {
     audioRef.current?.pause();
-    auditionRef.current?.pause();
     setPlaying(false);
   }, []);
 
@@ -211,11 +170,9 @@ export function PlaybackProvider({
       setCurrentTime(clamped);
       if (mode === "master" && audioRef.current) {
         audioRef.current.currentTime = clamped;
-      } else if (mode === "genome-preview" && auditionRef.current) {
-        auditionRef.current.seek(experiment, clamped);
       }
     },
-    [duration, mode, experiment],
+    [duration, mode],
   );
 
   const cycleSeconds = (60 / Math.max(profile.bpm, 1)) * profile.pulseCount;
@@ -269,4 +226,3 @@ export function usePlayback(): PlaybackState {
   }
   return ctx;
 }
-

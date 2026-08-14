@@ -19,3 +19,13 @@ data/identity/*.png
 
 data/GENUSNS_DITTO_ALL.zip
 data/_brevo_newsletter.json
+data/_launch_kit/
+data/_ditto_browser_profile/
+data/_ditto_shots/
+data/_ditto_auth_state.json
+data/videos/
+data/_yt_token.json
+data/yt_upload_log.jsonl
+data/yt_schedule.json
+scripts/client_secret.json
+scripts/_yt_kit/

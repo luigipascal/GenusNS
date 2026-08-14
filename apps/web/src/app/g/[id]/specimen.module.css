@@ -103,11 +103,65 @@
     color var(--gns-motion-quick) var(--gns-ease-structural);
 }
 
+.play:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
 .play:hover,
 .play:focus-visible {
   border-color: var(--gns-accent);
   color: var(--gns-accent);
   outline: none;
+}
+
+.packageBox {
+  margin-top: var(--gns-space-4);
+  width: min(420px, 92vw);
+  text-align: left;
+  border-top: 1px solid var(--gns-line);
+  padding-top: var(--gns-space-3);
+}
+
+.packageTitle {
+  margin: 0 0 var(--gns-space-2);
+  font-size: var(--gns-text-xs);
+  letter-spacing: 0.18em;
+  color: var(--gns-fg);
+}
+
+.packageList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.85rem;
+}
+
+.packageList li {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.28rem;
+}
+
+.packageLabel {
+  display: block;
+  font-size: var(--gns-text-xs);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--gns-fg);
+}
+
+.packageDetail {
+  display: block;
+  color: var(--gns-fg-muted);
+  letter-spacing: 0.01em;
+  text-transform: none;
+  font-family: var(--gns-font-body);
+  font-size: 0.88rem;
+  line-height: 1.45;
+  max-width: 36rem;
 }
 
 .specimen[data-playing="yes"] .play {
