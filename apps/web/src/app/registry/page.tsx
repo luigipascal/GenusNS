@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useMemo, useState, type CSSProperties } from "react";
+import type { ExperimentLaw } from "@genusns/genome-visuals";
 import {
   createGenomeVisualProfile,
   listExperiments,
@@ -12,7 +13,9 @@ import styles from "./page.module.css";
 type View = "field" | "index" | "timeline";
 
 export default function RegistryPage() {
-  const experiments = useMemo(() => listExperiments(), []);
+  const [experiments, setExperiments] = useState<ExperimentLaw[]>(() =>
+    listExperiments(),
+  );
   const [view, setView] = useState<View>("field");
   const [query, setQuery] = useState("");
   const [searchOpen, setSearchOpen] = useState(false);
@@ -45,6 +48,17 @@ export default function RegistryPage() {
   }, [profiles, query]);
 
   useEffect(() => {
+    void fetch("/api/catalog")
+      .then((r) => (r.ok ? r.json() : null))
+      .then(
+        (d: { experiments?: ExperimentLaw[] } | null) => {
+          if (d?.experiments?.length) setExperiments(d.experiments);
+        },
+      )
+      .catch(() => undefined);
+  }, []);
+
+  useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       const tag = (e.target as HTMLElement)?.tagName;
       if (tag === "INPUT" || tag === "TEXTAREA") return;
@@ -65,6 +79,9 @@ export default function RegistryPage() {
       <header className={styles.bar}>
         <Link href="/" className="mono">
           GENUS//NS
+        </Link>
+        <Link href="/catalogue" className={`${styles.searchBtn} mono`}>
+          CATALOGUE
         </Link>
         <nav className={`${styles.views} mono`} aria-label="Registry views">
           {(["field", "index", "timeline"] as const).map((v) => (

@@ -18,8 +18,8 @@ export default function NotFound() {
       <p style={{ color: "var(--gns-fg-muted)", margin: 0 }}>
         The requested identifier does not exist in the registry.
       </p>
-      <Link href="/registry" className="mono" style={{ letterSpacing: "0.18em" }}>
-        ENTER REGISTRY
+      <Link href="/catalogue" className="mono" style={{ letterSpacing: "0.18em" }}>
+        OPEN CATALOGUE
       </Link>
     </main>
   );

@@ -1,0 +1,39 @@
+.bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--gns-space-3);
+  flex-wrap: wrap;
+  padding: var(--gns-space-3) var(--gns-space-4);
+  border-bottom: 1px solid var(--gns-line);
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: color-mix(in oklab, var(--gns-bg) 92%, transparent);
+  backdrop-filter: blur(8px);
+}
+
+.mark {
+  font-size: var(--gns-text-xs);
+  letter-spacing: 0.22em;
+}
+
+.nav {
+  display: flex;
+  gap: 1.25rem;
+  font-size: 0.65rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--gns-fg-muted);
+}
+
+.nav a:hover,
+.mark:hover {
+  color: var(--gns-field-teal);
+}
+
+@media (max-width: 40rem) {
+  .bar {
+    padding: var(--gns-space-3);
+  }
+}

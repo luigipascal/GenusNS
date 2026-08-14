@@ -6,6 +6,7 @@ import { NextResponse } from "next/server";
 import path from "node:path";
 import { readFile } from "node:fs/promises";
 import { resolveExperiment } from "@genusns/genome-visuals";
+import { resolveLiveExperiment } from "@/lib/liveCatalog";
 import { runPublicationPipeline, verifyAssetHashes } from "@genusns/pipeline";
 
 export const runtime = "nodejs";
@@ -27,7 +28,8 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "digest required" }, { status: 400 });
   }
 
-  const experiment = resolveExperiment(body.digest);
+  const experiment =
+    (await resolveLiveExperiment(body.digest)) ?? resolveExperiment(body.digest);
   if (!experiment) {
     return NextResponse.json({ error: "unknown digest / fixture" }, { status: 404 });
   }

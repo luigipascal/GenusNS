@@ -70,6 +70,9 @@ export default function HomePage() {
         PUBLISHED UNDER 0DB_LABS
       </p>
       <nav className={styles.actions} data-show={stage >= 4}>
+        <Link href="/catalogue" className={styles.action}>
+          CATALOGUE
+        </Link>
         <Link href="/registry" className={styles.action}>
           ENTER THE REGISTRY
         </Link>

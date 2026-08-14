@@ -1,16 +1,18 @@
+import { access, readFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { getFirstGenome, listExperiments } from "@genusns/genome-visuals";
-import { writeArtistImagePng, writeCoverPng } from "../render";
+import {
+  getFirstGenome,
+  listExperiments,
+  type ExperimentLaw,
+} from "@genusns/genome-visuals";
+import { coverFileName, writeArtistImagePng, writeCoverPng } from "../render";
 
 const repoRoot = path.resolve(
   path.dirname(fileURLToPath(import.meta.url)),
   "../../../..",
 );
-const outDirs = [
-  path.join(repoRoot, "data", "covers"),
-  path.join(repoRoot, "apps", "web", "public", "covers"),
-];
+const outDirs = [path.join(repoRoot, "data", "covers")];
 const artistDirs = [
   path.join(repoRoot, "data", "identity"),
   path.join(repoRoot, "apps", "web", "public", "identity"),
@@ -25,10 +27,32 @@ async function main() {
   const artist = await writeArtistImagePng(first, artistDirs);
   console.log(`  artist.png → ${artist.path} (${artist.bytes} bytes)`);
 
-  const experiments = listExperiments();
+  const liveFile = path.join(repoRoot, "data", "catalog.json");
+  let experiments = listExperiments();
+  try {
+    const parsed: unknown = JSON.parse(await readFile(liveFile, "utf8"));
+    if (Array.isArray(parsed)) {
+      const map = new Map(experiments.map((e) => [e.digest.toLowerCase(), e]));
+      for (const row of parsed) {
+        const e = row as ExperimentLaw;
+        if (e?.digest) map.set(String(e.digest).toLowerCase(), e);
+      }
+      experiments = [...map.values()];
+    }
+  } catch {
+    /* fixture catalog only */
+  }
   console.log(`Generating ${experiments.length} covers (3000×3000)…`);
   for (const exp of experiments) {
     for (const dir of outDirs) {
+      const dest = path.join(dir, coverFileName(exp));
+      try {
+        await access(dest);
+        console.log(`  skip ${exp.canonicalId} (exists)`);
+        continue;
+      } catch {
+        /* render */
+      }
       const result = await writeCoverPng(exp, dir);
       console.log(`  ${exp.canonicalId} → ${result.path}`);
     }

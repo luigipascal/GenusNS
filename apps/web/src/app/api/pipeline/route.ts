@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import path from "node:path";
-import { listExperiments, resolveExperiment } from "@genusns/genome-visuals";
+import { resolveExperiment } from "@genusns/genome-visuals";
+import { listLiveExperiments, resolveLiveExperiment } from "@/lib/liveCatalog";
 import { runPublicationPipeline } from "@genusns/pipeline";
 
 export const runtime = "nodejs";
@@ -18,9 +19,12 @@ export async function POST(req: Request) {
   };
 
   const targets = body.all
-    ? listExperiments()
+    ? await listLiveExperiments()
     : body.id
-      ? [resolveExperiment(body.id)].filter(Boolean)
+      ? [
+          (await resolveLiveExperiment(body.id)) ??
+            resolveExperiment(body.id),
+        ].filter(Boolean)
       : [];
 
   if (targets.length === 0) {

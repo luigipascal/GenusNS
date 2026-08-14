@@ -9,6 +9,7 @@ import {
   type CSSProperties,
 } from "react";
 import {
+  composeInstructionFromLaw,
   createGenomeVisualProfile,
   renderFormGraphSvg,
   renderGenomeGlyphSvg,
@@ -18,6 +19,7 @@ import {
   resolveExperiment,
 } from "@genusns/genome-visuals";
 import { publicTraceRightsLabels } from "@genusns/rights";
+import { TRACK_PACKAGE_CONTENTS } from "@/lib/commerce";
 import { PlaybackProvider, usePlayback } from "@/lib/playback";
 import styles from "./specimen.module.css";
 
@@ -43,12 +45,43 @@ function SpecimenBody({
   const [mode, setMode] = useState<ExperimentMode>(initialMode);
   const [dataMode, setDataMode] = useState(false);
   const [showRaw, setShowRaw] = useState(false);
+  const [pubStatus, setPubStatus] = useState<{
+    published: boolean;
+    inBacklog: boolean;
+    hasMaster: boolean;
+  } | null>(null);
   const playback = usePlayback();
 
   const profile = useMemo(
     () => (experiment ? createGenomeVisualProfile(experiment) : null),
     [experiment],
   );
+
+  useEffect(() => {
+    if (!experiment) return;
+    const short = experiment.digest.slice(0, 6);
+    let cancelled = false;
+    void fetch(`/api/track-status/${short}`)
+      .then((r) => (r.ok ? r.json() : null))
+      .then(
+        (d: {
+          published?: boolean;
+          inBacklog?: boolean;
+          hasMaster?: boolean;
+        } | null) => {
+          if (cancelled || !d) return;
+          setPubStatus({
+            published: Boolean(d.published),
+            inBacklog: Boolean(d.inBacklog),
+            hasMaster: Boolean(d.hasMaster),
+          });
+        },
+      )
+      .catch(() => undefined);
+    return () => {
+      cancelled = true;
+    };
+  }, [experiment]);
 
   const onKey = useCallback(
     (e: KeyboardEvent) => {
@@ -115,6 +148,9 @@ function SpecimenBody({
         <Link href="/" className={`${styles.brand} mono`}>
           GENUS//NS
         </Link>
+        <Link href="/catalogue" className={`${styles.brand} mono`}>
+          CATALOGUE
+        </Link>
         <p className={`${styles.id} mono`}>{profile.canonicalId}</p>
         <nav className={styles.modes} aria-label="Experiment modes">
           {(["listen", "law", "trace"] as const).map((m) => (
@@ -147,7 +183,7 @@ function SpecimenBody({
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               className={styles.cover}
-              src={`/covers/${experiment.digest.slice(0, 6).toLowerCase()}.png`}
+              src={`/api/cover/${experiment.digest.slice(0, 6)}`}
               alt={`${experiment.digest.slice(0, 6).toUpperCase()} — GENUS//NS — 0dB_Labs`}
               width={320}
               height={320}
@@ -160,8 +196,15 @@ function SpecimenBody({
               type="button"
               className={styles.play}
               onClick={playback.toggle}
+              disabled={playback.mode !== "master"}
             >
-              {playback.playing ? "PAUSE" : "PLAY"}{" "}
+              {playback.mode !== "master"
+                ? pubStatus?.inBacklog || pubStatus?.hasMaster
+                  ? "IN BACKLOG · ONE TRACK / DAY"
+                  : "AWAITING GENUS MASTER"
+                : playback.playing
+                  ? "PAUSE"
+                  : "PLAY"}{" "}
               {profile.canonicalId.replace("GENUS//NS:", "")}
             </button>
             <div className={`${styles.transport} mono`}>
@@ -174,37 +217,55 @@ function SpecimenBody({
                 value={playback.currentTime}
                 onChange={(e) => playback.seek(Number(e.target.value))}
                 aria-label="Seek"
+                disabled={playback.mode !== "master"}
               />
               <span>{formatTime(playback.duration)}</span>
             </div>
             <p className={`${styles.note} mono`}>
               {playback.mode === "master"
-                ? "MASTER AUDIO · NO AUTOPLAY"
-                : playback.mode === "genome-preview"
-                  ? "GENOME AUDITION · WEB AUDIO PREVIEW · NO AUTOPLAY"
-                  : "LOADING AUDIO…"}
+                ? "GENUS MASTER · GENERATED FROM LAW PROMPT · NO AUTOPLAY"
+                : pubStatus?.inBacklog || pubStatus?.hasMaster
+                  ? "PACKAGE READY · AWAITING DAILY PUBLICATION SLOT"
+                  : "NO PREVIEW TRACK · OPEN {} FOR COMPOSE INSTRUCTION · PUBLISH MASTER FROM GENUS"}
             </p>
-            <button
-              type="button"
-              className={styles.play}
-              style={{ marginTop: "0.75rem" }}
-              onClick={() => {
-                void fetch("/api/checkout", {
-                  method: "POST",
-                  headers: { "Content-Type": "application/json" },
-                  body: JSON.stringify({
-                    kind: "track",
-                    trackId: experiment.digest.slice(0, 6),
-                  }),
-                })
-                  .then((r) => r.json())
-                  .then((d: { url?: string }) => {
-                    if (d.url) window.location.href = d.url;
-                  });
-              }}
-            >
-              BUY DOWNLOAD
-            </button>
+            <div className={styles.packageBox}>
+              <p className={`${styles.packageTitle} mono`}>
+                ONE PRICE · FULL PACKAGE INCLUDES
+              </p>
+              <ul className={`${styles.packageList} mono`}>
+                {TRACK_PACKAGE_CONTENTS.map((item) => (
+                  <li key={item.id}>
+                    <span>{item.label}</span>
+                    <span className={styles.packageDetail}>{item.detail}</span>
+                  </li>
+                ))}
+              </ul>
+              <button
+                type="button"
+                className={styles.play}
+                disabled={playback.mode !== "master"}
+                onClick={() => {
+                  void fetch("/api/checkout", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                      kind: "track",
+                      trackId: experiment.digest.slice(0, 6),
+                    }),
+                  })
+                    .then((r) => r.json())
+                    .then((d: { url?: string }) => {
+                      if (d.url) window.location.href = d.url;
+                    });
+                }}
+              >
+                {playback.mode === "master"
+                  ? "BUY FULL PACKAGE"
+                  : pubStatus?.inBacklog || pubStatus?.hasMaster
+                    ? "NOT YET PUBLISHED"
+                    : "BUY FULL PACKAGE"}
+              </button>
+            </div>
           </div>
         )}
       </section>
@@ -405,6 +466,7 @@ function SpecimenBody({
             {JSON.stringify(
               {
                 experiment,
+                compose_instruction: composeInstructionFromLaw(experiment),
                 visual_profile: {
                   version: profile.version,
                   geometryVariant: profile.geometryVariant,
@@ -412,6 +474,8 @@ function SpecimenBody({
                   euclideanHits: profile.euclideanHits,
                   palette: profile.palette,
                 },
+                listen_policy:
+                  "Published audio must be a Genus Compose master generated from compose_instruction (or the compiled pack foundry_brief/prompts). No Web Audio preview, Foundry demo, or raw source track.",
               },
               null,
               2,
@@ -430,7 +494,33 @@ export function ExperimentSpecimen({
   id: string;
   initialMode?: ExperimentMode;
 }) {
-  const experiment = resolveExperiment(id);
+  const bundled = resolveExperiment(id);
+  const [experiment, setExperiment] = useState(bundled);
+  const [loading, setLoading] = useState(!bundled);
+
+  useEffect(() => {
+    let cancelled = false;
+    void fetch(`/api/catalog/${encodeURIComponent(id)}`)
+      .then((r) => (r.ok ? r.json() : null))
+      .then((d: typeof bundled) => {
+        if (cancelled || !d?.digest) return;
+        setExperiment(d);
+      })
+      .finally(() => {
+        if (!cancelled) setLoading(false);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [id]);
+
+  if (loading && !experiment) {
+    return (
+      <main className={styles.missing}>
+        <p className="mono">LOADING SPECIES</p>
+      </main>
+    );
+  }
   if (!experiment) {
     return (
       <main className={styles.missing}>

@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { Suspense, useMemo, useState, type CSSProperties } from "react";
+import { Suspense, useEffect, useMemo, useState, type CSSProperties } from "react";
+import type { ExperimentLaw } from "@genusns/genome-visuals";
 import { useSearchParams } from "next/navigation";
 import {
   createGenomeVisualProfile,
@@ -15,9 +16,28 @@ function CompareInner() {
   const sp = useSearchParams();
   const raw = sp.get("g") ?? "288fbd,6336b6";
   const [left, right] = raw.split(",").map((s) => s.trim());
-  const a = resolveExperiment(left || "288fbd");
-  const b = resolveExperiment(right || "6336b6");
+  const [a, setA] = useState<ExperimentLaw | null>(() =>
+    resolveExperiment(left || "288fbd"),
+  );
+  const [b, setB] = useState<ExperimentLaw | null>(() =>
+    resolveExperiment(right || "6336b6"),
+  );
   const [t, setT] = useState(0);
+
+  useEffect(() => {
+    const load = (id: string, set: (e: ExperimentLaw | null) => void) => {
+      const bundled = resolveExperiment(id);
+      if (bundled) set(bundled);
+      void fetch(`/api/catalog/${encodeURIComponent(id)}`)
+        .then((r) => (r.ok ? r.json() : null))
+        .then((d: ExperimentLaw | null) => {
+          if (d?.digest) set(d);
+        })
+        .catch(() => undefined);
+    };
+    load(left || "288fbd", setA);
+    load(right || "6336b6", setB);
+  }, [left, right]);
 
   const pa = useMemo(() => (a ? createGenomeVisualProfile(a) : null), [a]);
   const pb = useMemo(() => (b ? createGenomeVisualProfile(b) : null), [b]);
