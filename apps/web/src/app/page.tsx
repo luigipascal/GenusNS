@@ -6,17 +6,49 @@ import {
   createGenomeVisualProfile,
   getFeaturedExperiment,
   renderGenomeGlyphSvg,
+  type ExperimentLaw,
 } from "@genusns/genome-visuals";
 import { NewsletterForm } from "@/components/NewsletterForm";
 import styles from "./page.module.css";
 
 export default function HomePage() {
-  const experiment = getFeaturedExperiment();
+  const [experiment, setExperiment] = useState<ExperimentLaw>(
+    getFeaturedExperiment,
+  );
   const profile = useMemo(
     () => createGenomeVisualProfile(experiment),
     [experiment],
   );
   const [stage, setStage] = useState(0);
+
+  useEffect(() => {
+    void fetch("/api/catalog")
+      .then((r) => (r.ok ? r.json() : null))
+      .then(
+        (d: {
+          experiments?: ExperimentLaw[];
+          status?: Record<
+            string,
+            { published?: boolean; publishedAt?: string | null }
+          >;
+        } | null) => {
+          if (!d?.experiments?.length) return;
+          const published = d.experiments.filter((e) => {
+            const id = e.digest.slice(0, 6).toUpperCase();
+            return d.status?.[id]?.published;
+          });
+          const latest = [...published].sort((a, b) => {
+            const da =
+              d.status?.[a.digest.slice(0, 6).toUpperCase()]?.publishedAt ?? "";
+            const db =
+              d.status?.[b.digest.slice(0, 6).toUpperCase()]?.publishedAt ?? "";
+            return db.localeCompare(da);
+          })[0];
+          if (latest) setExperiment(latest);
+        },
+      )
+      .catch(() => undefined);
+  }, []);
 
   useEffect(() => {
     const timers = [

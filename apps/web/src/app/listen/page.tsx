@@ -1,7 +1,11 @@
 import { redirect } from "next/navigation";
 import { getFeaturedExperiment } from "@genusns/genome-visuals";
+import { loadPublished } from "@/lib/publish";
 
-export default function ListenPage() {
+export default async function ListenPage() {
+  const published = await loadPublished();
+  const last = published.entries.at(-1);
   const featured = getFeaturedExperiment();
-  redirect(`/g/${featured.digest.slice(0, 6)}?mode=listen`);
+  const id = (last?.id ?? featured.digest.slice(0, 6)).toUpperCase();
+  redirect(`/g/${id}?mode=listen`);
 }

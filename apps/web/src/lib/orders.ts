@@ -182,8 +182,12 @@ export async function resolveTrackAudioPath(
   const candidates = [
     path.join(dataRoot(), "READY_FOR_DITTO", short, "audio", "master.wav"),
     path.join(dataRoot(), "READY_FOR_DITTO", short, "audio", "master.flac"),
+    path.join(dataRoot(), "READY_FOR_DITTO", short, "audio", "master.mp3"),
     path.join(dataRoot(), "masters", `${short}.wav`),
     path.join(dataRoot(), "masters", `${short.toLowerCase()}.wav`),
+    path.join(dataRoot(), "masters", `${short.toLowerCase()}.mp3`),
+    path.join(dataRoot(), "packages", short, "master.mp3"),
+    path.join(dataRoot(), "packages", short, "master.wav"),
   ];
   for (const file of candidates) {
     try {
@@ -202,6 +206,22 @@ export async function resolveTrackAudioPath(
     /* none */
   }
   return null;
+}
+
+/**
+ * Buyer download package: Genus master + raw law materials (zip when present).
+ */
+export async function resolveTrackPackagePath(
+  trackId: string,
+): Promise<string | null> {
+  const short = trackId.replace(/^genus\/\/ns:/i, "").slice(0, 6).toUpperCase();
+  const zip = path.join(dataRoot(), "packages", short, `GENUSNS_${short}.zip`);
+  try {
+    await access(zip);
+    return zip;
+  } catch {
+    return null;
+  }
 }
 
 export function orderPublicSummary(order: CommerceOrder) {
@@ -223,4 +243,4 @@ export function orderPublicSummary(order: CommerceOrder) {
 export function fingerprintPayload(payload: string): string {
   return createHash("sha256").update(payload).digest("hex").slice(0, 16);
 }
-
+
