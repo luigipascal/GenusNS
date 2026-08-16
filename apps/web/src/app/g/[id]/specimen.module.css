@@ -125,6 +125,17 @@ a.smartLink {
   color: inherit;
 }
 
+.smartLinkSoon {
+  opacity: 0.55;
+  cursor: default;
+}
+
+.smartLinkSoon:hover,
+.smartLinkSoon:focus-visible {
+  border-color: var(--gns-line-strong);
+  color: inherit;
+}
+
 .packageBox {
   margin-top: var(--gns-space-4);
   width: min(420px, 92vw);

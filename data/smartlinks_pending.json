@@ -1,0 +1,47 @@
+{
+  "schema": "genusns.smartlinks-pending.v1",
+  "note": "Published on genusns.com but no harvested/probed smart-link yet. Cowork: finish Ditto distribution / create smart-link; sync will pick it up. Site shows PLATFORMS COMING UP until then.",
+  "updatedAt": "2026-08-16T14:30:40Z",
+  "pending": [
+    {
+      "id": "2D77B2",
+      "expectedUrl": "https://ditto.fm/2d77b2",
+      "status": "awaiting_ditto_smartlink"
+    },
+    {
+      "id": "4651EB",
+      "expectedUrl": "https://ditto.fm/4651eb",
+      "status": "awaiting_ditto_smartlink"
+    },
+    {
+      "id": "6336B6",
+      "expectedUrl": "https://ditto.fm/6336b6",
+      "status": "awaiting_ditto_smartlink"
+    },
+    {
+      "id": "691620",
+      "expectedUrl": "https://ditto.fm/691620",
+      "status": "awaiting_ditto_smartlink"
+    },
+    {
+      "id": "7AF3F5",
+      "expectedUrl": "https://ditto.fm/7af3f5",
+      "status": "awaiting_ditto_smartlink"
+    },
+    {
+      "id": "8CCFD9",
+      "expectedUrl": "https://ditto.fm/8ccfd9",
+      "status": "awaiting_ditto_smartlink"
+    },
+    {
+      "id": "95B10A",
+      "expectedUrl": "https://ditto.fm/95b10a",
+      "status": "awaiting_ditto_smartlink"
+    },
+    {
+      "id": "A7700A",
+      "expectedUrl": "https://ditto.fm/a7700a",
+      "status": "awaiting_ditto_smartlink"
+    }
+  ]
+}

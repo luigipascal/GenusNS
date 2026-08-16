@@ -262,6 +262,90 @@ def inject(json_path: Path, id_key: str, field: str, mapping: dict, force: bool)
     return n
 
 
+def probe_ditto_fm(gid: str, timeout: int = 12) -> str | None:
+    """If https://ditto.fm/<id> is live, return that URL."""
+    import urllib.error
+    import urllib.request
+
+    url = f"https://ditto.fm/{gid.lower()}"
+    req = urllib.request.Request(
+        url,
+        method="HEAD",
+        headers={"User-Agent": "GenusNS-smartlinks/1.0 (+https://genusns.com)"},
+    )
+    try:
+        with urllib.request.urlopen(req, timeout=timeout) as resp:
+            if 200 <= getattr(resp, "status", 200) < 400:
+                return url
+    except urllib.error.HTTPError as e:
+        if e.code in (301, 302, 303, 307, 308):
+            return url
+    except Exception:
+        pass
+    # Some hosts reject HEAD — try GET range
+    req = urllib.request.Request(
+        url,
+        headers={
+            "User-Agent": "GenusNS-smartlinks/1.0 (+https://genusns.com)",
+            "Range": "bytes=0-0",
+        },
+    )
+    try:
+        with urllib.request.urlopen(req, timeout=timeout) as resp:
+            if 200 <= getattr(resp, "status", 200) < 400:
+                return url
+    except urllib.error.HTTPError as e:
+        if e.code in (206, 301, 302, 303, 307, 308):
+            return url
+    except Exception:
+        pass
+    return None
+
+
+def write_pending(root: Path, published_ids: set[str], mapping: dict) -> Path:
+    pending = []
+    now = dt.datetime.now(dt.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+    for gid in sorted(published_ids):
+        if gid in mapping:
+            continue
+        pending.append(
+            {
+                "id": gid,
+                "expectedUrl": f"https://ditto.fm/{gid.lower()}",
+                "status": "awaiting_ditto_smartlink",
+            }
+        )
+    path = root / "smartlinks_pending.json"
+    doc = {
+        "schema": "genusns.smartlinks-pending.v1",
+        "note": (
+            "Published on genusns.com but no harvested/probed smart-link yet. "
+            "Cowork: finish Ditto distribution / create smart-link; sync will pick it up. "
+            "Site shows PLATFORMS COMING UP until then."
+        ),
+        "updatedAt": now,
+        "pending": pending,
+    }
+    path.write_text(json.dumps(doc, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    return path
+
+
+def load_published_ids(root: Path, c: dict) -> set[str]:
+    path = root / c["published_file"]
+    ids: set[str] = set()
+    if not path.is_file():
+        return ids
+    try:
+        doc = json.loads(path.read_text("utf-8"))
+        for e in doc if isinstance(doc, list) else doc.get("entries", []):
+            gid = str(e.get("id") or "").upper()
+            if re.fullmatch(r"[0-9A-F]{6}", gid):
+                ids.add(gid)
+    except json.JSONDecodeError:
+        pass
+    return ids
+
+
 def main() -> None:
     ap = argparse.ArgumentParser(
         description="Harvest Ditto smart-links -> attach to GENUS//NS catalogue."
@@ -308,6 +392,26 @@ def main() -> None:
     for gid in sorted(mapping):
         log(f"  {gid} -> {mapping[gid]['url']}")
 
+    published_ids = load_published_ids(root, c)
+    # Promote live ditto.fm/<id> pages even before the email arrives
+    probed = 0
+    for gid in sorted(published_ids):
+        if gid in mapping:
+            continue
+        url = probe_ditto_fm(gid)
+        if not url:
+            continue
+        mapping[gid] = {
+            "url": url,
+            "source": "ditto-fm-probe",
+            "subject": "probed live ditto.fm slug",
+            "capturedAt": now,
+        }
+        probed += 1
+        log(f"probe live {gid} -> {url}")
+    if probed:
+        log(f"probed {probed} live ditto.fm links")
+
     if a.dry_run:
         log("dry-run: nothing written.")
         return
@@ -316,7 +420,9 @@ def main() -> None:
     map_path.write_text(json.dumps(mapping, indent=2, ensure_ascii=False), encoding="utf-8")
     n1 = inject(root / c["catalog_file"], "canonicalId", c["field_name"], mapping, a.force)
     n2 = inject(root / c["published_file"], "id", c["field_name"], mapping, a.force)
+    pending_path = write_pending(root, published_ids, mapping)
     log(f"wrote {map_path.name}; set {c['field_name']} on {n1} catalog + {n2} published entries")
+    log(f"pending platforms: {len(json.loads(pending_path.read_text('utf-8')).get('pending', []))} -> {pending_path.name}")
     log("done. commit + deploy the data files for the site to show the links.")
 
 

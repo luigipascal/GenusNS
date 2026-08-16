@@ -26,7 +26,7 @@ function availability(s: PubStatus | undefined): Filter {
 
 function statusLabel(s: PubStatus | undefined): string {
   if (s?.published && s.smartLink) return "Listen · Platforms · Buy";
-  if (s?.published) return "Listen · Buy";
+  if (s?.published) return "Listen · Buy · Platforms coming up";
   if (s?.inBacklog) return "In backlog";
   return "Awaiting master";
 }
@@ -249,6 +249,8 @@ export function CatalogueClient() {
                       >
                         Platforms
                       </a>
+                    ) : st?.published ? (
+                      <span className={styles.muted}>Platforms coming up</span>
                     ) : null}
                   </div>
                 </div>

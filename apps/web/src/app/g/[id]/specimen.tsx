@@ -245,6 +245,17 @@ function SpecimenBody({
                   STREAM ON PLATFORMS
                 </a>
               </p>
+            ) : pubStatus?.published ? (
+              <p className={styles.smartLinkRow}>
+                <button
+                  type="button"
+                  className={`${styles.play} ${styles.smartLinkSoon}`}
+                  disabled
+                  title="Ditto smart-link not live yet"
+                >
+                  PLATFORMS COMING UP
+                </button>
+              </p>
             ) : null}
             <div className={styles.packageBox}>
               <p className={`${styles.packageTitle} mono`}>
