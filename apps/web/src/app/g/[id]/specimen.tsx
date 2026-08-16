@@ -49,6 +49,7 @@ function SpecimenBody({
     published: boolean;
     inBacklog: boolean;
     hasMaster: boolean;
+    smartLink: string | null;
   } | null>(null);
   const playback = usePlayback();
 
@@ -68,12 +69,14 @@ function SpecimenBody({
           published?: boolean;
           inBacklog?: boolean;
           hasMaster?: boolean;
+          smartLink?: string | null;
         } | null) => {
           if (cancelled || !d) return;
           setPubStatus({
             published: Boolean(d.published),
             inBacklog: Boolean(d.inBacklog),
             hasMaster: Boolean(d.hasMaster),
+            smartLink: d.smartLink?.trim() || null,
           });
         },
       )
@@ -231,6 +234,18 @@ function SpecimenBody({
                   ? "PACKAGE READY · AWAITING DAILY PUBLICATION SLOT"
                   : "NO PREVIEW TRACK · OPEN {} FOR COMPOSE INSTRUCTION · PUBLISH MASTER FROM GENUS"}
             </p>
+            {pubStatus?.smartLink ? (
+              <p className={styles.smartLinkRow}>
+                <a
+                  className={`${styles.play} ${styles.smartLink}`}
+                  href={pubStatus.smartLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  STREAM ON PLATFORMS
+                </a>
+              </p>
+            ) : null}
             <div className={styles.packageBox}>
               <p className={`${styles.packageTitle} mono`}>
                 ONE PRICE · FULL PACKAGE INCLUDES

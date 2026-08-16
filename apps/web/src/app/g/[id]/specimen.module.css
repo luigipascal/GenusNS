@@ -115,6 +115,16 @@
   outline: none;
 }
 
+.smartLinkRow {
+  margin: var(--gns-space-2) 0 0;
+}
+
+a.smartLink {
+  display: inline-block;
+  text-decoration: none;
+  color: inherit;
+}
+
 .packageBox {
   margin-top: var(--gns-space-4);
   width: min(420px, 92vw);

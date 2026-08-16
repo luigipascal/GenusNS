@@ -10,6 +10,7 @@ type PubStatus = {
   published: boolean;
   inBacklog: boolean;
   publishedAt: string | null;
+  smartLink?: string | null;
 };
 
 type Filter = "all" | "listen" | "queue";
@@ -24,6 +25,7 @@ function availability(s: PubStatus | undefined): Filter {
 }
 
 function statusLabel(s: PubStatus | undefined): string {
+  if (s?.published && s.smartLink) return "Listen · Platforms · Buy";
   if (s?.published) return "Listen · Buy";
   if (s?.inBacklog) return "In backlog";
   return "Awaiting master";
@@ -239,6 +241,15 @@ export function CatalogueClient() {
                     ) : (
                       <span className={styles.muted}>Not on sale yet</span>
                     )}
+                    {st?.smartLink ? (
+                      <a
+                        href={st.smartLink}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        Platforms
+                      </a>
+                    ) : null}
                   </div>
                 </div>
               </li>

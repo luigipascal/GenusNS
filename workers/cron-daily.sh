@@ -30,6 +30,17 @@ fi
     (cd "$ROOT/scripts" && python3 forum_lab.py ingest --absorb) || echo "forum_lab skip"
   fi
 
+  # Ditto smart-links from StartMail (needs GENUSNS_IMAP_PASS in .env)
+  if [[ -n "${GENUSNS_IMAP_PASS:-}" && -f "$ROOT/worker/smartlinks_sync.py" ]]; then
+    export GENUSNS_DATA_DIR="$ROOT/data"
+    echo "smartlinks_sync"
+    (cd "$ROOT/worker" && python3 smartlinks_sync.py) || echo "smartlinks skip"
+  elif [[ -n "${GENUSNS_IMAP_PASS:-}" && -f "$ROOT/scripts/smartlinks_sync.py" ]]; then
+    export GENUSNS_DATA_DIR="$ROOT/data"
+    echo "smartlinks_sync (scripts)"
+    (cd "$ROOT/scripts" && python3 smartlinks_sync.py) || echo "smartlinks skip"
+  fi
+
   if sudo docker image inspect genusns-worker:latest >/dev/null 2>&1; then
     export GENUSNS_DATA_DIR=/data
     echo "via docker genusns-worker:latest DATA=$GENUSNS_DATA_DIR"

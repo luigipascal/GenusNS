@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { listLiveExperiments } from "@/lib/liveCatalog";
 import { loadBacklog, loadPublished } from "@/lib/publish";
+import { loadSmartLinks } from "@/lib/smartlinks";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -10,10 +11,11 @@ function shortId(digest: string): string {
 }
 
 export async function GET() {
-  const [experiments, published, backlog] = await Promise.all([
+  const [experiments, published, backlog, smartlinks] = await Promise.all([
     listLiveExperiments(),
     loadPublished(),
     loadBacklog(),
+    loadSmartLinks(),
   ]);
   const pubById = new Map(published.entries.map((e) => [shortId(e.id), e]));
   const queued = new Set(backlog.queue.map((e) => shortId(e.id)));
@@ -31,6 +33,7 @@ export async function GET() {
             published: Boolean(pub),
             inBacklog: queued.has(id),
             publishedAt: pub?.publishedAt ?? null,
+            smartLink: smartlinks[id]?.url ?? null,
           },
         ];
       }),
