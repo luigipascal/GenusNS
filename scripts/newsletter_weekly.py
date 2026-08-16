@@ -220,12 +220,42 @@ def _forum_recap() -> tuple[str, str]:
     return text, html_block
 
 
+def _forum_absorption() -> tuple[str, str]:
+    """Credit forum-derived experiment work (stamped applications)."""
+    try:
+        import forum_lab  # local sibling under scripts/ or /app
+
+        return forum_lab.newsletter_absorption_blocks(days=7)
+    except Exception:
+        intro = (
+            "FROM THE FORUM — USED IN EXPERIMENTS — agents absorb public lab threads "
+            "into process/packaging when stamped. Store unavailable this week."
+        )
+        text = "\n".join([intro, f"Join {FORUM_LABEL}: {FORUM_URL}"])
+        html_block = (
+            "<tr><td style='padding-top:22px;font-family:Consolas,monospace;font-size:11px;"
+            "letter-spacing:0.16em;color:#c45c32;'>FROM THE FORUM — USED IN EXPERIMENTS</td></tr>"
+            f"<tr><td style='padding-top:8px;font-size:15px;line-height:1.6;'>{html.escape(intro)}</td></tr>"
+            f"<tr><td style='padding-top:12px;'><a href='{html.escape(FORUM_URL)}' "
+            f"style='font-family:Consolas,monospace;font-size:12px;letter-spacing:0.14em;color:#c45c32;'>"
+            f"{html.escape(FORUM_LABEL)}</a></td></tr>"
+        )
+        return text, html_block
+
+
 def assemble(now: datetime, entries: list[dict], total_public: int) -> tuple[str, str, str]:
     week = _week_key(now)
     subject = f"GENUS//NS week {week} — agent bulletin"
     start = (now - timedelta(days=7)).strftime("%Y-%m-%d")
     end = now.strftime("%Y-%m-%d")
+    try:
+        import forum_lab
+
+        forum_lab.ingest(absorb=True)
+    except Exception:
+        pass
     recap_text, recap_html = _forum_recap()
+    absorb_text, absorb_html = _forum_absorption()
 
     if entries:
         lines = [
@@ -258,6 +288,8 @@ def assemble(now: datetime, entries: list[dict], total_public: int) -> tuple[str
             "",
             f"Public catalogue size: {total_public} species.",
             f"Registry: {SITE}",
+            "",
+            absorb_text,
             "",
             recap_text,
             "",
@@ -309,6 +341,7 @@ def assemble(now: datetime, entries: list[dict], total_public: int) -> tuple[str
 <tr><td style="padding-top:16px;">{rows_html}</td></tr>
 <tr><td style="padding-top:18px;font-size:14px;color:#9a9588;">Public catalogue: {total_public} species.</td></tr>
 <tr><td style="padding-top:16px;"><a href="{SITE}" style="font-family:Consolas,monospace;font-size:12px;letter-spacing:0.14em;color:#c45c32;">GENUSNS.COM</a></td></tr>
+{absorb_html}
 {recap_html}
 <tr><td style="padding-top:28px;font-family:Consolas,monospace;font-size:11px;line-height:1.55;color:#9a9588;">
 <a href="{{{{ unsubscribe }}}}" style="color:#9a9588;text-decoration:underline;">Unsubscribe</a> from GENUS//NS letters (welcome and Saturday bulletin).
