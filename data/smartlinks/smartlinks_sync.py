@@ -188,17 +188,38 @@ def harvest_imap(c: dict, whitelist: set[str]) -> list[dict]:
             "Set GENUSNS_IMAP_PASS (StartMail mailbox / app password) in the environment first."
         )
     log(f"IMAP {c['imap_user']}@{c['imap_host']}:{c['imap_port']} / {c['mailbox']}")
-    M = imaplib.IMAP4_SSL(c["imap_host"], int(c["imap_port"]))
+    M = imaplib.IMAP4_SSL(c["imap_host"], int(c["imap_port"]), timeout=60)
     M.login(c["imap_user"], pw)
     M.select(c["mailbox"], readonly=True)
     since = (dt.date.today() - dt.timedelta(days=int(c["since_days"]))).strftime("%d-%b-%Y")
-    typ, data = M.search(None, f"(SINCE {since})")
+    # Targeted SEARCH — full SINCE fetch on a busy inbox hangs for hours.
+    num_set: set[bytes] = set()
+    searches = [
+        f'(FROM "dittomusic.com" SINCE {since})',
+        f'(FROM "ditto.fm" SINCE {since})',
+        f'(FROM "noreply@ditto" SINCE {since})',
+        f'(SUBJECT "smart link" SINCE {since})',
+        f'(SUBJECT "Smart Link" SINCE {since})',
+        f'(SUBJECT "is live" SINCE {since})',
+        f'(SUBJECT "your release" SINCE {since})',
+        f'(TEXT "ditto.fm" SINCE {since})',
+        f'(TEXT "found.ee" SINCE {since})',
+    ]
+    for q in searches:
+        try:
+            typ, data = M.search(None, q)
+        except Exception as exc:  # noqa: BLE001
+            log(f"search skip {q!r}: {exc}")
+            continue
+        if typ == "OK" and data and data[0]:
+            for num in data[0].split():
+                num_set.add(num)
+    log(f"IMAP candidates: {len(num_set)} messages")
     out: list[dict] = []
-    if typ == "OK":
-        for num in data[0].split():
-            t, d = M.fetch(num, "(RFC822)")
-            if t == "OK" and d and d[0]:
-                out.extend(parse_message(d[0][1], c, whitelist))
+    for num in sorted(num_set, key=lambda x: int(x)):
+        t, d = M.fetch(num, "(RFC822)")
+        if t == "OK" and d and d[0]:
+            out.extend(parse_message(d[0][1], c, whitelist))
     M.logout()
     return out
 

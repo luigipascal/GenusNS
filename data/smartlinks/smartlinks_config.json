@@ -3,9 +3,27 @@
   "imap_port": 993,
   "imap_user": "neuralsyntax@0dblabs.com",
   "mailbox": "INBOX",
-  "sender_contains": ["dittomusic.com", "ditto.fm", "@ditto"],
-  "subject_contains": ["ditto", "live", "release", "smart link", "genus"],
-  "link_hosts": ["ditto.fm", "found.ee", "ffm.to", "hypeddit", "li.sten.to", "dittomusic.com/l/", "linktr.ee"],
+  "sender_contains": [
+    "dittomusic.com",
+    "ditto.fm",
+    "@ditto"
+  ],
+  "subject_contains": [
+    "ditto",
+    "live",
+    "release",
+    "smart link",
+    "genus"
+  ],
+  "link_hosts": [
+    "ditto.fm",
+    "found.ee",
+    "ffm.to",
+    "hypeddit",
+    "li.sten.to",
+    "dittomusic.com/l/",
+    "linktr.ee"
+  ],
   "data_dir": "..",
   "catalog_file": "catalog.json",
   "published_file": "published.json",
