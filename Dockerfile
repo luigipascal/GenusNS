@@ -45,6 +45,9 @@ RUN apt-get update \
 COPY --from=builder --chown=nextjs:nodejs /app/apps/web/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/apps/web/.next/static ./apps/web/.next/static
 COPY --from=builder --chown=nextjs:nodejs /app/apps/web/public ./apps/web/public
+# Audio route probes process.cwd()/public/audio (WORKDIR /app). Keep a copy there
+# so baked listen masters work when the Contabo data volume has no file yet.
+COPY --from=builder --chown=nextjs:nodejs /app/apps/web/public ./public
 
 USER nextjs
 EXPOSE 3000

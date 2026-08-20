@@ -203,6 +203,8 @@ export async function resolveTrackAudioPath(
     path.join(dataRoot(), "masters", `${short.toLowerCase()}.mp3`),
     path.join(dataRoot(), "packages", short, "master.mp3"),
     path.join(dataRoot(), "packages", short, "master.wav"),
+    path.join(process.cwd(), "public", "audio", `${short.toLowerCase()}.mp3`),
+    path.join(process.cwd(), "apps", "web", "public", "audio", `${short.toLowerCase()}.mp3`),
   ];
   for (const file of candidates) {
     if (await isUsableMasterFile(file)) return file;
