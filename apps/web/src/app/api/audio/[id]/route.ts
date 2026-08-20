@@ -21,20 +21,25 @@ async function locateAudio(id: string): Promise<string | null> {
   let audioPath = await resolveTrackAudioPath(short);
   if (audioPath) return audioPath;
 
-  const publicDir = path.join(process.cwd(), "public", "audio");
-  try {
-    const files = await readdir(publicDir);
-    const match = files.find((f) =>
-      f.toLowerCase().startsWith(short.toLowerCase()),
-    );
-    if (match) {
-      const p = path.join(publicDir, match);
-      await access(p);
-      if (statSync(p).size < MIN_MASTER_BYTES) return null;
-      return p;
+  const publicDirs = [
+    path.join(process.cwd(), "public", "audio"),
+    path.join(process.cwd(), "apps", "web", "public", "audio"),
+  ];
+  for (const publicDir of publicDirs) {
+    try {
+      const files = await readdir(publicDir);
+      const match = files.find((f) =>
+        f.toLowerCase().startsWith(short.toLowerCase()),
+      );
+      if (match) {
+        const p = path.join(publicDir, match);
+        await access(p);
+        if (statSync(p).size < MIN_MASTER_BYTES) continue;
+        return p;
+      }
+    } catch {
+      /* try next */
     }
-  } catch {
-    /* none */
   }
   return null;
 }
