@@ -19,14 +19,18 @@ export function getStripe(): Stripe {
 
 /**
  * Public site origin for Checkout redirects.
- * GENUS//NS host is not live yet — default to 0dblabs.com.
+ * Canonical host is genusns.com — ignore stale Coolify sslip.io / 0dblabs fallbacks.
  */
 export function siteOrigin(req?: Request): string {
-  return (
+  const configured = (
+    process.env.GENUSNS_CHECKOUT_ORIGIN ??
     process.env.NEXT_PUBLIC_SITE_URL ??
-    req?.headers.get("origin") ??
-    "https://0dblabs.com"
-  );
+    ""
+  ).replace(/\/$/, "");
+  if (configured.includes("genusns.com")) return configured;
+  const header = req?.headers.get("origin") ?? "";
+  if (header.includes("genusns.com")) return header.replace(/\/$/, "");
+  return "https://genusns.com";
 }
 
 export function randomIntegrationSuffix(length = 8): string {
@@ -38,8 +42,8 @@ export function randomIntegrationSuffix(length = 8): string {
   return out;
 }
 
-/** Registered Stripe webhook URL while genusns is offline. */
+/** Live Stripe webhook for GENUS//NS fulfilment. */
 export const STRIPE_WEBHOOK_PUBLIC_URL =
   process.env.STRIPE_WEBHOOK_PUBLIC_URL ??
-  "https://0dblabs.com/api/webhooks/stripe";
-
+  "https://genusns.com/api/webhooks/stripe";
+

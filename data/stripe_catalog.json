@@ -1,0 +1,249 @@
+{
+  "schema": "genusns.stripe-catalog.v1",
+  "currency": "gbp",
+  "unit_amount": 199,
+  "products": {
+    "00D88E": {
+      "id": "00D88E",
+      "digest": "00d88ef0aa406864",
+      "productId": "genusns_00d88e",
+      "priceId": "price_1U6XLq6MQAjxm2yoYEKaJyOG",
+      "lookupKey": "genusns_00d88e_gbp",
+      "unitAmount": 199,
+      "currency": "gbp",
+      "url": "https://genusns.com/g/00d88e",
+      "created": true
+    },
+    "19615D": {
+      "id": "19615D",
+      "digest": "19615d49ec2d94fa",
+      "productId": "genusns_19615d",
+      "priceId": "price_1U6XLr6MQAjxm2yocosGsf6s",
+      "lookupKey": "genusns_19615d_gbp",
+      "unitAmount": 199,
+      "currency": "gbp",
+      "url": "https://genusns.com/g/19615d",
+      "created": true
+    },
+    "288FBD": {
+      "id": "288FBD",
+      "digest": "288fbdc2281bc4c8",
+      "productId": "genusns_288fbd",
+      "priceId": "price_1U6XLs6MQAjxm2yoLO74MhZp",
+      "lookupKey": "genusns_288fbd_gbp",
+      "unitAmount": 199,
+      "currency": "gbp",
+      "url": "https://genusns.com/g/288fbd",
+      "created": true
+    },
+    "2B85A0": {
+      "id": "2B85A0",
+      "digest": "2b85a0b263525916",
+      "productId": "genusns_2b85a0",
+      "priceId": "price_1U6XLu6MQAjxm2yoWxGppc27",
+      "lookupKey": "genusns_2b85a0_gbp",
+      "unitAmount": 199,
+      "currency": "gbp",
+      "url": "https://genusns.com/g/2b85a0",
+      "created": true
+    },
+    "36050A": {
+      "id": "36050A",
+      "digest": "36050a02c998aa82",
+      "productId": "genusns_36050a",
+      "priceId": "price_1U6XLv6MQAjxm2yojKGfh3Hl",
+      "lookupKey": "genusns_36050a_gbp",
+      "unitAmount": 199,
+      "currency": "gbp",
+      "url": "https://genusns.com/g/36050a",
+      "created": true
+    },
+    "4651EB": {
+      "id": "4651EB",
+      "digest": "4651eb582dc5fb3f",
+      "productId": "genusns_4651eb",
+      "priceId": "price_1U6XLv6MQAjxm2yomx79YPpe",
+      "lookupKey": "genusns_4651eb_gbp",
+      "unitAmount": 199,
+      "currency": "gbp",
+      "url": "https://genusns.com/g/4651eb",
+      "created": true
+    },
+    "6336B6": {
+      "id": "6336B6",
+      "digest": "6336b67cd614ef99",
+      "productId": "genusns_6336b6",
+      "priceId": "price_1U6XLw6MQAjxm2yoOim3FNtN",
+      "lookupKey": "genusns_6336b6_gbp",
+      "unitAmount": 199,
+      "currency": "gbp",
+      "url": "https://genusns.com/g/6336b6",
+      "created": true
+    },
+    "691620": {
+      "id": "691620",
+      "digest": "691620c37be04908",
+      "productId": "genusns_691620",
+      "priceId": "price_1U6XLx6MQAjxm2yoAHwuTUf3",
+      "lookupKey": "genusns_691620_gbp",
+      "unitAmount": 199,
+      "currency": "gbp",
+      "url": "https://genusns.com/g/691620",
+      "created": true
+    },
+    "7AF3F5": {
+      "id": "7AF3F5",
+      "digest": "7af3f57381837421",
+      "productId": "genusns_7af3f5",
+      "priceId": "price_1U6XLy6MQAjxm2yo8xXhng4R",
+      "lookupKey": "genusns_7af3f5_gbp",
+      "unitAmount": 199,
+      "currency": "gbp",
+      "url": "https://genusns.com/g/7af3f5",
+      "created": true
+    },
+    "8CCFD9": {
+      "id": "8CCFD9",
+      "digest": "8ccfd910e5d6bb7d",
+      "productId": "genusns_8ccfd9",
+      "priceId": "price_1U6XLz6MQAjxm2yoBUvdSh0h",
+      "lookupKey": "genusns_8ccfd9_gbp",
+      "unitAmount": 199,
+      "currency": "gbp",
+      "url": "https://genusns.com/g/8ccfd9",
+      "created": true
+    },
+    "95B10A": {
+      "id": "95B10A",
+      "digest": "95b10aa69d56f3bf",
+      "productId": "genusns_95b10a",
+      "priceId": "price_1U6XM06MQAjxm2yonnL08REv",
+      "lookupKey": "genusns_95b10a_gbp",
+      "unitAmount": 199,
+      "currency": "gbp",
+      "url": "https://genusns.com/g/95b10a",
+      "created": true
+    },
+    "A7700A": {
+      "id": "A7700A",
+      "digest": "a7700a8890cec37f",
+      "productId": "genusns_a7700a",
+      "priceId": "price_1U6XM16MQAjxm2yoFSNVQZJs",
+      "lookupKey": "genusns_a7700a_gbp",
+      "unitAmount": 199,
+      "currency": "gbp",
+      "url": "https://genusns.com/g/a7700a",
+      "created": true
+    },
+    "AFCBE2": {
+      "id": "AFCBE2",
+      "digest": "afcbe26ef1b5c3bd",
+      "productId": "genusns_afcbe2",
+      "priceId": "price_1U6XM26MQAjxm2yonBazGidH",
+      "lookupKey": "genusns_afcbe2_gbp",
+      "unitAmount": 199,
+      "currency": "gbp",
+      "url": "https://genusns.com/g/afcbe2",
+      "created": true
+    },
+    "C1AF30": {
+      "id": "C1AF30",
+      "digest": "c1af303c30a36205",
+      "productId": "genusns_c1af30",
+      "priceId": "price_1U6XM36MQAjxm2yoFRtNnqoj",
+      "lookupKey": "genusns_c1af30_gbp",
+      "unitAmount": 199,
+      "currency": "gbp",
+      "url": "https://genusns.com/g/c1af30",
+      "created": true
+    },
+    "F5D42A": {
+      "id": "F5D42A",
+      "digest": "f5d42a4f382cdb12",
+      "productId": "genusns_f5d42a",
+      "priceId": "price_1U6XM46MQAjxm2yoNpfhroi5",
+      "lookupKey": "genusns_f5d42a_gbp",
+      "unitAmount": 199,
+      "currency": "gbp",
+      "url": "https://genusns.com/g/f5d42a",
+      "created": true
+    },
+    "F9B2D3": {
+      "id": "F9B2D3",
+      "digest": "f9b2d3bc402d6563",
+      "productId": "genusns_f9b2d3",
+      "priceId": "price_1U6XM56MQAjxm2yoVBsqf4bi",
+      "lookupKey": "genusns_f9b2d3_gbp",
+      "unitAmount": 199,
+      "currency": "gbp",
+      "url": "https://genusns.com/g/f9b2d3",
+      "created": true
+    },
+    "0012BA": {
+      "id": "0012BA",
+      "digest": "0012ba31dcf0978d",
+      "productId": "genusns_0012ba",
+      "priceId": "price_1U6XM66MQAjxm2yoYFtdFjo0",
+      "lookupKey": "genusns_0012ba_gbp",
+      "unitAmount": 199,
+      "currency": "gbp",
+      "url": "https://genusns.com/g/0012ba",
+      "created": true
+    },
+    "2D77B2": {
+      "id": "2D77B2",
+      "digest": "2d77b27319884e80",
+      "productId": "genusns_2d77b2",
+      "priceId": "price_1U6XM76MQAjxm2yomnaIxfdL",
+      "lookupKey": "genusns_2d77b2_gbp",
+      "unitAmount": 199,
+      "currency": "gbp",
+      "url": "https://genusns.com/g/2d77b2",
+      "created": true
+    },
+    "49702A": {
+      "id": "49702A",
+      "digest": "49702a84e2809da5",
+      "productId": "genusns_49702a",
+      "priceId": "price_1U6XM76MQAjxm2yogd3htaaU",
+      "lookupKey": "genusns_49702a_gbp",
+      "unitAmount": 199,
+      "currency": "gbp",
+      "url": "https://genusns.com/g/49702a",
+      "created": true
+    },
+    "49D3FE": {
+      "id": "49D3FE",
+      "digest": "49d3fe19a19f30eb",
+      "productId": "genusns_49d3fe",
+      "priceId": "price_1U6XM86MQAjxm2yoxHZfKflh",
+      "lookupKey": "genusns_49d3fe_gbp",
+      "unitAmount": 199,
+      "currency": "gbp",
+      "url": "https://genusns.com/g/49d3fe",
+      "created": true
+    },
+    "555867": {
+      "id": "555867",
+      "digest": "5558675b19617525",
+      "productId": "genusns_555867",
+      "priceId": "price_1U6XM96MQAjxm2yo2vyziy9J",
+      "lookupKey": "genusns_555867_gbp",
+      "unitAmount": 199,
+      "currency": "gbp",
+      "url": "https://genusns.com/g/555867",
+      "created": true
+    },
+    "5E8574": {
+      "id": "5E8574",
+      "digest": "5e85749ccae954f6",
+      "productId": "genusns_5e8574",
+      "priceId": "price_1U6XMA6MQAjxm2yoQQJyIYjB",
+      "lookupKey": "genusns_5e8574_gbp",
+      "unitAmount": 199,
+      "currency": "gbp",
+      "url": "https://genusns.com/g/5e8574",
+      "created": true
+    }
+  }
+}

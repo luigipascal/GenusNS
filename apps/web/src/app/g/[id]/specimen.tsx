@@ -272,7 +272,7 @@ function SpecimenBody({
               <button
                 type="button"
                 className={styles.play}
-                disabled={playback.mode !== "master"}
+                disabled={!pubStatus?.published}
                 onClick={() => {
                   void fetch("/api/checkout", {
                     method: "POST",
@@ -283,16 +283,12 @@ function SpecimenBody({
                     }),
                   })
                     .then((r) => r.json())
-                    .then((d: { url?: string }) => {
+                    .then((d: { url?: string; error?: string }) => {
                       if (d.url) window.location.href = d.url;
                     });
                 }}
               >
-                {playback.mode === "master"
-                  ? "BUY FULL PACKAGE"
-                  : pubStatus?.inBacklog || pubStatus?.hasMaster
-                    ? "NOT YET PUBLISHED"
-                    : "BUY FULL PACKAGE"}
+                {pubStatus?.published ? "BUY FULL PACKAGE" : "NOT YET PUBLISHED"}
               </button>
             </div>
           </div>
