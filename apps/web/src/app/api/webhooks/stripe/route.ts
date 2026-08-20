@@ -8,7 +8,8 @@ export const dynamic = "force-dynamic";
 
 /**
  * Stripe webhooks for GENUS//NS / 0dB_Labs commerce.
- * Public URL: https://genusns.com/api/webhooks/stripe
+ * Optional. Downloads are issued from GET /api/checkout/session after redirect.
+ * Public URL if enabled: https://0dblabs.com/api/webhooks/stripe
  * Requires STRIPE_WEBHOOK_SECRET. Raw body required for signature verify.
  */
 export async function POST(req: Request) {
@@ -83,4 +84,4 @@ export async function POST(req: Request) {
 
   return NextResponse.json({ received: true });
 }
-
+

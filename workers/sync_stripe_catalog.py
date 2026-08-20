@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
 """
-Create/update a live Stripe Product + Price for every published GENUS//NS species.
+Create/update a live Stripe Product + Price for one newly published species.
 
-Idempotent: product id = genusns_<id> (lowercase). Price lookup_key = genusns_<id>_gbp.
+Existing published tracks already sell via Checkout `price_data` and the
+success-page session lookup — no webhook required. This script is for
+connecting *new* daily publishes one id at a time.
 
 Usage:
-  python scripts/sync_stripe_catalog.py
-  python scripts/sync_stripe_catalog.py --ids 5E8574,555867
+  python scripts/sync_stripe_catalog.py --ids 5E8574
 """
 
 from __future__ import annotations

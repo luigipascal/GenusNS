@@ -67,34 +67,6 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Invalid checkout request" }, { status: 400 });
   }
 
-  const lineItems: Parameters<typeof stripe.checkout.sessions.create>[0]["line_items"] =
-    [];
-  if (meta.kind === "track" && meta.trackId) {
-    const lookup = `genusns_${meta.trackId}_gbp`;
-    const found = await stripe.prices.list({
-      lookup_keys: [lookup],
-      active: true,
-      limit: 1,
-    });
-    const priceId = found.data[0]?.id;
-    if (priceId) {
-      lineItems.push({ quantity: 1, price: priceId });
-    }
-  }
-  if (lineItems.length === 0) {
-    lineItems.push({
-      quantity: 1,
-      price_data: {
-        currency: "gbp",
-        unit_amount: unitAmount,
-        product_data: {
-          name: lineName,
-          description,
-        },
-      },
-    });
-  }
-
   const cancelPath =
     meta.kind === "track" && meta.trackId
       ? `/g/${meta.trackId}?checkout=cancel`
@@ -106,7 +78,19 @@ export async function POST(req: Request) {
     billing_address_collection: "auto",
     success_url: `${origin}/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
     cancel_url: `${origin}${cancelPath}`,
-    line_items: lineItems,
+    line_items: [
+      {
+        quantity: 1,
+        price_data: {
+          currency: "gbp",
+          unit_amount: unitAmount,
+          product_data: {
+            name: lineName,
+            description,
+          },
+        },
+      },
+    ],
     metadata: meta,
   };
 

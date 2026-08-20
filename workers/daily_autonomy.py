@@ -516,15 +516,26 @@ def generate_one(*, dry_run: bool = False, candidate: dict | None = None) -> str
     return c["short"]
 
 
-def sync_stripe() -> None:
+def sync_stripe_today() -> None:
+    """Attach Stripe to today's newly published species only — not a backfill."""
     script = SCRIPT_DIR / "sync_stripe_catalog.py"
     if not script.is_file():
+        return
+    pub = _load_json(DATA / "published.json", {"entries": []})
+    day = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+    ids = [
+        str(e.get("id", "")).upper()[:6]
+        for e in pub.get("entries", [])
+        if str(e.get("publishedAt", ""))[:10] == day
+    ]
+    if not ids:
+        print("stripe: no new publish today")
         return
     env = os.environ.copy()
     env["GENUSNS_DATA_DIR"] = str(DATA)
     try:
         subprocess.run(
-            [sys.executable, str(script)],
+            [sys.executable, str(script), "--ids", ",".join(ids)],
             cwd=str(GENUSNS),
             env=env,
             check=False,

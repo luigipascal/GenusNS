@@ -42,8 +42,8 @@ export function randomIntegrationSuffix(length = 8): string {
   return out;
 }
 
-/** Live Stripe webhook for GENUS//NS fulfilment. */
+/** Optional Stripe webhook. Downloads do not depend on it — success page verifies the session. */
 export const STRIPE_WEBHOOK_PUBLIC_URL =
   process.env.STRIPE_WEBHOOK_PUBLIC_URL ??
-  "https://genusns.com/api/webhooks/stripe";
+  "https://0dblabs.com/api/webhooks/stripe";
 
