@@ -12,6 +12,50 @@ export const dynamic = "force-dynamic";
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const WELCOME_ATTR = "GENUSNS_WELCOME";
 
+const BLOCKED_HOSTS = new Set([
+  "example.com",
+  "example.org",
+  "example.net",
+  "example.invalid",
+  "mailinator.com",
+  "guerrillamail.com",
+  "10minutemail.com",
+  "tempmail.com",
+  "throwaway.email",
+]);
+
+const WINDOW_MS = 10 * 60 * 1000;
+const MAX_PER_WINDOW = 8;
+const hits = new Map<string, { n: number; reset: number }>();
+
+function rateLimited(req: Request): boolean {
+  const ip =
+    req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown";
+  const now = Date.now();
+  const h = hits.get(ip);
+  if (!h || now > h.reset) {
+    hits.set(ip, { n: 1, reset: now + WINDOW_MS });
+    if (hits.size > 5000) {
+      for (const [k, v] of hits) if (now > v.reset) hits.delete(k);
+    }
+    return false;
+  }
+  h.n += 1;
+  return h.n > MAX_PER_WINDOW;
+}
+
+function isBlockedEmail(email: string): boolean {
+  const host = email.split("@")[1] || "";
+  if (BLOCKED_HOSTS.has(host)) return true;
+  const tld = host.split(".").pop() || "";
+  if (["invalid", "localhost", "test", "example"].includes(tld)) return true;
+  if (host.endsWith(".invalid") || host.endsWith(".example")) return true;
+  const local = email.split("@")[0] || "";
+  return /^(probe|brevo-test|welcome-test|test|asdf|qwerty)([+._-]|$)/i.test(
+    local,
+  );
+}
+
 type BrevoErrorBody = {
   code?: string;
   message?: string;
@@ -129,9 +173,14 @@ function siteOrigin(req: Request): string {
 }
 
 /**
- * POST { email } → Brevo list + welcome letter (with unsubscribe).
+ * POST { email, company? } → Brevo list + welcome letter (with unsubscribe).
+ * `company` is a honeypot field.
  */
 export async function POST(req: Request) {
+  if (rateLimited(req)) {
+    return NextResponse.json({ error: "Too many requests" }, { status: 429 });
+  }
+
   const apiKey = process.env.BREVO_API_KEY?.trim();
   const listId = parseListId(process.env.BREVO_NEWSLETTER_LIST_ID);
   const doiTemplateRaw = process.env.BREVO_DOI_TEMPLATE_ID?.trim();
@@ -147,16 +196,28 @@ export async function POST(req: Request) {
     );
   }
 
-  let body: { email?: unknown };
+  let body: { email?: unknown; company?: unknown; website?: unknown };
   try {
-    body = (await req.json()) as { email?: unknown };
+    body = (await req.json()) as {
+      email?: unknown;
+      company?: unknown;
+      website?: unknown;
+    };
   } catch {
     return NextResponse.json({ error: "Invalid JSON body" }, { status: 400 });
   }
 
+  // Honeypot — bots that fill hidden fields get a fake success.
+  if (
+    (typeof body.company === "string" && body.company.trim()) ||
+    (typeof body.website === "string" && body.website.trim())
+  ) {
+    return NextResponse.json({ ok: true });
+  }
+
   const email =
     typeof body.email === "string" ? body.email.trim().toLowerCase() : "";
-  if (!email || !EMAIL_RE.test(email)) {
+  if (!email || !EMAIL_RE.test(email) || isBlockedEmail(email)) {
     return NextResponse.json({ error: "Valid email required" }, { status: 400 });
   }
 

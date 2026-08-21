@@ -10,6 +10,7 @@ type Props = {
 
 export function NewsletterForm({ idPrefix, variant = "footer" }: Props) {
   const [email, setEmail] = useState("");
+  const [company, setCompany] = useState(""); // honeypot
   const [status, setStatus] = useState<"idle" | "pending" | "ok" | "error">(
     "idle",
   );
@@ -24,7 +25,7 @@ export function NewsletterForm({ idPrefix, variant = "footer" }: Props) {
       const res = await fetch("/api/newsletter/subscribe", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email }),
+        body: JSON.stringify({ email, company }),
       });
       const data = (await res.json()) as {
         ok?: boolean;
@@ -82,6 +83,22 @@ export function NewsletterForm({ idPrefix, variant = "footer" }: Props) {
             }
           }}
           disabled={status === "pending"}
+        />
+        <input
+          type="text"
+          name="company"
+          tabIndex={-1}
+          autoComplete="off"
+          aria-hidden="true"
+          value={company}
+          onChange={(ev) => setCompany(ev.target.value)}
+          style={{
+            position: "absolute",
+            left: "-9999px",
+            opacity: 0,
+            height: 0,
+            width: 0,
+          }}
         />
         <button
           type="submit"
